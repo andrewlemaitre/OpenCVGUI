@@ -79,7 +79,7 @@ public class OpenCVHarnessWindow extends JFrame {
 		viewerPanel.add(imagePanelOrganizer);
 
 		imagePanel = new ImagePanel();
-		((ImagePanelOrganizer)imagePanelOrganizer).addPanel(imagePanel);
+		imagePanelOrganizer.addPanel(imagePanel);
 		JPanel viewerControlsPanel = new JPanel();
 		viewerPanel.add(viewerControlsPanel, BorderLayout.SOUTH);
 		viewerControlsPanel.setLayout(new BoxLayout(viewerControlsPanel, BoxLayout.X_AXIS));

@@ -22,7 +22,6 @@ public class ThresholdOperation extends OpenCVOperation {
 		this.outputName.setValue( "Threshold Output ");
 	}
 	
-	//TODO: Link the sliders so that the min slider can not exceed the max slider. Maybe change addSliderSetting to return the JSlider so we can add a listener to it?
 	@Override
 	public JDialog openDialogBox() {
 		

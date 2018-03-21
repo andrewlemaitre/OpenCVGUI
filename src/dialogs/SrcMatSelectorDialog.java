@@ -19,6 +19,7 @@ import javax.swing.AbstractAction;
 import java.awt.event.ActionEvent;
 import javax.swing.Action;
 
+//TODO: When a source mat selector is created, make it appear near the mouse or another location.
 //TODO: Add a listcellrenderer like in WebcamHarnessWindow to show the output name of the operation in the list instead of the operation name.
 public class SrcMatSelectorDialog extends JDialog {
 

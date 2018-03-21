@@ -29,7 +29,7 @@ public class ImagePanelOrganizer extends JPanel {
 	public void removePanel( ImagePanel imagePanel )
 	{
 		panelList.remove( imagePanel );
-		this.remove(imagePanel);
+		this.remove(imagePanel.getDrawingPanel());
 		this.organizePanels();
 		this.revalidate();
 		this.repaint();
@@ -37,9 +37,9 @@ public class ImagePanelOrganizer extends JPanel {
 	
 	public void addPanel( ImagePanel imagePanel )
 	{
-		add(imagePanel, "cell 0 0,grow");
+		add(imagePanel.getDrawingPanel(), "cell 0 0,grow");
 		panelList.add( imagePanel );
-		migLayout.addLayoutComponent(imagePanel, "");
+		migLayout.addLayoutComponent(imagePanel.getDrawingPanel(), "");
 		imagePanel.setParentOrganizer( this );
 		organizePanels();
 	}
@@ -63,7 +63,7 @@ public class ImagePanelOrganizer extends JPanel {
 		for( int i = 0; i < squareSize; i++ ) {
 			for( int j = 0; j < squareSize && i*squareSize + j < panelList.size(); j++ ) {
 				String compConstraints = String.format("cell %d %d,grow", j, i);
-				migLayout.setComponentConstraints(panelList.get(i*squareSize+j), compConstraints);
+				migLayout.setComponentConstraints(panelList.get(i*squareSize+j).getDrawingPanel(), compConstraints);
 			}
 		}
 		revalidate();

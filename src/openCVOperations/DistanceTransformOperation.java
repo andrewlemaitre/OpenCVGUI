@@ -2,7 +2,6 @@ package openCVOperations;
 
 import javax.swing.JDialog;
 
-import org.opencv.core.CvType;
 import org.opencv.imgproc.Imgproc;
 
 import dialogs.OperationDialogBox;
