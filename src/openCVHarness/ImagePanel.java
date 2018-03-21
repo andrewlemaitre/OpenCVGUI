@@ -157,7 +157,6 @@ public class ImagePanel {
             	} else if ( panelWidth < imageWidth && panelHeight >= imageHeight ) {
             		//If the panelwidth is less than the imagewidth, we need to scale the image. To preserve the aspect ratio we can use the ratio of the panelwidth:imagewidth.
             		double scaleFactor = (double)((double)panelWidth/imageWidth);
-            		System.out.println(scaleFactor);
                 	g2d.drawImage(image, 0, 0, panelWidth, (int)(imageHeight*scaleFactor), 0, 0, imageWidth, imageHeight, null);
             	} else if ( panelWidth >= imageWidth && panelHeight < imageHeight ) {
             		//If the panelHeight is less than the imageHeight, we need to scale the image. To preserve the aspect ratio we can use the ratio of the panelHeight:imageHeight.

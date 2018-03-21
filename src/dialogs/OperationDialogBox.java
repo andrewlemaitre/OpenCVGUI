@@ -39,22 +39,23 @@ import java.awt.event.WindowEvent;
 import javax.swing.JComboBox;
 
 
-public class OperationDialogBox extends JDialog {
+public class OperationDialogBox {
 
-	private static final long serialVersionUID = 1L;
 	private int elementCount = 0;
 	JPanel settingsPanel;
 	MigLayout migLayout = new MigLayout("", "[right][grow]", "");
+	JDialog operationDialog;
 	
 	public OperationDialogBox( )
 	{
-		this.setSize(600,300);
-		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
+		operationDialog = new JDialog();
+		operationDialog.setSize(600,300);
+		operationDialog.getContentPane().setLayout(new BoxLayout(operationDialog.getContentPane(), BoxLayout.PAGE_AXIS));
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		getContentPane().add(scrollPane);
+		operationDialog.getContentPane().add(scrollPane);
 		
 		settingsPanel = new JPanel();
 		scrollPane.setViewportView(settingsPanel);
@@ -62,10 +63,14 @@ public class OperationDialogBox extends JDialog {
 
 	}
 	
+	public JDialog getDialog() {
+		return operationDialog;
+	}
+	
 	public void repack()
 	{
-		this.setSize(600,300);
-		this.pack();
+		operationDialog.setSize(600,300);
+		operationDialog.pack();
 	}
 	
 	public void addFileChooser( String label, String fileFilterLabel, PassableFile passableFile, String... validExtensions )

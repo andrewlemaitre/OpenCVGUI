@@ -47,7 +47,7 @@ public class ImReadOperation extends OpenCVOperation {
 		};
 		odb.addComboBox("Flags", intFlagItemList, ifi);
 		odb.addTextBox("Output Name", "Image Read Output", outputName);
-		return odb;
+		return odb.getDialog();
 	}
 
 	@Override

@@ -1,8 +1,6 @@
 package openCVOperations;
 
 import javax.swing.JDialog;
-import javax.swing.JFrame;
-
 import dialogs.OperationDialogBox;
 
 public class ResizeOperation extends OpenCVOperation {
@@ -32,7 +30,7 @@ public class ResizeOperation extends OpenCVOperation {
 		//odb.addComboBox(label, itemList, passableIntFlagItem);
 
 		odb.addTextBox("Output Name", "Resize Output", outputName);
-		return odb;
+		return odb.getDialog();
 	}
 
 	@Override

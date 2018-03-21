@@ -50,7 +50,7 @@ public class ThresholdOperation extends OpenCVOperation {
 		odb.addComboBox("Threshold Type", additionalThreshTypes, additionalThreshFlag);
 		
 		odb.addTextBox("Output Name", "Threshold Output", outputName);
-		return odb;
+		return odb.getDialog();
 	}
 
 	@Override

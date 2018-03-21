@@ -46,7 +46,7 @@ public class DistanceTransformOperation extends OpenCVOperation {
 		odb.addComboBox("Mask Size", maskSizes, maskSize);
 	
 		odb.addTextBox("Output Name", "Threshold Output", this.outputName);
-		return odb;
+		return odb.getDialog();
 	}
 
 	@Override

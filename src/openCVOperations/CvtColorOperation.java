@@ -33,7 +33,7 @@ public class CvtColorOperation extends OpenCVOperation {
 		odb.addPopUpMenu("Convert Color Flag", selectedColorConversion, popupMenu);
 		
 		odb.addTextBox("Output Name", "Convert Color Output", outputName);
-		return odb;
+		return odb.getDialog();
 	}
 	
 	@Override
