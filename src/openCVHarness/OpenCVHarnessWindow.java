@@ -44,7 +44,7 @@ public class OpenCVHarnessWindow extends JFrame {
 	OpenCVHarness webcamHarness;
 	ImagePanel imagePanel;
 	ImagePanelOrganizer imagePanelOrganizer;
-	JPanel optionsPanel;
+	JPanel operationsListPanel;
 	JList<OpenCVOperation> imageOperationsJList;
 	
 	BufferedImage image;
@@ -94,41 +94,44 @@ public class OpenCVHarnessWindow extends JFrame {
 		button.setAction(newImagePanelAction);
 		viewerControlsPanel.add(button);
 		
-		optionsPanel = new JPanel();
-		this.getContentPane().add(optionsPanel, BorderLayout.EAST);
-		optionsPanel.setLayout( new BoxLayout(optionsPanel, BoxLayout.PAGE_AXIS));
+		JPanel operationsPanel = new JPanel();
+		getContentPane().add(operationsPanel, BorderLayout.EAST);
 		
+		operationsListPanel = new JPanel();
+		operationsPanel.add(operationsListPanel);
+		operationsListPanel.setLayout( new BoxLayout(operationsListPanel, BoxLayout.PAGE_AXIS));
+
 		operationsList = new DefaultListModel<>();
 		imageOperationsJList = new JList<>( operationsList );
 		imageOperationsJList.addMouseListener( new ImageOperationsListListener() );
 		imageOperationsJList.setCellRenderer( new ImageOperationsCellRenderer() );
-		JScrollPane operationsScrollPane = new JScrollPane(imageOperationsJList);
-		operationsScrollPane.setPreferredSize( new Dimension(368, 240));
-		optionsPanel.add(operationsScrollPane);
+		JScrollPane operationsListScrollPane = new JScrollPane(imageOperationsJList);
+		operationsListScrollPane.setPreferredSize( new Dimension(368, 240));
+		operationsListPanel.add(operationsListScrollPane);
 		
-		JPanel operationsButtonPanel = new JPanel();
-		operationsButtonPanel.setLayout( new BoxLayout(operationsButtonPanel, BoxLayout.LINE_AXIS));
-		optionsPanel.add(operationsButtonPanel);
-
-		JButton newOperationButton = new JButton();
-		newOperationButton.setAction(newOperationAction);
-		operationsButtonPanel.add(newOperationButton);
-		JButton CopyOperationButton = new JButton();
-		CopyOperationButton.setAction(copyOperationAction);
-		operationsButtonPanel.add(CopyOperationButton);
-		JButton RemoveOperationButton = new JButton();
-		RemoveOperationButton.setAction(removeOperationAction);
-		operationsButtonPanel.add(RemoveOperationButton);
-		JButton editOperationButton = new JButton();
-		editOperationButton.setAction(editOperationAction);
-		operationsButtonPanel.add(editOperationButton);
+		JPanel operationsListButtonPanel = new JPanel();
+		operationsListButtonPanel.setLayout( new BoxLayout(operationsListButtonPanel, BoxLayout.LINE_AXIS));
+		operationsListPanel.add(operationsListButtonPanel);
 		
-		JPanel panel = new JPanel();
-		getContentPane().add(panel, BorderLayout.NORTH);
-		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+				JButton newOperationButton = new JButton();
+				newOperationButton.setAction(newOperationAction);
+				operationsListButtonPanel.add(newOperationButton);
+				JButton CopyOperationButton = new JButton();
+				CopyOperationButton.setAction(copyOperationAction);
+				operationsListButtonPanel.add(CopyOperationButton);
+				JButton RemoveOperationButton = new JButton();
+				RemoveOperationButton.setAction(removeOperationAction);
+				operationsListButtonPanel.add(RemoveOperationButton);
+				JButton editOperationButton = new JButton();
+				editOperationButton.setAction(editOperationAction);
+				operationsListButtonPanel.add(editOperationButton);
+		
+		JPanel menuBarPanel = new JPanel();
+		getContentPane().add(menuBarPanel, BorderLayout.NORTH);
+		menuBarPanel.setLayout(new BoxLayout(menuBarPanel, BoxLayout.X_AXIS));
 		
 		JMenuBar menuBar = new JMenuBar();
-		panel.add(menuBar);
+		menuBarPanel.add(menuBar);
 		
 		JMenu mnNewMenu = new JMenu("New menu");
 		menuBar.add(mnNewMenu);

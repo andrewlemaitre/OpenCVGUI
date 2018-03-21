@@ -65,8 +65,7 @@ public class ImagePanel {
 	    	type = BufferedImage.TYPE_4BYTE_ABGR;
 	    }
 	    
-	    if( matCopy.type() == 5 )
-	    {
+	    if( matCopy.type() == 5 ) {
 	    	matCopy.convertTo(matCopy, org.opencv.core.CvType.CV_8U, 1);
 	    }
 	    
@@ -79,19 +78,11 @@ public class ImagePanel {
 	    return image;
 	}
 	
-	private BufferedImage getInputImage() {
-		if( inputOperation != null && inputOperation.getOutputMat().width() > 0 && inputOperation.getOutputMat().height() > 0 )
-			return matToBufferedImage( inputOperation.getOutputMat() );
-		return null;
-	}
-
-	private JMenu createOperationsJMenu()
-    {
+	private JMenu createOperationsJMenu() {
     	JMenu newMenu = new JMenu("Select Viewer Input");
     	
     	DefaultListModel<OpenCVOperation> operationsList = Helper.getWebcamHarnessWindow().getOperationsList();
-    	for( int i = 0; i < operationsList.getSize(); i++ )
-    	{
+    	for( int i = 0; i < operationsList.getSize(); i++ ) {
 			OpenCVOperation selectedOperation = operationsList.getElementAt( i );
 			OperationMenuItem newMenuItem = new OperationMenuItem( selectedOperation );
 			newMenu.add(newMenuItem);
@@ -108,12 +99,10 @@ public class ImagePanel {
     	return newMenu;
     }
     
-    private class ImagePanelMouseListener extends MouseAdapter
-    {
+    private class ImagePanelMouseListener extends MouseAdapter {
     	@Override
     	public void mouseClicked(MouseEvent e) {
-    		if( e.getButton() == MouseEvent.BUTTON3 )
-    		{
+    		if( e.getButton() == MouseEvent.BUTTON3 ) {
     			//Create new popup menu.
     			JPopupMenu jpm = new JPopupMenu();
     			//Create a submenu for choosing an operation to be drawn.
@@ -146,7 +135,17 @@ public class ImagePanel {
             int panelWidth = this.getWidth();
             int panelHeight = this.getHeight();
             
-            BufferedImage image = getInputImage();
+            BufferedImage image;
+            
+    		if( inputOperation != null && inputOperation.getOutputMat().width() > 0 && inputOperation.getOutputMat().height() > 0 ) {
+    			image = matToBufferedImage( inputOperation.getOutputMat() );
+    		} else if ( inputOperation != null ) {
+				drawingPanel.setBackground( new Color( 238, 238, 238 ));
+    			return;
+			} else {
+				drawingPanel.setBackground( new Color( 255, 245, 245 ));
+            	return;
+            }
 
             if( image != null ) {
             	int imageWidth = image.getWidth();
@@ -171,6 +170,9 @@ public class ImagePanel {
             			g2d.drawImage(image, 0, 0, (int)(imageWidth/scaleFactor), panelHeight, 0, 0, imageWidth, imageHeight, null);
             		}
             	}
+            } else {
+            	g2d.setColor( Color.RED );
+            	g2d.fillRect(0, 0, panelWidth, panelHeight);
             }
     		
             g2d.dispose();
