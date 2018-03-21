@@ -57,17 +57,15 @@ public class DistanceTransformOperation extends OpenCVOperation {
 			return;
 		}
 		if( this.getInputOperation().getOutputMat().empty() )
-			System.out.println("Input mat for threshold operation \"" + this.getOperationName() +"\" is empty. Did you configure the input operation?");
+			System.err.println("Input mat for threshold operation \"" + this.getOperationName() +"\" is empty. Did you configure the input operation?");
 		
-//		getInputOperation().getOutputMat().convertTo(outputMat, CvType.CV_8U, 8);
 		
 		Imgproc.distanceTransform( 
 				this.getInputOperation().getOutputMat(), 
 				this.outputMat, 
 				distanceType.getValue().getValue(), 
 				maskSize.getValue().getValue());
-		
-//		System.out.println( outputMat.type() );
+
 //		this.outputMat.convertTo(outputMat, org.opencv.core.CvType.CV_8U, 1);
 	}
 

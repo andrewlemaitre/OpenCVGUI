@@ -29,13 +29,12 @@ public class IntFlagMenuItem extends JMenuItem {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Clicked item.");
 				this.ifi.setName( getIntFlagItem().getName() ); 
 				this.ifi.setValue( getIntFlagItem().getValue() ); 
 				if ( menuButton != null ) {
 					menuButton.setText( intFlagItem.getName() + "," + intFlagItem.getValue() );
 				} else {
-					System.out.println("Could not update popup menu button because the menuButton" + 
+					System.err.println("Could not update popup menu button because the menuButton" + 
 										" variable was not set. use the menuRecursiveButtonAdd function" +
 										" in operationdialogbox.");
 				}

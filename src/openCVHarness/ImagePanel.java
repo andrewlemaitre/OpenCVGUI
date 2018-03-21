@@ -50,9 +50,6 @@ public class ImagePanel extends JPanel {
 	    int type = 0;
 	    Mat matCopy = new Mat();
 	    imgMat.copyTo(matCopy);
-	    System.out.println("Converting Mat to Buffered Image");
-	    System.out.printf("Image mat has %d channel%s\n", 	matCopy.channels(), 
-	    													matCopy.channels() > 1 || matCopy.channels() < 1 ? "s." : "." );
 	    if (matCopy.channels() == 1) {
 	        type = BufferedImage.TYPE_BYTE_GRAY;
 	    } else if (matCopy.channels() == 3) {
@@ -71,8 +68,6 @@ public class ImagePanel extends JPanel {
 	    DataBufferByte dataBuffer = (DataBufferByte) raster.getDataBuffer();
 	    byte[] data = dataBuffer.getData();
 	    matCopy.get(0, 0, data);
-	    
-	    System.out.println(data[0]);
 	
 	    return image;
 	}
@@ -104,8 +99,13 @@ public class ImagePanel extends JPanel {
         		double scaleFactor = (double)((double)panelHeight/(double)imageHeight);
             	g2d.drawImage(image, 0, 0, (int)(imageWidth*scaleFactor), panelHeight, 0, 0, imageWidth, imageHeight, null);
         	} else { //panelWidth < imageWidth && panelHeight < imageHeight
-        		//TODO:Add code to handle scaling and maintaining aspect ratio.
-            	g2d.drawImage(image, 0, 0, panelWidth, panelHeight, 0, 0, imageWidth, imageHeight, null);
+        		if( (double)imageWidth/panelWidth > (double)imageHeight/panelHeight ) {
+        			double scaleFactor = (double)imageWidth/panelWidth;
+        			g2d.drawImage(image, 0, 0, panelWidth, (int)(imageHeight/scaleFactor), 0, 0, imageWidth, imageHeight, null);
+        		} else {
+        			double scaleFactor = (double)imageHeight/panelHeight;
+        			g2d.drawImage(image, 0, 0, (int)(imageWidth/scaleFactor), panelHeight, 0, 0, imageWidth, imageHeight, null);
+        		}
         	}
         }
 		
@@ -127,7 +127,6 @@ public class ImagePanel extends JPanel {
 			//Add a listener to the operationmenuitem that will set the inputoperation of the right clicked operation to the selected operationmenuitem.
 			newMenuItem.addActionListener( e -> {
 				viewerInput = newMenuItem.getOpenCVOperation();
-				System.out.println("Set image panel operation to " + viewerInput);
 				this.revalidate();
 				this.repaint();
 			});

@@ -29,8 +29,7 @@ public class SrcMatSelectorDialog extends JDialog {
 	private final Action applySourceAction = new ApplySourceAction();
 	private final Action closeAction = new CloseAction();
 	
-	public SrcMatSelectorDialog( OpenCVOperation openCVOperation )
-	{
+	public SrcMatSelectorDialog( OpenCVOperation openCVOperation ) {
 		super();
 		setSize(new Dimension(300, 300));
 		setType(Type.UTILITY);
@@ -67,33 +66,26 @@ public class SrcMatSelectorDialog extends JDialog {
 		this.setVisible( true );
 	}
 	
-	void populatePanel()
-	{
+	void populatePanel() {
 		OpenCVHarnessWindow whw = Helper.getWebcamHarnessWindow();
 		DefaultListModel<OpenCVOperation> imageOpList = whw.getOperationsList();
 		int foundIndex = 0;
-		for( int i = 0; i < imageOpList.getSize(); i++ )
-		{
-			if( imageOpList.get(i).equals(parentOperation) )
-			{
-				System.out.println("Found matching operation at index:"+i);
+		for( int i = 0; i < imageOpList.getSize(); i++ ) {
+			if( imageOpList.get(i).equals(parentOperation) ) {
 				foundIndex = i;
 				break;
 			}
-			if( i == imageOpList.getSize()-1 )
-			{
+			if( i == imageOpList.getSize()-1 ) {
 				System.err.println("Parent operation was not found in the operations list.");
 				return;
 			}
 		}
-		if( foundIndex == 0 )
-		{
+		if( foundIndex == 0 ) {
 			System.err.println("Parent operation appears to be first operation in the list.. so there will be no source mats available.");
 			return;
 		}
 		
-		for( int i = 0; i < foundIndex; i++ )
-		{
+		for( int i = 0; i < foundIndex; i++ ) {
 			availableSourceMatsList.addElement(imageOpList.get(i));
 		}
 	}

@@ -61,7 +61,7 @@ public class ThresholdOperation extends OpenCVOperation {
 			return;
 		}
 		if( this.getInputOperation().getOutputMat().empty() )
-			System.out.println("Input mat for threshold operation \"" + this.getOperationName() +"\" is empty. Did you configure the input operation?");
+			System.err.println("Input mat for threshold operation \"" + this.getOperationName() +"\" is empty. Did you configure the input operation?");
 		
 		Imgproc.threshold(this.getInputOperation().getOutputMat(), 
 				this.outputMat, 
@@ -79,7 +79,7 @@ public class ThresholdOperation extends OpenCVOperation {
 	@Override
 	public boolean isValid() {
 		if( maxThresholdValue.getValue() < thresholdValue.getValue() )
-			System.out.println("Max Threshold Value is less than or equal to threshold value in " + getOperationName()
+			System.err.println("Max Threshold Value is less than or equal to threshold value in " + getOperationName()
 								+ ". Did you mean to do this?");
 		if( inputOperation != null && threshFlag != null )
 			return true;

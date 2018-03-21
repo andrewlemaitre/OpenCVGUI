@@ -77,16 +77,9 @@ public class OpenCVHarnessWindow extends JFrame {
 		
 		imagePanelOrganizer = new ImagePanelOrganizer();
 		viewerPanel.add(imagePanelOrganizer);
-//		imagePanelOrganizer.setLayout(new MigLayout("", "", ""));
 
 		imagePanel = new ImagePanel();
 		((ImagePanelOrganizer)imagePanelOrganizer).addPanel(imagePanel);
-		
-//		imagePanel = new ImagePanel();
-////		imagePanel.setSize(640,480);
-//		imagePanelOrganizer.add(imagePanel);
-//		imagePanel.setBorder( BorderFactory.createLineBorder(Color.black));
-		
 		JPanel viewerControlsPanel = new JPanel();
 		viewerPanel.add(viewerControlsPanel, BorderLayout.SOUTH);
 		viewerControlsPanel.setLayout(new BoxLayout(viewerControlsPanel, BoxLayout.X_AXIS));
@@ -150,15 +143,6 @@ public class OpenCVHarnessWindow extends JFrame {
 	public DefaultListModel<OpenCVOperation> getOperationsList() {
 		return operationsList;
 	}
-
-//	public void drawImage( Mat mat ) {
-//	    matToBufferedImage(mat);
-//		((ImagePanel) imagePanel).drawImage( image );
-//	}
-//	
-//	public void drawImage( BufferedImage image ) {
-//		((ImagePanel) imagePanel).drawImage( image );
-//	}
 	
 	void refreshMainView() {
 		this.revalidate();
@@ -408,7 +392,6 @@ public class OpenCVHarnessWindow extends JFrame {
 			
 			//Add a listener to the operationmenuitem that will set the inputoperation of the right clicked operation to the selected operationmenuitem.
 			newMenuItem.addActionListener( e -> {
-				System.out.println("Setting input operation of " + operationsList.getElementAt( selectedIndex ).getOperationName() + " to " + ((OperationMenuItem)newMenuItem).getOpenCVOperation().getOperationName() );
 				operationsList.getElementAt( selectedIndex ).setInputOperation( ((OperationMenuItem)newMenuItem).getOpenCVOperation() );
 			});
 		}

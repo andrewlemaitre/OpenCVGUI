@@ -70,7 +70,6 @@ public class ImReadOperation extends OpenCVOperation {
 			outputMat = Imgcodecs.imread( file.getPath(), flag );
 		else
 			outputMat = Imgcodecs.imread( file.getPath() );
-		System.out.println("Loaded Image: " + outputMat);
 	}
 
 	@Override
