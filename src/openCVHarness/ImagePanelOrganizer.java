@@ -9,15 +9,16 @@ import javax.swing.border.LineBorder;
 
 import net.miginfocom.swing.MigLayout;
 
-public class ImagePanelOrganizer extends JPanel {
+public class ImagePanelOrganizer {
+	
+	JPanel imagePanelHolder;
 	
 	public ImagePanelOrganizer() {
-		this.setBorder( new LineBorder(Color.RED));
+		imagePanelHolder = new JPanel();
+		imagePanelHolder.setBorder( new LineBorder(Color.RED));
 		migLayout = new MigLayout("", "[grow]", "[grow]");
-		setLayout( migLayout );
+		imagePanelHolder.setLayout( migLayout );
 	}
-	
-	private static final long serialVersionUID = 1L;
 
 	ArrayList<ImagePanel> panelList = new ArrayList<>();
 	MigLayout migLayout;
@@ -29,15 +30,19 @@ public class ImagePanelOrganizer extends JPanel {
 	public void removePanel( ImagePanel imagePanel )
 	{
 		panelList.remove( imagePanel );
-		this.remove(imagePanel.getDrawingPanel());
+		imagePanelHolder.remove(imagePanel.getDrawingPanel());
 		this.organizePanels();
-		this.revalidate();
-		this.repaint();
+		imagePanelHolder.revalidate();
+		imagePanelHolder.repaint();
+	}
+	
+	public JPanel getOrganizerPanel(){
+		return imagePanelHolder;
 	}
 	
 	public void addPanel( ImagePanel imagePanel )
 	{
-		add(imagePanel.getDrawingPanel(), "cell 0 0,grow");
+		imagePanelHolder.add(imagePanel.getDrawingPanel(), "cell 0 0,grow");
 		panelList.add( imagePanel );
 		migLayout.addLayoutComponent(imagePanel.getDrawingPanel(), "");
 		imagePanel.setParentOrganizer( this );
@@ -66,7 +71,7 @@ public class ImagePanelOrganizer extends JPanel {
 				migLayout.setComponentConstraints(panelList.get(i*squareSize+j).getDrawingPanel(), compConstraints);
 			}
 		}
-		revalidate();
-		repaint();
+		imagePanelHolder.revalidate();
+		imagePanelHolder.repaint();
 	}
 }
