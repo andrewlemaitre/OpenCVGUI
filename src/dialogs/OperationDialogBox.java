@@ -90,17 +90,14 @@ public class OperationDialogBox extends JDialog {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Creating file chooser.");
 				JFileChooser chooser = new JFileChooser();
 				
 			    FileNameExtensionFilter filter = new FileNameExtensionFilter( fileFilterLabel, validExtensions );
 			    chooser.setFileFilter(filter);
 			    int returnVal = chooser.showOpenDialog( (JButton)e.getSource() );
-				System.out.println("retval:"+returnVal);
 			    
 			    if(returnVal == JFileChooser.APPROVE_OPTION) {
 
-					System.out.println("Approved. setting " + f + " to " + chooser.getSelectedFile());
 			    	this.f.setValue( chooser.getSelectedFile() );
 			    	lblFileTitle.setText(this.f.getValue().getPath());
 			     }
@@ -138,7 +135,6 @@ public class OperationDialogBox extends JDialog {
 				smsd.addWindowListener(new WindowAdapter() {
 				    @Override
 				    public void windowClosed(WindowEvent e) {
-				        System.out.println("Closed source mat selector.");
 				        if( openCVOperation.getInputOperation() != null )
 				        button.setText( openCVOperation.getInputOperation().getOutputName() );
 				    }

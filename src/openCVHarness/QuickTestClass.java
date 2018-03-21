@@ -48,6 +48,7 @@ public class QuickTestClass {
 		fibonacci( 0, 1, 25 );
 		
 		reverseString("abcdefghijklmnopqrstuvwxyz");
+		
 	}
 	
 	static void reverseString( String s )

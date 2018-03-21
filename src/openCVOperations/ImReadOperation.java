@@ -59,8 +59,7 @@ public class ImReadOperation extends OpenCVOperation {
 		if( ifi.getValue() != null ) {
 			flag = ifi.getValue().getValue();
 		}
-		if( passableFile.getValue() != null )
-		{
+		if( passableFile.getValue() != null ) {
 			file = passableFile.getValue();
 		}
 		if( file == null ) {

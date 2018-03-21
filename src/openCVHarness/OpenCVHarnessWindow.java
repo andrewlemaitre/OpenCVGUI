@@ -5,16 +5,11 @@ import java.awt.Dimension;
 import java.awt.MouseInfo;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.awt.image.WritableRaster;
-
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -27,7 +22,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.border.LineBorder;
-import org.opencv.core.Mat;
 import dialogs.NewOperationDialog;
 import miscellaneous.Helper;
 import openCVOperations.OpenCVOperation;
@@ -48,8 +42,8 @@ public class OpenCVHarnessWindow extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	OpenCVHarness webcamHarness;
-	JPanel imagePanel;
-	JPanel imagePanelOrganizer;
+	ImagePanel imagePanel;
+	ImagePanelOrganizer imagePanelOrganizer;
 	JPanel optionsPanel;
 	JList<OpenCVOperation> imageOperationsJList;
 	
@@ -61,6 +55,7 @@ public class OpenCVHarnessWindow extends JFrame {
 	private final Action removeOperationAction = new RemoveOperationAction();
 	private final Action copyOperationAction = new CopyOperationAction();
 	private final Action editOperationAction = new EditOperationAction();
+	private final Action newImagePanelAction = new NewImagePanelAction();
 	 	
 	public OpenCVHarnessWindow( OpenCVHarness webcamHarness ) {
 		this.webcamHarness = webcamHarness;
@@ -78,35 +73,33 @@ public class OpenCVHarnessWindow extends JFrame {
 		
 		JPanel viewerPanel = new JPanel();
 		getContentPane().add(viewerPanel, BorderLayout.CENTER);
-		viewerPanel.setLayout(new BoxLayout(viewerPanel, BoxLayout.PAGE_AXIS));
+		viewerPanel.setLayout(new BorderLayout(0, 0));
 		
 		imagePanelOrganizer = new ImagePanelOrganizer();
 		viewerPanel.add(imagePanelOrganizer);
-		imagePanelOrganizer.setLayout( new BoxLayout(imagePanelOrganizer, BoxLayout.PAGE_AXIS));
-		imagePanelOrganizer.setBorder( new LineBorder(Color.RED));
+//		imagePanelOrganizer.setLayout(new MigLayout("", "", ""));
 
 		imagePanel = new ImagePanel();
-		imagePanel.setSize(640,480);
-		imagePanelOrganizer.add(imagePanel);
-		imagePanel.setBorder( BorderFactory.createLineBorder(Color.black));
-
-		ImagePanel imagePanel2 = new ImagePanel();
-		imagePanel2.setSize(640,480);
-		imagePanelOrganizer.add(imagePanel2);
-		imagePanel2.setBorder( BorderFactory.createLineBorder(Color.black));
+		((ImagePanelOrganizer)imagePanelOrganizer).addPanel(imagePanel);
 		
 //		imagePanel = new ImagePanel();
-//		imagePanel.setSize(640,480);
-//		viewerPanel.add(imagePanel);
+////		imagePanel.setSize(640,480);
+//		imagePanelOrganizer.add(imagePanel);
 //		imagePanel.setBorder( BorderFactory.createLineBorder(Color.black));
 		
 		JPanel viewerControlsPanel = new JPanel();
-		viewerPanel.add(viewerControlsPanel);
+		viewerPanel.add(viewerControlsPanel, BorderLayout.SOUTH);
 		viewerControlsPanel.setLayout(new BoxLayout(viewerControlsPanel, BoxLayout.X_AXIS));
 		 
 		JButton runOperationsButton = new JButton();
+		runOperationsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		runOperationsButton.setAction(runOperationsAction);
 		viewerControlsPanel.add(runOperationsButton);
+		
+		JButton button = new JButton("New button");
+		button.setAlignmentX(Component.CENTER_ALIGNMENT);
+		button.setAction(newImagePanelAction);
+		viewerControlsPanel.add(button);
 		
 		optionsPanel = new JPanel();
 		this.getContentPane().add(optionsPanel, BorderLayout.EAST);
@@ -158,14 +151,14 @@ public class OpenCVHarnessWindow extends JFrame {
 		return operationsList;
 	}
 
-	public void drawImage( Mat mat ) {
-	    matToBufferedImage(mat);
-		((ImagePanel) imagePanel).drawImage( image );
-	}
-	
-	public void drawImage( BufferedImage image ) {
-		((ImagePanel) imagePanel).drawImage( image );
-	}
+//	public void drawImage( Mat mat ) {
+//	    matToBufferedImage(mat);
+//		((ImagePanel) imagePanel).drawImage( image );
+//	}
+//	
+//	public void drawImage( BufferedImage image ) {
+//		((ImagePanel) imagePanel).drawImage( image );
+//	}
 	
 	void refreshMainView() {
 		this.revalidate();
@@ -224,14 +217,10 @@ public class OpenCVHarnessWindow extends JFrame {
 			System.err.println("Attempted to draw empty mat.");
 			return;
 		}
-		image = matToBufferedImage( operationsList.getElementAt( operationsList.getSize()-1 ).getOutputMat());
-		drawImage( image );
-	}
-	
-	private class EditButtonListener implements ActionListener {
-		public void actionPerformed(ActionEvent e)
+		for( ImagePanel ip : imagePanelOrganizer.getImagePanels() )
 		{
-			editOperation();
+			ip.revalidate();
+			ip.repaint();
 		}
 	}
 	
@@ -243,7 +232,7 @@ public class OpenCVHarnessWindow extends JFrame {
 	private class RunOperationsAction extends AbstractAction {
 		public RunOperationsAction() {
 			putValue(NAME, "Run Operations");
-			putValue(SHORT_DESCRIPTION, "Some short description");
+			putValue(SHORT_DESCRIPTION, "Performs all of the operations in the operations list.");
 		}
 		public void actionPerformed(ActionEvent e) {
 			runOperations();
@@ -253,7 +242,7 @@ public class OpenCVHarnessWindow extends JFrame {
 	private class NewOperationAction extends AbstractAction {
 		public NewOperationAction() {
 			putValue(NAME, "New Operation");
-			putValue(SHORT_DESCRIPTION, "Some short description");
+			putValue(SHORT_DESCRIPTION, "Opens a dialog to create new operations.");
 		}
 		public void actionPerformed(ActionEvent e) {
 			newOperation();
@@ -263,7 +252,7 @@ public class OpenCVHarnessWindow extends JFrame {
 	private class EditOperationAction extends AbstractAction {
 		public EditOperationAction() {
 			putValue(NAME, "Edit");
-			putValue(SHORT_DESCRIPTION, "Edit the selected operation.");
+			putValue(SHORT_DESCRIPTION, "Edit the settings of the selected operation.");
 		}
 		public void actionPerformed(ActionEvent e) {
 			OpenCVOperation selectedOperation = imageOperationsJList.getSelectedValue();
@@ -289,7 +278,7 @@ public class OpenCVHarnessWindow extends JFrame {
 	private class RemoveOperationAction extends AbstractAction {
 		public RemoveOperationAction() {
 			putValue(NAME, "Remove");
-			putValue(SHORT_DESCRIPTION, "Some short description");
+			putValue(SHORT_DESCRIPTION, "Remove the topmost selected operation.");
 		}
 		public void actionPerformed(ActionEvent e) {
 			removeSelectedElement();
@@ -299,30 +288,26 @@ public class OpenCVHarnessWindow extends JFrame {
 	private class CopyOperationAction extends AbstractAction {
 		public CopyOperationAction() {
 			putValue(NAME, "Copy");
-			putValue(SHORT_DESCRIPTION, "Some short description");
+			putValue(SHORT_DESCRIPTION, "This button will create a new version of the currently selected operation.");
 		}
 		public void actionPerformed(ActionEvent e) {
 			copyOperation();
 		}
 	}
 	
-    static BufferedImage matToBufferedImage(Mat imgMat) {
-        //Mat to BufferedImage
-        int type = 0;
-        if (imgMat.channels() == 1) {
-            type = BufferedImage.TYPE_BYTE_GRAY;
-        } else if (imgMat.channels() == 3) {
-            type = BufferedImage.TYPE_3BYTE_BGR;
-        }
-        BufferedImage image = new BufferedImage(imgMat.width(), imgMat.height(), type);
-        WritableRaster raster = image.getRaster();
-        DataBufferByte dataBuffer = (DataBufferByte) raster.getDataBuffer();
-        byte[] data = dataBuffer.getData();
-        imgMat.get(0, 0, data);
+	private class NewImagePanelAction extends AbstractAction {
+		public NewImagePanelAction() {
+			putValue( NAME, "New Image Panel");
+			putValue( SHORT_DESCRIPTION, "This button will create a new image viewer for viewing the output of an operation.");
+		}
 
-        return image;
-    }
-    
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			ImagePanel ip = new ImagePanel();
+			imagePanelOrganizer.addPanel( ip );
+		}
+	}
+	
     private class ImageOperationsCellRenderer extends JLabel implements ListCellRenderer<OpenCVOperation> {
         public ImageOperationsCellRenderer() {
             setOpaque(true);
@@ -363,41 +348,11 @@ public class OpenCVHarnessWindow extends JFrame {
 		}
     }
     
-	private static void addPopup(Component component, final JPopupMenu popup) {
-		component.addMouseListener(new MouseAdapter() {
-			
-			@Override
-			public void mouseClicked(MouseEvent e)	{
-				System.out.println("pressed item.");
-			}
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				if (e.isPopupTrigger() || e.getButton() == MouseEvent.BUTTON1 ) {
-					System.out.println("pressed item.");
-//					showMenu(e);
-				}
-			}
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				if (e.isPopupTrigger() || e.getButton() == MouseEvent.BUTTON3 ) {
-					System.out.println("pressed item.");
-					showMenu(e);
-				}
-			}
-			
-			private void showMenu(MouseEvent e) {
-				popup.show(e.getComponent(), e.getX(), e.getY());
-			}
-		});
-	}
-    
 	//TODO: Make edit operations here and on the button call a editOperation( int i ) function so we have a common code base for creating edit dialogs, showing them and packing them.
-    private class ImageOperationsListListener extends MouseAdapter {
-    	@Override
+	private class ImageOperationsListListener extends MouseAdapter {
+		@Override
 	    public void mouseClicked(MouseEvent evt) {
-    		
+			
 	        JList<?> list = (JList<?>)evt.getSource();
 	        
 	        //If the click count is equal to two and we have clicked the left mouse button.
@@ -436,10 +391,9 @@ public class OpenCVHarnessWindow extends JFrame {
 	        }
 	        
 	    }
-    }
+	}
     
-
-    private JMenu getInputOperationsForPopupMenu( int selectedIndex )
+	private JMenu getInputOperationsForPopupMenu( int selectedIndex )
     {
     	//Create a new JMenu
     	JMenu inputOperationsMenu = new JMenu("Input Operation");
@@ -461,6 +415,4 @@ public class OpenCVHarnessWindow extends JFrame {
 		return inputOperationsMenu;
     }
 
-
-    
 }
