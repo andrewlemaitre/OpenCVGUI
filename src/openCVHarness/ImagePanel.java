@@ -130,31 +130,38 @@ public class ImagePanel {
         protected void paintComponent(Graphics g) {
 
             super.paintComponent(g);
-
-            Graphics2D g2d = (Graphics2D) g.create();
-            int panelWidth = this.getWidth();
-            int panelHeight = this.getHeight();
             
             BufferedImage image;
             
-    		if( inputOperation != null && inputOperation.getOutputMat().width() > 0 && inputOperation.getOutputMat().height() > 0 ) {
-    			image = matToBufferedImage( inputOperation.getOutputMat() );
-    		} else if ( inputOperation != null ) {
+            //Set the background color of the imagePanel.
+            if( inputOperation != null ) {
 				drawingPanel.setBackground( new Color( 238, 238, 238 ));
-    			return;
-			} else {
+            } else {
 				drawingPanel.setBackground( new Color( 255, 245, 245 ));
             	return;
             }
+            
+            //Convert the Mat of the inputOperation to a bufferedImage.
+    		if( inputOperation.getOutputMat().width() > 0 && inputOperation.getOutputMat().height() > 0 ) {
+    			image = ImagePanel.matToBufferedImage( inputOperation.getOutputMat() );
+    			drawingPanel.setBackground( new Color( 238, 238, 238 ));
+    		} else {
+    			return;
+    		}
+    		
+    		//Create a graphics2D object for drawing the image.
+            Graphics2D g2d = (Graphics2D) g.create();
+            int panelWidth = this.getWidth();
+            int panelHeight = this.getHeight();
+        	int imageWidth = image.getWidth();
+        	int imageHeight = image.getHeight();
 
             if( image != null ) {
-            	int imageWidth = image.getWidth();
-            	int imageHeight = image.getHeight();
             	if( panelWidth >= imageWidth && panelHeight >= imageHeight  ) {
                 	//If image panel is greater in width and height then draw the regular image since it will fit.
             		g2d.drawImage( image, 0, 0, null);
             	} else if ( panelWidth < imageWidth && panelHeight >= imageHeight ) {
-            		//If the panelwidth is less than the imagewidth, we need to scale the image. To preserve the aspect ratio we can use the ratio of the panelwidth:imagewidth.
+            		//If the panelWidth is less than the imageWidth, we need to scale the image. To preserve the aspect ratio we can use the ratio of the panelwidth:imagewidth.
             		double scaleFactor = (double)((double)panelWidth/imageWidth);
                 	g2d.drawImage(image, 0, 0, panelWidth, (int)(imageHeight*scaleFactor), 0, 0, imageWidth, imageHeight, null);
             	} else if ( panelWidth >= imageWidth && panelHeight < imageHeight ) {
@@ -170,10 +177,7 @@ public class ImagePanel {
             			g2d.drawImage(image, 0, 0, (int)(imageWidth/scaleFactor), panelHeight, 0, 0, imageWidth, imageHeight, null);
             		}
             	}
-            } else {
-            	g2d.setColor( Color.RED );
-            	g2d.fillRect(0, 0, panelWidth, panelHeight);
-            }
+            } 
     		
             g2d.dispose();
         }
