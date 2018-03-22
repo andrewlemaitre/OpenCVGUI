@@ -2,8 +2,6 @@ package listeners;
 
 
 import javax.swing.AbstractAction;
-import javax.swing.JButton;
-
 import miscellaneous.IntFlagItem;
 
 public abstract class MenuItemListener extends AbstractAction {
