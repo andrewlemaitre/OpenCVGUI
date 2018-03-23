@@ -13,7 +13,7 @@ import javax.swing.ScrollPaneConstants;
 
 import net.miginfocom.swing.MigLayout;
 import openCVHarness.OpenCVHarnessWindow;
-import openCVOperations.*;
+import operations.*;
 
 import javax.swing.JComboBox;
 import javax.swing.ListCellRenderer;

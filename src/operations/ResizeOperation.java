@@ -1,4 +1,4 @@
-package openCVOperations;
+package operations;
 
 import java.awt.Dimension;
 
@@ -18,9 +18,8 @@ public class ResizeOperation extends OpenCVOperation {
 	
 	public ResizeOperation() {
 		super();
-		this.name.setValue("Resize Operation");
-		this.outputName.setValue("Resize Output");
-		
+		this.setOperationName("Resize Operation");
+		this.setOutputName("Resize Output");
 	}
 
 	@Override
@@ -32,7 +31,7 @@ public class ResizeOperation extends OpenCVOperation {
 	@Override
 	public JDialog openDialogBox() {
 		OperationDialogBox odb = new OperationDialogBox();
-		odb.addTextBox("Operation Name", "Resize Operation", this.name);
+		odb.addTextBox("Operation Name", "Resize Operation", this.getOutputNameObject());
 		
 		odb.addSourceMatSelector("Input Operation", this);
 //		odb.add2DDimension("Absolute Size", absoluteResizeDims, 1, 10000, 1, 1, 1, 10000, 1, 1, false );
@@ -53,7 +52,7 @@ public class ResizeOperation extends OpenCVOperation {
 		odb.addComboBox("Interpolation Type", interpolationFlags, interpolationFlag);
 //		Imgproc.resize(this.getInputOperation().getOutputMat(), this.getOutputMat(), new Size( absoluteResizeDims.getWidth(), absoluteResizeDims.getHeight() ));
 
-		odb.addTextBox("Output Name", "Resize Output", outputName);
+		odb.addTextBox("Output Name", "Resize Output", this.getOutputNameObject());
 		return odb.getDialog();
 	}
 

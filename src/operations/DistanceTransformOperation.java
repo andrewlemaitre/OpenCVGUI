@@ -1,4 +1,4 @@
-package openCVOperations;
+package operations;
 
 import javax.swing.JDialog;
 
@@ -15,15 +15,15 @@ public class DistanceTransformOperation extends OpenCVOperation {
 	
 	public DistanceTransformOperation()
 	{
-		this.name.setValue( "Distance Transform Operation ");
-		this.outputName.setValue( "Distance Transform Output ");
+		this.setOperationName( "Distance Transform Operation ");
+		this.setOutputName( "Distance Transform Output ");
 	}
 	
 	//TODO: Add controls to enable both version of DistanceTransform. Maybe.
 	@Override
 	public JDialog openDialogBox() {
 		OperationDialogBox odb = new OperationDialogBox( );
-		odb.addTextBox("Operation Name", "Distance Transform Name", this.name);
+		odb.addTextBox("Operation Name", "Distance Transform Name", this.getOperationNameObject());
 		odb.addSourceMatSelector("Input Operation", this );
 	
 		IntFlagItem[] distanceTypes = {
@@ -45,7 +45,7 @@ public class DistanceTransformOperation extends OpenCVOperation {
 		};
 		odb.addComboBox("Mask Size", maskSizes, maskSize);
 	
-		odb.addTextBox("Output Name", "Threshold Output", this.outputName);
+		odb.addTextBox("Output Name", "Threshold Output", this.getOutputNameObject());
 		return odb.getDialog();
 	}
 
@@ -61,7 +61,7 @@ public class DistanceTransformOperation extends OpenCVOperation {
 		
 		Imgproc.distanceTransform( 
 				this.getInputOperation().getOutputMat(), 
-				this.outputMat, 
+				this.getOutputMat(), 
 				distanceType.getValue().getValue(), 
 				maskSize.getValue().getValue());
 
@@ -76,7 +76,7 @@ public class DistanceTransformOperation extends OpenCVOperation {
 
 	@Override
 	public boolean isValid() {
-		if( inputOperation != null )
+		if( this.getInputOperation() != null )
 			return true;
 		return false;
 	}

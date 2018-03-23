@@ -1,4 +1,4 @@
-package openCVOperations;
+package operations;
 
 import java.io.File;
 
@@ -18,14 +18,14 @@ public class ImReadOperation extends OpenCVOperation {
 	
 	public ImReadOperation()
 	{
-		this.name.setValue("Imread Name");
-		this.outputName.setValue("Imread Output");
+		this.setOperationName("Imread Name");
+		this.setOutputName("Imread Output");
 	}
 
 	@Override
 	public JDialog openDialogBox() {
 		OperationDialogBox odb = new OperationDialogBox( );
-		odb.addTextBox("Op Name", "Image Operation", this.name);
+		odb.addTextBox("Op Name", "Image Operation", this.getOperationNameObject());
 		
 		String[] validFileTypes = {"gif", "jpg", "jpeg"};
 		odb.addFileChooser("Load Image", "Images (gif, jpg, jpeg)", passableFile, validFileTypes);
@@ -46,7 +46,7 @@ public class ImReadOperation extends OpenCVOperation {
 			new IntFlagItem("IMREAD_REDUCED_GRAYSCALE_8", 64),
 		};
 		odb.addComboBox("Flags", intFlagItemList, ifi);
-		odb.addTextBox("Output Name", "Image Read Output", outputName);
+		odb.addTextBox("Output Name", "Image Read Output", this.getOutputNameObject());
 		return odb.getDialog();
 	}
 
@@ -67,9 +67,9 @@ public class ImReadOperation extends OpenCVOperation {
 			return;
 		}
 		if( flag != -2 )
-			outputMat = Imgcodecs.imread( file.getPath(), flag );
+			this.setOutputMat( Imgcodecs.imread( file.getPath(), flag ) );
 		else
-			outputMat = Imgcodecs.imread( file.getPath() );
+			this.setOutputMat( Imgcodecs.imread( file.getPath() ) );
 	}
 
 	@Override

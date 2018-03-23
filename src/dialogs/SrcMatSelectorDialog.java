@@ -12,7 +12,7 @@ import javax.swing.JList;
 import javax.swing.JButton;
 import miscellaneous.Helper;
 import openCVHarness.OpenCVHarnessWindow;
-import openCVOperations.OpenCVOperation;
+import operations.OpenCVOperation;
 
 import java.awt.Dimension;
 import javax.swing.AbstractAction;

@@ -28,7 +28,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.BadLocationException;
 
 import net.miginfocom.swing.MigLayout;
-import openCVOperations.OpenCVOperation;
+import operations.OpenCVOperation;
 import listeners.*;
 import miscellaneous.IntFlagItem;
 import miscellaneous.IntFlagMenuItem;

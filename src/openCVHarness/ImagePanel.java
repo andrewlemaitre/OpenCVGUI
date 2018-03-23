@@ -19,8 +19,8 @@ import javax.swing.border.LineBorder;
 import org.opencv.core.Mat;
 
 import miscellaneous.Helper;
-import openCVOperations.OpenCVOperation;
-import openCVOperations.OperationMenuItem;
+import operations.OpenCVOperation;
+import operations.OperationMenuItem;
 
 
 public class ImagePanel {

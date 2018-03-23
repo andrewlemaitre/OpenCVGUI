@@ -1,4 +1,4 @@
-package openCVOperations;
+package operations;
 
 import javax.swing.JDialog;
 import javax.swing.JMenu;
@@ -16,8 +16,8 @@ public class CvtColorOperation extends OpenCVOperation {
 	private final int unselectedFlag = -2;
 	
 	public CvtColorOperation(){
-		this.name.setValue("Convert Color Name");
-		this.outputName.setValue("Convert Color Name");
+		this.setOperationName("Convert Color Name");
+		this.setOutputName("Convert Color Name");
 		this.selectedColorConversion.setValue( unselectedFlag );
 	}
 	
@@ -25,20 +25,20 @@ public class CvtColorOperation extends OpenCVOperation {
 	public JDialog openDialogBox() {
 		
 		OperationDialogBox odb = new OperationDialogBox();
-		odb.addTextBox("Op Name", "Convert Color Operation", this.name);
+		odb.addTextBox("Op Name", "Convert Color Operation", this.getOperationNameObject());
 
 		odb.addSourceMatSelector("Input Operation", this );
 
 		JPopupMenu popupMenu = createPopupMenu();
 		odb.addPopUpMenu("Convert Color Flag", selectedColorConversion, popupMenu);
 		
-		odb.addTextBox("Output Name", "Convert Color Output", outputName);
+		odb.addTextBox("Output Name", "Convert Color Output", this.getOutputNameObject());
 		return odb.getDialog();
 	}
 	
 	@Override
 	public void performOperation() {
-		Imgproc.cvtColor(this.getInputOperation().getOutputMat(), outputMat, selectedColorConversion.getValue());
+		Imgproc.cvtColor(this.getInputOperation().getOutputMat(), this.getOutputMat(), selectedColorConversion.getValue());
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class CvtColorOperation extends OpenCVOperation {
 
 	@Override
 	public boolean isValid() {
-			if( inputOperation != null && selectedColorConversion.getValue() != unselectedFlag )
+			if( this.getInputOperation() != null && selectedColorConversion.getValue() != unselectedFlag )
 				return true;
 		return false;
 	}

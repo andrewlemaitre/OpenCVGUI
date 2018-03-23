@@ -1,4 +1,4 @@
-package openCVOperations;
+package operations;
 
 import javax.swing.JDialog;
 
@@ -18,15 +18,15 @@ public class ThresholdOperation extends OpenCVOperation {
 	
 	public ThresholdOperation()
 	{
-		this.name.setValue( "Threshold Operation ");
-		this.outputName.setValue( "Threshold Output ");
+		this.setOperationName( "Threshold Operation ");
+		this.setOutputName( "Threshold Output ");
 	}
 	
 	@Override
 	public JDialog openDialogBox() {
 		
 		OperationDialogBox odb = new OperationDialogBox();
-		odb.addTextBox("Operation Name", "Threshold Name", this.name);
+		odb.addTextBox("Operation Name", "Threshold Name", this.getOperationNameObject());
 
 		odb.addSourceMatSelector("Input Operation", this );
 		odb.addSliderSetting("Threshold Min", 0, 255, thresholdValue.getValue(), thresholdValue);
@@ -49,7 +49,7 @@ public class ThresholdOperation extends OpenCVOperation {
 		};
 		odb.addComboBox("Threshold Type", additionalThreshTypes, additionalThreshFlag);
 		
-		odb.addTextBox("Output Name", "Threshold Output", outputName);
+		odb.addTextBox("Output Name", "Threshold Output", this.getOutputNameObject());
 		return odb.getDialog();
 	}
 
@@ -63,7 +63,7 @@ public class ThresholdOperation extends OpenCVOperation {
 			System.err.println("Input mat for threshold operation \"" + this.getOperationName() +"\" is empty. Did you configure the input operation?");
 		
 		Imgproc.threshold(this.getInputOperation().getOutputMat(), 
-				this.outputMat, 
+				this.getOutputMat(), 
 				thresholdValue.getValue(), 
 				maxThresholdValue.getValue(), 
 				threshFlag.getValue().getValue()+additionalThreshFlag.getValue().getValue());
@@ -80,7 +80,7 @@ public class ThresholdOperation extends OpenCVOperation {
 		if( maxThresholdValue.getValue() < thresholdValue.getValue() )
 			System.err.println("Max Threshold Value is less than or equal to threshold value in " + getOperationName()
 								+ ". Did you mean to do this?");
-		if( inputOperation != null && threshFlag != null )
+		if( this.getInputOperation() != null && threshFlag != null )
 			return true;
 		return false;
 	}

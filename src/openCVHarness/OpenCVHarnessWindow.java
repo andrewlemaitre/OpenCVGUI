@@ -24,8 +24,8 @@ import javax.swing.ListCellRenderer;
 import javax.swing.border.LineBorder;
 import dialogs.NewOperationDialog;
 import miscellaneous.Helper;
-import openCVOperations.OpenCVOperation;
-import openCVOperations.OperationMenuItem;
+import operations.OpenCVOperation;
+import operations.OperationMenuItem;
 
 import java.awt.BorderLayout;
 import javax.swing.JMenuBar;
