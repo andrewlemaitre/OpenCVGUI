@@ -8,14 +8,19 @@ import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JSlider;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 import javax.swing.JButton;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
+
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.DocumentEvent;
@@ -73,6 +78,102 @@ public class OperationDialogBox {
 		operationDialog.pack();
 	}
 	
+	public void addButton()
+	{
+		
+	}
+	
+	/** Creates an entry in the operation dialog box that accepts two numbers and updates a Dimension when they are changed.
+	 * @param label The label that appears to the left of the setting controls. It should be a short description of the setting, e.g., "Image Size"
+	 * @param dimension This is the Dimension object that should be updated when the spinner changes.
+	 * @param xMin The minimum value of the x spinners.
+	 * @param xMax The maximum value of the x spinners.
+	 * @param xStep The value by which the x spinner increases or decreases.
+	 * @param initialX The initial value of the x spinner.
+	 * @param yMin The minimum value of the y spinner.
+	 * @param yMax The maximum value of the y spinner.
+	 * @param yStep The value by which the y spinner increases or decreases.
+	 * @param initialY The initial value of the y spinner.
+	 * @param isSquare If true, changing one spinner will change the other to the same value.
+	 * @return returns an array of array of JSpinner[] that contains the two JSpinners created. Useful for changing the listeners or SpinnerNumberModel settings.
+	 */
+	public JSpinner[] add2DDimension( 	String label, 
+										Dimension dimension, 
+										Integer xMin, 
+										Integer xMax, 
+										Integer xStep, 
+										Integer initialX, 
+										Integer yMin, 
+										Integer yMax, 
+										Integer yStep, 
+										Integer initialY, boolean isSquare )
+	{
+		addMigRow();
+		addSettingLabel( label );
+		
+		//Create a new JSpinner model for the x (or width) value of the dimension
+		SpinnerNumberModel xNumberModel = new SpinnerNumberModel();
+		xNumberModel.setValue(initialX);
+		xNumberModel.setMinimum( xMin );
+		xNumberModel.setMaximum( xMax );
+		xNumberModel.setStepSize( xStep );
+		JSpinner dimXSpinner = new JSpinner( xNumberModel );
+		dimXSpinner.setPreferredSize( new Dimension( 60, 20 ) );
+		dimXSpinner.setMinimumSize( new Dimension( 60, 20 ) );
+		
+		//Create a new JSpinner model for the y (or height) value of the dimension
+		SpinnerNumberModel yNumberModel = new SpinnerNumberModel();
+		yNumberModel.setValue(initialY);
+		yNumberModel.setMinimum( yMin );
+		yNumberModel.setMaximum( yMax );
+		yNumberModel.setStepSize( yStep );
+		JSpinner dimYSpinner = new JSpinner(yNumberModel);
+		dimYSpinner.setPreferredSize( new Dimension( 60, 20 ) );
+		dimYSpinner.setMinimumSize( new Dimension( 60, 20 ) );
+		
+		//Add change listeners to the spinners
+		dimXSpinner.addChangeListener( evt -> dimension.setSize( (int)dimXSpinner.getValue(), (int)dimension.getHeight()) );
+		dimYSpinner.addChangeListener( evt -> dimension.setSize( (int)dimension.getWidth(), (int)dimYSpinner.getValue()) );
+
+		//Add the spinners and the x label between them to the dialog.
+		addSettingControl( dimXSpinner, "", "flowx" );
+		addSettingControl( new JLabel("x") );
+		addSettingControl( dimYSpinner, "", "" );
+		
+		elementCount++;
+		
+		return new JSpinner[] { dimXSpinner, dimYSpinner };
+	}
+	
+	public JSpinner[] add2DDimension( String label, Dimension dimension, SpinnerNumberModel xModel, SpinnerNumberModel yModel, boolean isSquare )
+	{
+		addMigRow();
+		addSettingLabel( label );
+
+		//Create a new JSpinner model for the x (or width) value of the dimension
+		JSpinner dimXSpinner = new JSpinner( xModel );
+		dimXSpinner.setPreferredSize( new Dimension( 60, 20 ) );
+		dimXSpinner.setMinimumSize( new Dimension( 60, 20 ) );
+
+		//Create a new JSpinner model for the y (or height) value of the dimension
+		JSpinner dimYSpinner = new JSpinner( yModel );
+		dimYSpinner.setPreferredSize( new Dimension( 60, 20 ) );
+		dimYSpinner.setMinimumSize( new Dimension( 60, 20 ) );
+		
+		//Add change listeners to the spinners
+		dimXSpinner.addChangeListener( evt -> dimension.setSize( (int)dimXSpinner.getValue(), (int)dimension.getHeight()) );
+		dimYSpinner.addChangeListener( evt -> dimension.setSize( (int)dimension.getWidth(), (int)dimYSpinner.getValue()) );
+
+		//Add the spinners and the x label between them to the dialog.
+		addSettingControl( dimXSpinner, "", "flowx" );
+		addSettingControl( new JLabel("x") );
+		addSettingControl( dimYSpinner, "", "" );
+		
+		elementCount++;
+		
+		return new JSpinner[] { dimXSpinner, dimYSpinner };
+	}
+
 	public void addFileChooser( String label, String fileFilterLabel, PassableFile passableFile, String... validExtensions )
 	{
 		addMigRow();
@@ -113,11 +214,6 @@ public class OperationDialogBox {
 		
 	}
 	
-	public void addButton()
-	{
-		
-	}
-	
 	public void addSourceMatSelector( String label, OpenCVOperation openCVOperation )
 	{
 		addMigRow();
@@ -154,7 +250,7 @@ public class OperationDialogBox {
 		addSettingLabel( label );
 		
 		JComboBox<IntFlagItem> comboBox = new JComboBox<>();
-		addSettingControl(comboBox);
+		addSettingControl(comboBox, "growx");
 		
 		elementCount++;
 
@@ -199,48 +295,13 @@ public class OperationDialogBox {
 		} else {
 			popupMenuButton.setText("Select");
 		}
-		addSettingControl(popupMenuButton);
+		addSettingControl(popupMenuButton,"growx");
 		
 		elementCount++;
 		
 		addPopup(popupMenuButton, popupMenu);
 		menuRecursiveButtonAdd(popupMenu, popupMenuButton);
 
-	}
-	
-	private void menuRecursiveButtonAdd( Component popupMenu, JButton popupMenuButton )
-	{
-		if( popupMenu instanceof JPopupMenu )
-		{
-			Component[] cc = ((JPopupMenu)popupMenu).getComponents();
-			for( Component c : cc )
-			{
-				if( c instanceof JMenu ) {
-					menuRecursiveButtonAdd( c, popupMenuButton );
-				} else if ( c instanceof IntFlagMenuItem ) {
-					((IntFlagMenuItem)c).setMenuButton(popupMenuButton);
-				} else {
-					System.err.println("Found unexpected type:" + c.getClass() + " in recursive search of JPopupMenu.");
-				}
-			}
-		}
-		
-		if( popupMenu instanceof JMenu )
-		{
-			JMenu menu = ((JMenu)popupMenu);
-			
-			for( int i = 0; i < menu.getItemCount(); i++ ) {
-				if( menu.getItem(i) instanceof JMenu ) {
-					menuRecursiveButtonAdd( menu.getItem(i), popupMenuButton );
-				}
-				else if( menu.getItem(i) instanceof IntFlagMenuItem ) {
-					((IntFlagMenuItem)menu.getItem(i)).setMenuButton(popupMenuButton);
-				}
-				else {
-					System.err.println("Found unexpected type:" + menu.getItem(i).getClass() + " in recursive search of JMenu.");
-				}
-			}
-		}
 	}
 	
 	public void addRadioButtonGroup()
@@ -362,14 +423,54 @@ public class OperationDialogBox {
 		}
 	}
 
+	private void menuRecursiveButtonAdd( Component popupMenu, JButton popupMenuButton )
+	{
+		if( popupMenu instanceof JPopupMenu )
+		{
+			Component[] cc = ((JPopupMenu)popupMenu).getComponents();
+			for( Component c : cc )
+			{
+				if( c instanceof JMenu ) {
+					menuRecursiveButtonAdd( c, popupMenuButton );
+				} else if ( c instanceof IntFlagMenuItem ) {
+					((IntFlagMenuItem)c).setMenuButton(popupMenuButton);
+				} else {
+					System.err.println("Found unexpected type:" + c.getClass() + " in recursive search of JPopupMenu.");
+				}
+			}
+		}
+		
+		if( popupMenu instanceof JMenu )
+		{
+			JMenu menu = ((JMenu)popupMenu);
+			
+			for( int i = 0; i < menu.getItemCount(); i++ ) {
+				if( menu.getItem(i) instanceof JMenu ) {
+					menuRecursiveButtonAdd( menu.getItem(i), popupMenuButton );
+				}
+				else if( menu.getItem(i) instanceof IntFlagMenuItem ) {
+					((IntFlagMenuItem)menu.getItem(i)).setMenuButton(popupMenuButton);
+				}
+				else {
+					System.err.println("Found unexpected type:" + menu.getItem(i).getClass() + " in recursive search of JMenu.");
+				}
+			}
+		}
+	}
+
 	private void addSettingControl( Component component )
 	{
-		settingsPanel.add(component, String.format("cell 1 %d,growx", elementCount));
+		settingsPanel.add(component, String.format("cell 1 %d", elementCount));
 	}
 
 	private void addSettingControl( Component component, String constraints )
 	{
 		settingsPanel.add(component, String.format("cell 1 %d,"+constraints, elementCount));
+	}
+
+	private void addSettingControl( Component component, String constraints, String prependedConstraints)
+	{
+		settingsPanel.add(component, String.format(prependedConstraints+","+"cell 1 %d,"+constraints, elementCount));
 	}
 	
 	private void addMigRow() {
