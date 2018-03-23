@@ -26,7 +26,7 @@ public class ThresholdOperation extends OpenCVOperation {
 	public JDialog openDialogBox() {
 		
 		OperationDialogBox odb = new OperationDialogBox();
-		odb.addTextBox("Operation Name", "FLIIIIIR Threshold Name", this.name);
+		odb.addTextBox("Operation Name", "Threshold Name", this.name);
 
 		odb.addSourceMatSelector("Input Operation", this );
 		odb.addSliderSetting("Threshold Min", 0, 255, thresholdValue.getValue(), thresholdValue);
