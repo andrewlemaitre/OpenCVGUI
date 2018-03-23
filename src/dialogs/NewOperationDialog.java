@@ -60,6 +60,7 @@ public class NewOperationDialog extends JDialog {
 		comboBox.addItem( new CvtColorOperation() );
 		comboBox.addItem( new ThresholdOperation() );
 		comboBox.addItem( new DistanceTransformOperation() );
+		comboBox.addItem( new ResizeOperation() );
 		panel_4.add(comboBox, "cell 1 0");
 		
 		JButton btnNewButton = new JButton("Create");
