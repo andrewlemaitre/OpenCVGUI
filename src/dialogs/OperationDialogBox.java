@@ -83,68 +83,6 @@ public class OperationDialogBox {
 		
 	}
 	
-	/** Creates an entry in the operation dialog box that accepts two numbers and updates a Dimension when they are changed.
-	 * @param label The label that appears to the left of the setting controls. It should be a short description of the setting, e.g., "Image Size"
-	 * @param dimension This is the Dimension object that should be updated when the spinner changes.
-	 * @param xMin The minimum value of the x spinners.
-	 * @param xMax The maximum value of the x spinners.
-	 * @param xStep The value by which the x spinner increases or decreases.
-	 * @param initialX The initial value of the x spinner.
-	 * @param yMin The minimum value of the y spinner.
-	 * @param yMax The maximum value of the y spinner.
-	 * @param yStep The value by which the y spinner increases or decreases.
-	 * @param initialY The initial value of the y spinner.
-	 * @param isSquare If true, changing one spinner will change the other to the same value.
-	 * @return returns an array of array of JSpinner[] that contains the two JSpinners created. Useful for changing the listeners or SpinnerNumberModel settings.
-	 */
-	public JSpinner[] add2DDimension( 	String label, 
-										Dimension dimension, 
-										Integer xMin, 
-										Integer xMax, 
-										Integer xStep, 
-										Integer initialX, 
-										Integer yMin, 
-										Integer yMax, 
-										Integer yStep, 
-										Integer initialY, boolean isSquare )
-	{
-		addMigRow();
-		addSettingLabel( label );
-		
-		//Create a new JSpinner model for the x (or width) value of the dimension
-		SpinnerNumberModel xNumberModel = new SpinnerNumberModel();
-		xNumberModel.setValue(initialX);
-		xNumberModel.setMinimum( xMin );
-		xNumberModel.setMaximum( xMax );
-		xNumberModel.setStepSize( xStep );
-		JSpinner dimXSpinner = new JSpinner( xNumberModel );
-		dimXSpinner.setPreferredSize( new Dimension( 60, 20 ) );
-		dimXSpinner.setMinimumSize( new Dimension( 60, 20 ) );
-		
-		//Create a new JSpinner model for the y (or height) value of the dimension
-		SpinnerNumberModel yNumberModel = new SpinnerNumberModel();
-		yNumberModel.setValue(initialY);
-		yNumberModel.setMinimum( yMin );
-		yNumberModel.setMaximum( yMax );
-		yNumberModel.setStepSize( yStep );
-		JSpinner dimYSpinner = new JSpinner(yNumberModel);
-		dimYSpinner.setPreferredSize( new Dimension( 60, 20 ) );
-		dimYSpinner.setMinimumSize( new Dimension( 60, 20 ) );
-		
-		//Add change listeners to the spinners
-		dimXSpinner.addChangeListener( evt -> dimension.setSize( (int)dimXSpinner.getValue(), (int)dimension.getHeight()) );
-		dimYSpinner.addChangeListener( evt -> dimension.setSize( (int)dimension.getWidth(), (int)dimYSpinner.getValue()) );
-
-		//Add the spinners and the x label between them to the dialog.
-		addSettingControl( dimXSpinner, "", "flowx" );
-		addSettingControl( new JLabel("x") );
-		addSettingControl( dimYSpinner, "", "" );
-		
-		elementCount++;
-		
-		return new JSpinner[] { dimXSpinner, dimYSpinner };
-	}
-	
 	public JSpinner[] add2DDimension( String label, Dimension dimension, SpinnerNumberModel xModel, SpinnerNumberModel yModel, boolean isSquare )
 	{
 		addMigRow();
