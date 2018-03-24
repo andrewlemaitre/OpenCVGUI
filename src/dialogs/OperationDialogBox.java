@@ -201,19 +201,6 @@ public class OperationDialogBox {
 			comboBox.addItem( ifi );
 		}
 		
-		//If we have already picked an intflagitem previously then we should show that in the combo box.
-		if( passableIntFlagItem.getValue() != null ) {
-			//Search for a matching intflagitem in the combobox list.
-			for( int i = 0; i < comboBox.getItemCount(); i++ )
-			{
-				if( comboBox.getItemAt(i).equals(passableIntFlagItem.getValue()) )
-				{
-					comboBox.setSelectedIndex(i);
-					break;
-				}
-			}
-		}
-		
 		comboBox.setRenderer( new ComboBoxRenderer() );
 		
 		comboBox.addActionListener( new ComboBoxListener( passableIntFlagItem ){
@@ -224,6 +211,21 @@ public class OperationDialogBox {
 				this.i.setValue( comboBox.getItemAt(comboBox.getSelectedIndex()) );
 			}
 		});
+
+		//If we have already picked an intflagitem previously then we should show that in the combo box.
+        if( passableIntFlagItem.getValue() != null ) {
+            //Search for a matching intflagitem in the combobox list.
+            for( int i = 0; i < comboBox.getItemCount(); i++ )
+            {
+                if( comboBox.getItemAt(i).equals(passableIntFlagItem.getValue()) )
+                {
+                    comboBox.setSelectedIndex(i);
+                    break;
+                }
+            }
+        } else {
+            comboBox.setSelectedIndex(0);
+        }
 		
 		return comboBox;
 	}
