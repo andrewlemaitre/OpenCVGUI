@@ -1,6 +1,8 @@
-package operations;
+package miscellaneous;
 
 import javax.swing.JMenuItem;
+
+import operations.OpenCVOperation;
 
 /**
  *

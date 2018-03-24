@@ -16,6 +16,7 @@ public class IntFlagItem {
 		this.value = value;
 	}
 	
+	//TODO: Override the hashcode method and provide an implementation for this class.
 	@Override
 	public boolean equals( Object o )
 	{
