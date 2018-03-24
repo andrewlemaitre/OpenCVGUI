@@ -66,6 +66,9 @@ public class ResizeOperation extends OpenCVOperation {
 		odb.add2DDimension("Absolute Size", absoluteResizeDims, getAbsXNumberModel(), getAbsYNumberModel(), false );
 		odb.add2DDimension("Scale Factor", scaleFactorDims, getScaleXNumberModel(), getScaleYNumberModel(), false );
 		
+		/* TODO: The INTER_MAX, WARP_FILL_OUTLIERS and WARP_INVERSE_MAP flags have been commented out 
+		 * because they are not valid interpolation flags even though they are in the documentation.
+		*/
 		IntFlagItem[] interpolationFlags = {
 				new IntFlagItem("INTER_NEAREST",0),
 				new IntFlagItem("INTER_LINEAR",1),
@@ -73,12 +76,12 @@ public class ResizeOperation extends OpenCVOperation {
 				new IntFlagItem("INTER_AREA",3),
 				new IntFlagItem("INTER_LANCZOS4",4),
 				new IntFlagItem("INTER_LINEAR_EXACT",5),
-				new IntFlagItem("INTER_MAX ",7),
-				new IntFlagItem("WARP_FILL_OUTLIERS",8),
-				new IntFlagItem("WARP_INVERSE_MAP",16)
+//				new IntFlagItem("INTER_MAX ",7),
+//				new IntFlagItem("WARP_FILL_OUTLIERS",8),
+//				new IntFlagItem("WARP_INVERSE_MAP",16)
 		};
 		
-		odb.addComboBox("Interpolation Type", interpolationFlags, interpolationFlag);
+		JComboBox<IntFlagItem> comboBox = odb.addComboBox("Interpolation Type", interpolationFlags, interpolationFlag);
 		odb.addTextBox("Output Name", "Resize Output", this.getOutputNameObject());
 		return odb.getDialog();
 	}
