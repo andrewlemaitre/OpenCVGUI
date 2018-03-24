@@ -70,7 +70,12 @@ public abstract class OpenCVOperation {
      * @return The Mat from the OpenCVOperation that supplies this operation with data.
      */
     public final Mat getInputMat() {
-        return this.inputOperation.getOutputMat();
+        if( this.inputOperation != null )
+            return this.inputOperation.getOutputMat();
+        else {
+            System.err.println("Input operation is null.");
+            throw( new NullPointerException() );
+        }
     }
 
     /**
