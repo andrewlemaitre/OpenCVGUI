@@ -78,7 +78,7 @@ public class NewOperationDialog extends JDialog {
 	{
 		OpenCVOperation operation = comboBox.getItemAt(comboBox.getSelectedIndex());
 //		 whw.newOperation( comboBox.getItemAt(comboBox.getSelectedIndex()).clone() );
-		whw.newOperation( operation.newOperationCopy());
+		whw.addOperation( operation.newOperationCopy());
 	}
 
 	class MyCellRenderer extends JLabel implements ListCellRenderer<Object> {

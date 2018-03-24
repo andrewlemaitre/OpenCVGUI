@@ -10,6 +10,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
+
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -24,6 +26,7 @@ import javax.swing.ListCellRenderer;
 import javax.swing.border.LineBorder;
 import dialogs.NewOperationDialog;
 import miscellaneous.Helper;
+import operations.ImReadOperation;
 import operations.OpenCVOperation;
 import operations.OperationMenuItem;
 
@@ -51,7 +54,7 @@ public class OpenCVHarnessWindow extends JFrame {
 	DefaultListModel<OpenCVOperation> operationsList;
 
 	private final Action runOperationsAction = new RunOperationsAction();
-	private final Action newOperationAction = new NewOperationAction();
+	private final Action addOperationAction = new AddOperationAction();
 	private final Action removeOperationAction = new RemoveOperationAction();
 	private final Action copyOperationAction = new CopyOperationAction();
 	private final Action editOperationAction = new EditOperationAction();
@@ -113,9 +116,9 @@ public class OpenCVHarnessWindow extends JFrame {
 		operationsListButtonPanel.setLayout( new BoxLayout(operationsListButtonPanel, BoxLayout.LINE_AXIS));
 		operationsListPanel.add(operationsListButtonPanel);
 		
-				JButton newOperationButton = new JButton();
-				newOperationButton.setAction(newOperationAction);
-				operationsListButtonPanel.add(newOperationButton);
+				JButton addOperationButton = new JButton();
+				addOperationButton.setAction(addOperationAction);
+				operationsListButtonPanel.add(addOperationButton);
 				JButton CopyOperationButton = new JButton();
 				CopyOperationButton.setAction(copyOperationAction);
 				operationsListButtonPanel.add(CopyOperationButton);
@@ -135,8 +138,19 @@ public class OpenCVHarnessWindow extends JFrame {
 		
 		JMenu mnNewMenu = new JMenu("New menu");
 		menuBar.add(mnNewMenu);
-//		editOperationButton .addActionListener( new EditButtonListener());
 
+		addTestingOperations();
+		
+	}
+	
+	private void addTestingOperations() {
+        ImReadOperation iro = (ImReadOperation) this.addOperation( new operations.ImReadOperation() );
+        iro.setOutputName("Image Read test");
+        iro.getFile().setValue( new File("C:/Users/lemaitrea/Documents/Skittles_1.jpg"));
+        this.addOperation( new operations.ResizeOperation() );
+        this.addOperation( new operations.CvtColorOperation() );
+        this.addOperation( new operations.ThresholdOperation() );
+        this.addOperation( new operations.DistanceTransformOperation() );
 	}
 	
 	public JList<OpenCVOperation> getImageOperationsJList() {
@@ -171,11 +185,12 @@ public class OpenCVHarnessWindow extends JFrame {
 		}
 	}
 
-	public void newOperation( OpenCVOperation op ) {
+	public OpenCVOperation addOperation( OpenCVOperation op ) {
 		operationsList.addElement(op);
+		return op;
 	}
 	
-	void newOperation() {
+	void addOperation() {
 		NewOperationDialog nod = new NewOperationDialog( this );
 		nod.setLocationRelativeTo(this);
 		nod.setVisible(true);
@@ -185,7 +200,7 @@ public class OpenCVHarnessWindow extends JFrame {
 		if( imageOperationsJList.getSelectedIndex() >= 0 && operationsList.getSize() > 0)
 		{
 			OpenCVOperation operationToCopy = operationsList.get(imageOperationsJList.getSelectedIndex());
-			newOperation( operationToCopy.newOperationCopy() );
+			addOperation( operationToCopy.newOperationCopy() );
 		}
 	}
 	
@@ -226,13 +241,13 @@ public class OpenCVHarnessWindow extends JFrame {
 		}
 	}
 	
-	private class NewOperationAction extends AbstractAction {
-		public NewOperationAction() {
+	private class AddOperationAction extends AbstractAction {
+		public AddOperationAction() {
 			putValue(NAME, "New Operation");
 			putValue(SHORT_DESCRIPTION, "Opens a dialog to create new operations.");
 		}
 		public void actionPerformed(ActionEvent e) {
-			newOperation();
+			addOperation();
 		}
 	}
 	
