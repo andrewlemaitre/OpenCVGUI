@@ -85,20 +85,21 @@ public class ResizeOperation extends OpenCVOperation {
 
 	@Override
 	public void performOperation() {
-	    if( this.getInputOperation() == null )
-	        throw( new NullPointerException() );
-	    else if( this.getInputOperation().getOutputMat().empty() ) {
-            System.err.println("Input mat for resize operation \"" + this.getOperationName() +"\" is empty. Did you configure the input operation?");
-            return;
+        try {
+            if( this.getInputOperation().getOutputMat().empty() ) {
+                System.err.println("Input mat for resize operation \"" + this.getOperationName() +"\" is empty. Did you configure the input operation?");
+                return;
+            }
+            Imgproc.resize(
+                    this.getInputOperation().getOutputMat(), 
+                    this.getOutputMat(), 
+                    new Size( absoluteResizeDims.getWidth(), absoluteResizeDims.getHeight() ), 
+                    scaleFactorDims.getWidth(), 
+                    scaleFactorDims.getHeight(),
+                    interpolationFlag.getValue().getValue() );
+        } catch ( NullPointerException e ) {
+            e.printStackTrace();
         }
-        
-        Imgproc.resize(
-                this.getInputOperation().getOutputMat(), 
-                this.getOutputMat(), 
-                new Size( absoluteResizeDims.getWidth(), absoluteResizeDims.getHeight() ), 
-                scaleFactorDims.getWidth(), 
-                scaleFactorDims.getHeight(),
-                interpolationFlag.getValue().getValue() );
 	}
 
 	@Override
