@@ -19,7 +19,6 @@ import java.awt.Dimension;
 
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
@@ -40,6 +39,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.geom.Dimension2D;
 
 import javax.swing.JComboBox;
 
@@ -83,7 +83,7 @@ public class OperationDialogBox {
 		
 	}
 	
-	public JSpinner[] add2DDimension( String label, Dimension dimension, SpinnerNumberModel xModel, SpinnerNumberModel yModel, boolean isSquare )
+	public JSpinner[] add2DDimension( String label, Dimension2D dimension, SpinnerNumberModel xModel, SpinnerNumberModel yModel, boolean isSquare )
 	{
 		addMigRow();
 		addSettingLabel( label );
@@ -98,9 +98,14 @@ public class OperationDialogBox {
 		dimYSpinner.setPreferredSize( new Dimension( 60, 20 ) );
 		dimYSpinner.setMinimumSize( new Dimension( 60, 20 ) );
 		
-		//Add change listeners to the spinners
-		dimXSpinner.addChangeListener( evt -> dimension.setSize( (int)dimXSpinner.getValue(), (int)dimension.getHeight()) );
-		dimYSpinner.addChangeListener( evt -> dimension.setSize( (int)dimension.getWidth(), (int)dimYSpinner.getValue()) );
+        //Add change listeners to the spinners
+        if( dimension instanceof Dimension ) {
+            dimXSpinner.addChangeListener( evt -> dimension.setSize( (int)dimXSpinner.getValue(), dimension.getHeight()) );
+            dimYSpinner.addChangeListener( evt -> dimension.setSize( dimension.getWidth(), (int)dimYSpinner.getValue()) );
+        } else if ( dimension instanceof DoubleDimension ) {
+            dimXSpinner.addChangeListener( evt -> dimension.setSize( (double)dimXSpinner.getValue(), dimension.getHeight() ) );
+            dimYSpinner.addChangeListener( evt -> dimension.setSize( dimension.getWidth(), (double)dimYSpinner.getValue()) );
+        }
 
 		//Add the spinners and the x label between them to the dialog.
 		addSettingControl( dimXSpinner, "", "flowx" );
@@ -141,7 +146,6 @@ public class OperationDialogBox {
 			    int returnVal = chooser.showOpenDialog( (JButton)e.getSource() );
 			    
 			    if(returnVal == JFileChooser.APPROVE_OPTION) {
-
 			    	this.f.setValue( chooser.getSelectedFile() );
 			    	lblFileTitle.setText(this.f.getValue().getPath());
 			     }
@@ -182,7 +186,7 @@ public class OperationDialogBox {
 		});
 	}
 	
-	public void addComboBox( String label, IntFlagItem[] itemList, PassableIntFlagItem passableIntFlagItem )
+	public JComboBox<IntFlagItem> addComboBox( String label, IntFlagItem[] itemList, PassableIntFlagItem passableIntFlagItem )
 	{
 		addMigRow();
 		addSettingLabel( label );
@@ -220,6 +224,8 @@ public class OperationDialogBox {
 				this.i.setValue( comboBox.getItemAt(comboBox.getSelectedIndex()) );
 			}
 		});
+		
+		return comboBox;
 	}
 	
 	public void addPopUpMenu( String label, IntFlagItem intFlagItem, JPopupMenu popupMenu )
