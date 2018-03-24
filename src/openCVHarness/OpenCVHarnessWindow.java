@@ -11,11 +11,13 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -24,6 +26,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import dialogs.NewOperationDialog;
 import miscellaneous.Helper;
 import miscellaneous.OperationMenuItem;
@@ -136,8 +140,12 @@ public class OpenCVHarnessWindow extends JFrame {
 		JMenuBar menuBar = new JMenuBar();
 		menuBarPanel.add(menuBar);
 		
-		JMenu mnNewMenu = new JMenu("New menu");
-		menuBar.add(mnNewMenu);
+		JMenu fileMenu = new JMenu("File");
+		menuBar.add(fileMenu);
+        JMenuItem saveOperationsMenuItem = fileMenu.add( new JMenuItem() );
+        saveOperationsMenuItem.setAction( new SaveOperationsAction() );
+        JMenuItem loadOperationsMenuItem = fileMenu.add( new JMenuItem() );
+        loadOperationsMenuItem.setAction( new LoadOperationsAction() );
 
 		addTestingOperations();
 		
@@ -159,6 +167,15 @@ public class OpenCVHarnessWindow extends JFrame {
 
 	public DefaultListModel<OpenCVOperation> getOperationsList() {
 		return operationsList;
+	}
+	
+	public ArrayList<OpenCVOperation> getOperationsArrayList() {
+	    DefaultListModel<OpenCVOperation> operationsList = getOperationsList();
+	    ArrayList<OpenCVOperation> operationsArrayList = new ArrayList<>();
+	    for( int i = 0; i < operationsList.size(); i++ ) {
+	        operationsArrayList.add( operationsList.getElementAt(i));
+	    }
+	    return operationsArrayList;
 	}
 	
 	void refreshMainView() {
@@ -229,6 +246,46 @@ public class OpenCVHarnessWindow extends JFrame {
 	void removeSelectedElement() {
 		if( imageOperationsJList.getSelectedIndex() >= 0 && operationsList.getSize() > 0)
 			operationsList.removeElementAt( this.imageOperationsJList.getSelectedIndex() );
+	}
+
+    private class LoadOperationsAction extends AbstractAction {
+        public LoadOperationsAction() {
+            putValue(NAME,"Load Operations");
+        }
+        public void actionPerformed( ActionEvent e) {
+            System.out.println("Clicked load operations.");
+
+            JFileChooser chooser = new JFileChooser();
+            chooser.setDialogTitle("Load image operations");
+       
+            int returnVal = chooser.showOpenDialog( (JMenuItem)e.getSource() );
+            
+            if(returnVal == JFileChooser.APPROVE_OPTION) {
+                File loadFile = chooser.getSelectedFile();
+                System.out.println("Save as file " + loadFile.getPath());
+                OpenCVSerializer.deserializeOperations( loadFile.getPath() );
+            }
+        }
+    }
+	
+	private class SaveOperationsAction extends AbstractAction {
+	    public SaveOperationsAction() {
+	        putValue(NAME,"Save Operations");
+	    }
+	    public void actionPerformed( ActionEvent e) {
+	        System.out.println("Clicked save operations.");
+
+            JFileChooser chooser = new JFileChooser();
+            chooser.setDialogTitle("Save image operations");
+       
+            int returnVal = chooser.showSaveDialog( (JMenuItem)e.getSource() );
+            
+            if(returnVal == JFileChooser.APPROVE_OPTION) {
+                File saveFile = chooser.getSelectedFile();
+                System.out.println("Save as file " + saveFile.getPath());
+                OpenCVSerializer.serializeOperations( getOperationsArrayList(), saveFile.getPath( ));
+            }
+	    }
 	}
 
 	private class RunOperationsAction extends AbstractAction {

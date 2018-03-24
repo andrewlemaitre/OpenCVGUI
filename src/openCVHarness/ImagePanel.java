@@ -142,7 +142,7 @@ public class ImagePanel {
             }
             
             //Convert the Mat of the inputOperation to a bufferedImage.
-    		if( inputOperation.getOutputMat().width() > 0 && inputOperation.getOutputMat().height() > 0 ) {
+    		if( inputOperation.getOutputMat() != null && inputOperation.getOutputMat().width() > 0 && inputOperation.getOutputMat().height() > 0 ) {
     			image = ImagePanel.matToBufferedImage( inputOperation.getOutputMat() );
     			drawingPanel.setBackground( new Color( 238, 238, 238 ));
     		} else {

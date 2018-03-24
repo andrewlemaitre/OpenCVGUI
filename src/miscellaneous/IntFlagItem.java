@@ -1,8 +1,12 @@
 package miscellaneous;
 
-public class IntFlagItem {
+import java.io.Serializable;
 
-	String name;
+public class IntFlagItem implements Serializable {
+
+    /** Generated serial id */
+    private static final long serialVersionUID = 435057375374010000L;
+    String name;
 	int value;
 	
 	public IntFlagItem()

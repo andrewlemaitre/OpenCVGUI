@@ -1,10 +1,14 @@
 package passableTypes;
 
+import java.io.Serializable;
+
 import miscellaneous.IntFlagItem;
 
-public class PassableIntFlagItem {
+public class PassableIntFlagItem implements Serializable {
 	
-	private IntFlagItem value;
+    /** Generated serial id */
+    private static final long serialVersionUID = 7573980744854091092L;
+    private IntFlagItem value;
 	
 	public PassableIntFlagItem(){}
 	

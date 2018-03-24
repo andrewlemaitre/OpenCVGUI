@@ -1,5 +1,7 @@
 package operations;
 
+import java.io.Serializable;
+
 import javax.swing.JDialog;
 
 import org.opencv.core.Mat;
@@ -9,8 +11,10 @@ import passableTypes.PassableString;
 /**
  *  This is the abstract class from which all other OpenCV operations are derived.
  */
-public abstract class OpenCVOperation {
+public abstract class OpenCVOperation implements Serializable {
 
+    /** Serialization ID */
+    private static final long serialVersionUID = 3811274352537025874L;
     /** The name of this operation. */
     private PassableString name = new PassableString();
     /** The output name of this operation. */
@@ -18,8 +22,11 @@ public abstract class OpenCVOperation {
     /** The OpenCVOperation that this operation will get it's input data from. */
     private OpenCVOperation inputOperation;
     /** The Mat that this openCVOperation will put output data in. */
-    private Mat outputMat = new Mat();
+    transient private Mat outputMat = new Mat();
 
+    public void createNewOutputMat() {
+        outputMat = new Mat();
+    }
     /**
      * @return A new instance (not a clone) of this operation type.
      */

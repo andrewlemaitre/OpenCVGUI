@@ -1,8 +1,12 @@
 package passableTypes;
 
-public class PassableInt {
+import java.io.Serializable;
+
+public class PassableInt implements Serializable {
 	
-	private int value;
+    /** Generated serial id */
+    private static final long serialVersionUID = -3938763484007618097L;
+    private int value;
 	
 	public PassableInt() {}
 	

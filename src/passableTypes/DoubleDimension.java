@@ -1,9 +1,12 @@
 package passableTypes;
 
 import java.awt.geom.Dimension2D;
+import java.io.Serializable;
 
-public class DoubleDimension extends Dimension2D {
+public class DoubleDimension extends Dimension2D implements Serializable {
 
+    /** Generated serial id */
+    private static final long serialVersionUID = 48830963091945994L;
     double width;
     double height;
     
