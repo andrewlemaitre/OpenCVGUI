@@ -71,6 +71,11 @@ public class ImReadOperation extends OpenCVOperation {
 		else
 			this.setOutputMat( Imgcodecs.imread( file.getPath() ) );
 	}
+	
+	public PassableFile getFile()
+	{
+        return passableFile;
+	}
 
 	@Override
 	public OpenCVOperation newOperationCopy() {
