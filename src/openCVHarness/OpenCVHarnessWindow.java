@@ -4,6 +4,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.MouseInfo;
 import java.awt.Toolkit;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -11,11 +13,14 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
+import javax.swing.DropMode;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -25,14 +30,14 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
+import javax.swing.TransferHandler;
 import javax.swing.border.LineBorder;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
 import dialogs.NewOperationDialog;
 import miscellaneous.Helper;
 import miscellaneous.OperationMenuItem;
 import operations.ImReadOperation;
 import operations.OpenCVOperation;
+import operations.OpenCVOperation.OpenCVOperationTransferable;
 
 import java.awt.BorderLayout;
 import javax.swing.JMenuBar;
@@ -112,6 +117,10 @@ public class OpenCVHarnessWindow extends JFrame {
 		imageOperationsJList = new JList<>( operationsList );
 		imageOperationsJList.addMouseListener( new ImageOperationsListListener() );
 		imageOperationsJList.setCellRenderer( new ImageOperationsCellRenderer() );
+		imageOperationsJList.setTransferHandler( new ListTransferHandler() );
+		imageOperationsJList.setDragEnabled( true );
+		imageOperationsJList.setDropMode( DropMode.ON_OR_INSERT );
+		
 		JScrollPane operationsListScrollPane = new JScrollPane(imageOperationsJList);
 		operationsListScrollPane.setPreferredSize( new Dimension(368, 240));
 		operationsListPanel.add(operationsListScrollPane);
@@ -449,6 +458,76 @@ public class OpenCVHarnessWindow extends JFrame {
 	    		jpm.show( evt.getComponent(), evt.getX(), evt.getY());
 	        }
 	        
+	    }
+	}
+	
+	private class ListTransferHandler extends TransferHandler {
+        
+	    private TransferSupport transferSupport;
+	    
+	    public ListTransferHandler() {
+	        super();
+        }
+	    
+	    @Override
+	    public boolean canImport( TransferSupport transferSupport ) {
+            // we only import OpenCVOperations
+            if (!transferSupport.isDataFlavorSupported(OpenCVOperation.OpenCVOperationTransferable.OPENCV_OPERATION_DATA_FLAVOR))
+                return false;
+            return true;
+        }
+	    
+	    @Override
+        public boolean importData( TransferSupport transferSupport) {
+	        
+	        this.transferSupport = transferSupport;
+	        
+	        System.out.println("ImportData");
+
+	        if( canImport( transferSupport ) ) {
+                System.out.println("\tCan Import");
+                return true;
+	        }
+	        return false;
+        }
+	    
+	    @Override
+        public int getSourceActions(JComponent c) {
+            return TransferHandler.MOVE;
+        }
+	    
+	    @Override
+        protected Transferable createTransferable(JComponent c) {
+	        Transferable transferable = null;
+            if (c instanceof JList) {
+                @SuppressWarnings("unchecked")
+                JList<OpenCVOperation> list = (JList<OpenCVOperation>) c;
+                Object value = list.getSelectedValue();
+                if (value instanceof OpenCVOperation) {
+                    OpenCVOperation operation = (OpenCVOperation) value;
+                    transferable = operation.getTransferable( list.getSelectedIndex() );
+                }
+            }
+            return transferable;
+        }
+	    
+	    @Override
+	    protected void exportDone( JComponent source, Transferable data, int action ) {
+	        
+	        JList list = (JList)source;
+	        DefaultListModel<OpenCVOperation> listModel = (DefaultListModel<OpenCVOperation>)list.getModel();
+	        JList.DropLocation dropLocation = (JList.DropLocation)transferSupport.getDropLocation();
+	        int dropIndex = dropLocation.getIndex();
+	        int originalIndex = ((OpenCVOperationTransferable)data).getOriginalIndex();
+	        OpenCVOperation originalOperation = ((OpenCVOperationTransferable)data).getOriginalOperation();
+	        
+	        if( dropLocation.getIndex() < originalIndex ) {
+                listModel.removeElement(originalOperation);
+	            listModel.add( dropIndex, originalOperation);
+	        } else {
+                listModel.add( dropIndex, originalOperation);
+                listModel.removeElement(originalOperation);
+	        }
 	    }
 	}
     

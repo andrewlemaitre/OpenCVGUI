@@ -1,5 +1,9 @@
 package operations;
 
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
 import java.io.Serializable;
 
 import javax.swing.JDialog;
@@ -125,6 +129,50 @@ public abstract class OpenCVOperation implements Serializable {
      */
     public final PassableString getOperationNameObject() {
         return this.name;
+    }
+    
+    public OpenCVOperationTransferable getTransferable( int originalIndex )
+    {
+        OpenCVOperationTransferable item = new OpenCVOperationTransferable( this, originalIndex );
+        return item;
+    }
+    
+    public static class OpenCVOperationTransferable implements Transferable {
+
+        public static final DataFlavor OPENCV_OPERATION_DATA_FLAVOR = new DataFlavor(OpenCVOperation.class, "Java/OpenCVOperation");
+        private OpenCVOperation openCVOperation;
+        private int originalIndex;
+        
+        public OpenCVOperationTransferable( OpenCVOperation operation, int originalIndex ) {
+            this.openCVOperation = operation;
+            this.originalIndex = originalIndex;
+        }
+
+        public int getOriginalIndex()
+        {
+            return originalIndex;
+        }
+        
+        public OpenCVOperation getOriginalOperation()
+        {
+            return openCVOperation;
+        }
+        
+        @Override
+        public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+            return openCVOperation;
+        }
+
+        @Override
+        public DataFlavor[] getTransferDataFlavors() {
+            return new DataFlavor[]{OPENCV_OPERATION_DATA_FLAVOR};
+        }
+
+        @Override
+        public boolean isDataFlavorSupported(DataFlavor flavor) {
+            return flavor.equals(OPENCV_OPERATION_DATA_FLAVOR);
+        }
+        
     }
 
 }
