@@ -3,7 +3,6 @@ package operations;
 import java.awt.Dimension;
 import java.awt.geom.Dimension2D;
 
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.SpinnerNumberModel;
 
@@ -17,6 +16,10 @@ import passableTypes.PassableIntFlagItem;
 
 public class ResizeOperation extends OpenCVOperation {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -1284828314506751508L;
     Dimension2D absoluteResizeDims = new Dimension(0,0);
     Dimension2D scaleFactorDims = new DoubleDimension(0,0);
 	PassableIntFlagItem interpolationFlag = new PassableIntFlagItem();
@@ -81,7 +84,7 @@ public class ResizeOperation extends OpenCVOperation {
 //				new IntFlagItem("WARP_INVERSE_MAP",16)
 		};
 		
-		JComboBox<IntFlagItem> comboBox = odb.addComboBox("Interpolation Type", interpolationFlags, interpolationFlag);
+		odb.addComboBox("Interpolation Type", interpolationFlags, interpolationFlag);
 		odb.addTextBox("Output Name", "Resize Output", this.getOutputNameObject());
 		return odb.getDialog();
 	}
