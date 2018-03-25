@@ -237,12 +237,6 @@ public class OpenCVHarnessWindow extends JFrame {
 		{
 			operationsList.getElementAt(i).performOperation();
 		}
-
-		if( operationsList.getElementAt( operationsList.getSize()-1 ).getOutputMat().empty() )
-		{
-			System.err.println("Attempted to draw empty mat.");
-			return;
-		}
 		for( ImagePanel ip : imagePanelOrganizer.getImagePanels() )
 		{
 			ip.revalidate();
