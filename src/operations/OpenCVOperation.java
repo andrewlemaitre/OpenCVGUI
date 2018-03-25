@@ -5,6 +5,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Random;
 
 import javax.swing.JDialog;
 
@@ -27,10 +28,21 @@ public abstract class OpenCVOperation implements Serializable {
     private OpenCVOperation inputOperation;
     /** The Mat that this openCVOperation will put output data in. */
     transient private Mat outputMat = new Mat();
+    private long ID;
+    transient private static Random r = new Random();
 
+    public OpenCVOperation() {
+        ID = r.nextLong();
+    }
+    
+    final public long getID() {
+        return ID;
+    }
+    
     public void createNewOutputMat() {
         outputMat = new Mat();
     }
+    
     /**
      * @return A new instance (not a clone) of this operation type.
      */

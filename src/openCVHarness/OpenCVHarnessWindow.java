@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.MouseInfo;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -13,7 +12,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
@@ -511,8 +509,9 @@ public class OpenCVHarnessWindow extends JFrame {
 	    @Override
 	    protected void exportDone( JComponent source, Transferable data, int action ) {
 	        
-	        JList list = (JList)source;
-	        DefaultListModel<OpenCVOperation> listModel = (DefaultListModel<OpenCVOperation>)list.getModel();
+	        JList<?> list = (JList<?>)source;
+	        @SuppressWarnings("unchecked")
+            DefaultListModel<OpenCVOperation> listModel = (DefaultListModel<OpenCVOperation>)list.getModel();
 	        JList.DropLocation dropLocation;
 	        int dropIndex;
 	        int originalIndex = ((OpenCVOperationTransferable)data).getOriginalIndex();
@@ -521,7 +520,11 @@ public class OpenCVHarnessWindow extends JFrame {
 	        if( transferSupport == null ) {
 	            return;
 	        }
+
+	        if( !(transferSupport.getComponent() instanceof JList) )
+	            return;
 	        
+	        System.out.println(transferSupport.getComponent());
             dropLocation = (JList.DropLocation)transferSupport.getDropLocation();
             dropIndex = dropLocation.getIndex();
 	        

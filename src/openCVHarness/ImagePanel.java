@@ -3,17 +3,24 @@ package openCVHarness;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JComponent;
+import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.TransferHandler;
 import javax.swing.border.LineBorder;
 
 import org.opencv.core.Mat;
@@ -21,6 +28,7 @@ import org.opencv.core.Mat;
 import miscellaneous.Helper;
 import miscellaneous.OperationMenuItem;
 import operations.OpenCVOperation;
+import operations.OpenCVOperation.OpenCVOperationTransferable;
 
 
 public class ImagePanel {
@@ -34,6 +42,7 @@ public class ImagePanel {
 		drawingPanel = new DrawingPanel();
 		drawingPanel.setBorder( new LineBorder(Color.BLACK));
 		drawingPanel.addMouseListener(new ImagePanelMouseListener());
+		drawingPanel.setTransferHandler( new ImagePanelTransferHandler() );
 	}
 	
 	public void setParentOrganizer( ImagePanelOrganizer parentOrganizer ) {
@@ -182,4 +191,72 @@ public class ImagePanel {
             g2d.dispose();
         }
     }
+    
+    private class ImagePanelTransferHandler extends TransferHandler {
+        
+        /** Generated Serial ID */
+        private static final long serialVersionUID = 2680504291208009913L;
+        
+        public ImagePanelTransferHandler() {
+            super();
+        }
+        
+        @Override
+        public boolean canImport( TransferSupport transferSupport ) {
+            // we only import OpenCVOperations
+            if (!transferSupport.isDataFlavorSupported(OpenCVOperation.OpenCVOperationTransferable.OPENCV_OPERATION_DATA_FLAVOR)) {
+                return false;
+            }
+            return true;
+        }
+        
+        @Override
+        public boolean importData( TransferSupport transferSupport) {
+            if( canImport( transferSupport ) ) {
+                try {
+                    long droppedOperationID = ((OpenCVOperation)transferSupport.getTransferable().getTransferData( OpenCVOperationTransferable.OPENCV_OPERATION_DATA_FLAVOR )).getID();
+                    ArrayList<OpenCVOperation> operationsList = Helper.getWebcamHarnessWindow().getOperationsArrayList();
+                    for( OpenCVOperation op : operationsList ) {
+                        if( op.getID() == droppedOperationID ) {
+                            System.out.println("importing image panel data");
+                            ImagePanel.this.inputOperation = op;
+                        }
+                    }
+                } catch (UnsupportedFlavorException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                return true;
+            }
+            return false;
+        }
+        
+        @Override
+        public int getSourceActions(JComponent c) {
+            return TransferHandler.MOVE;
+        }
+        
+        @Override
+        protected Transferable createTransferable(JComponent c) {
+            Transferable transferable = null;
+            if (c instanceof JList) {
+                @SuppressWarnings("unchecked")
+                JList<OpenCVOperation> list = (JList<OpenCVOperation>) c;
+                Object value = list.getSelectedValue();
+                if (value instanceof OpenCVOperation) {
+                    OpenCVOperation operation = (OpenCVOperation) value;
+                    transferable = operation.getTransferable( list.getSelectedIndex() );
+                }
+            }
+            return transferable;
+        }
+        
+        @Override
+        protected void exportDone( JComponent source, Transferable data, int action ) {
+        }
+    }
+    
 }
