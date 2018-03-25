@@ -49,9 +49,9 @@ public class CvtColorOperation extends OpenCVOperation {
 
 	@Override
 	public boolean isValid() {
-			if( this.getInputOperation() != null && selectedColorConversion.getValue() != unselectedFlag )
-				return true;
-		return false;
+		if( this.getInputOperation() == null || selectedColorConversion.getValue() == unselectedFlag || selectedColorConversion == null )
+			return false;
+		return true;
 	}
 
 	//TODO: Only show menu options that are valid conversion types for the selected input mat.

@@ -52,6 +52,8 @@ public class ImReadOperation extends OpenCVOperation {
 
 	@Override
 	public void performOperation() {
+		if( this.isValid() == false )
+		    return;
 		
 		File file = null;
 		int flag = -2;
@@ -85,8 +87,8 @@ public class ImReadOperation extends OpenCVOperation {
 
 	@Override
 	public boolean isValid() {
-		if( passableFile.getValue() != null && passableFile.getValue().exists() )
-			return true;
-		return false;
+	    if( passableFile.getValue() == null || passableFile.getValue().exists() == false )
+	        return false;
+		return true;
 	}
 }

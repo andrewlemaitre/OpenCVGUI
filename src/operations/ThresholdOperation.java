@@ -77,12 +77,9 @@ public class ThresholdOperation extends OpenCVOperation {
 
 	@Override
 	public boolean isValid() {
-		if( maxThresholdValue.getValue() < thresholdValue.getValue() )
-			System.err.println("Max Threshold Value is less than or equal to threshold value in " + getOperationName()
-								+ ". Did you mean to do this?");
-		if( this.getInputOperation() != null && threshFlag != null )
-			return true;
-		return false;
+	    if( getInputOperation() == null || threshFlag == null || additionalThreshFlag == null )
+	        return false;
+		return true;
 	}
 
 }

@@ -76,9 +76,9 @@ public class DistanceTransformOperation extends OpenCVOperation {
 
 	@Override
 	public boolean isValid() {
-		if( this.getInputOperation() != null )
-			return true;
-		return false;
+		if( this.getInputOperation() == null || distanceType == null || maskSize == null )
+			return false;
+		return true;
 	}
 
 }
