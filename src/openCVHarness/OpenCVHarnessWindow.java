@@ -513,10 +513,17 @@ public class OpenCVHarnessWindow extends JFrame {
 	        
 	        JList list = (JList)source;
 	        DefaultListModel<OpenCVOperation> listModel = (DefaultListModel<OpenCVOperation>)list.getModel();
-	        JList.DropLocation dropLocation = (JList.DropLocation)transferSupport.getDropLocation();
-	        int dropIndex = dropLocation.getIndex();
+	        JList.DropLocation dropLocation;
+	        int dropIndex;
 	        int originalIndex = ((OpenCVOperationTransferable)data).getOriginalIndex();
 	        OpenCVOperation originalOperation = ((OpenCVOperationTransferable)data).getOriginalOperation();
+	        
+	        if( transferSupport == null ) {
+	            return;
+	        }
+	        
+            dropLocation = (JList.DropLocation)transferSupport.getDropLocation();
+            dropIndex = dropLocation.getIndex();
 	        
 	        if( dropLocation.isInsert() ) {
                 if( dropIndex < originalIndex ) {
