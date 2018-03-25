@@ -481,11 +481,8 @@ public class OpenCVHarnessWindow extends JFrame {
         public boolean importData( TransferSupport transferSupport) {
 	        
 	        this.transferSupport = transferSupport;
-	        
-	        System.out.println("ImportData");
 
 	        if( canImport( transferSupport ) ) {
-                System.out.println("\tCan Import");
                 return true;
 	        }
 	        return false;
@@ -521,13 +518,28 @@ public class OpenCVHarnessWindow extends JFrame {
 	        int originalIndex = ((OpenCVOperationTransferable)data).getOriginalIndex();
 	        OpenCVOperation originalOperation = ((OpenCVOperationTransferable)data).getOriginalOperation();
 	        
-	        if( dropLocation.getIndex() < originalIndex ) {
-                listModel.removeElement(originalOperation);
-	            listModel.add( dropIndex, originalOperation);
-	        } else {
-                listModel.add( dropIndex, originalOperation);
-                listModel.removeElement(originalOperation);
-	        }
+	        if( dropLocation.isInsert() ) {
+                if( dropIndex < originalIndex ) {
+                    listModel.removeElement(originalOperation);
+                    listModel.add( dropIndex, originalOperation);
+                } else if( dropIndex == originalIndex || dropIndex == originalIndex+1 ) {
+//                    System.out.println("Dropped into list where it already is.");
+                } else {
+                    listModel.add( dropIndex, originalOperation);
+                    listModel.removeElement(originalOperation);
+                }
+    	    } else {
+    	        if( originalIndex > dropIndex ) {
+//                    System.out.println("Dropped on another above.");
+    	        } else if ( originalIndex == dropIndex ) {
+//    	            System.out.println("Dropped on itself.");
+    	        } else {
+    	            OpenCVOperation targetOperation = listModel.getElementAt(dropIndex);
+//                    System.out.println("Dropped on another below.");
+//                    System.out.println("Dropped " + originalOperation + " on " + targetOperation);
+                    targetOperation.setInputOperation(originalOperation);
+    	        }
+    	    }
 	    }
 	}
     
