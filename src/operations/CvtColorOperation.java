@@ -38,6 +38,9 @@ public class CvtColorOperation extends OpenCVOperation {
 	
 	@Override
 	public void performOperation() {
+	    if( this.isValid() == false )
+	        return; 
+	    
 		Imgproc.cvtColor(this.getInputOperation().getOutputMat(), this.getOutputMat(), selectedColorConversion.getValue());
 	}
 

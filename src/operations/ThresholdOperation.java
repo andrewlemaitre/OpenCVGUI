@@ -55,10 +55,9 @@ public class ThresholdOperation extends OpenCVOperation {
 
 	@Override
 	public void performOperation() {
-		if( this.getInputOperation() == null ) {
-			System.err.println("No input specified for threshold operation" + this.getOperationName());
-			return;
-		}
+	    if( this.isValid() == false )
+	        return;
+	    
 		if( this.getInputOperation().getOutputMat().empty() )
 			System.err.println("Input mat for threshold operation \"" + this.getOperationName() +"\" is empty. Did you configure the input operation?");
 		
