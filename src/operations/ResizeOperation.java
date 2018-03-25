@@ -115,8 +115,8 @@ public class ResizeOperation extends OpenCVOperation {
 	public boolean isValid() {
 	    if( this.getInputOperation() == null )
 	        return false;
-	    //If either absolute width or height is greater than 0 and the other is 0, then return false.
-	    if(    ( absoluteResizeDims.getWidth() >= 0 || absoluteResizeDims.getHeight() >= 0 ) && 
+	    //If either absolute width or height is greater than 0 and the other is equal to 0, then return false.
+	    if(    ( absoluteResizeDims.getWidth() > 0 || absoluteResizeDims.getHeight() > 0 ) && 
 	           ( absoluteResizeDims.getWidth() == 0 || absoluteResizeDims.getHeight() == 0 ) )
 	        return false;
 	    /* If both the absolute width and height are 0, then the function will use the scale factor values.
