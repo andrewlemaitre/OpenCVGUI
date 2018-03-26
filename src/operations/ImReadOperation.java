@@ -32,18 +32,18 @@ public class ImReadOperation extends OpenCVOperation {
 		
 		IntFlagItem[] intFlagItemList = {
 			new IntFlagItem("No Flags Set", -2),
-			new IntFlagItem("IMREAD_UNCHANGED", -1),
-			new IntFlagItem("IMREAD_GRAYSCALE", 0),
-			new IntFlagItem("IMREAD_COLOR", 1),
-			new IntFlagItem("IMREAD_ANYDEPTH", 2),
-			new IntFlagItem("IMREAD_ANYCOLOR", 4),
-			new IntFlagItem("IMREAD_LOAD_GDAL", 8),
-			new IntFlagItem("IMREAD_REDUCED_COLOR_2", 17),
-			new IntFlagItem("IMREAD_REDUCED_COLOR_4", 33),
-			new IntFlagItem("IMREAD_REDUCED_COLOR_8", 65),
-			new IntFlagItem("IMREAD_REDUCED_GRAYSCALE_2", 16),
-			new IntFlagItem("IMREAD_REDUCED_GRAYSCALE_4", 32),
-			new IntFlagItem("IMREAD_REDUCED_GRAYSCALE_8", 64),
+			new IntFlagItem("IMREAD_UNCHANGED",Imgcodecs.IMREAD_UNCHANGED),
+			new IntFlagItem("IMREAD_GRAYSCALE",Imgcodecs.IMREAD_GRAYSCALE),
+			new IntFlagItem("IMREAD_COLOR",Imgcodecs.IMREAD_COLOR),
+			new IntFlagItem("IMREAD_ANYDEPTH",Imgcodecs.IMREAD_ANYDEPTH),
+			new IntFlagItem("IMREAD_ANYCOLOR",Imgcodecs.IMREAD_ANYCOLOR),
+			new IntFlagItem("IMREAD_LOAD_GDAL",Imgcodecs.IMREAD_LOAD_GDAL),
+			new IntFlagItem("IMREAD_REDUCED_COLOR_2",Imgcodecs.IMREAD_REDUCED_COLOR_2),
+			new IntFlagItem("IMREAD_REDUCED_COLOR_4",Imgcodecs.IMREAD_REDUCED_COLOR_4),
+			new IntFlagItem("IMREAD_REDUCED_COLOR_8",Imgcodecs.IMREAD_REDUCED_COLOR_8),
+			new IntFlagItem("IMREAD_REDUCED_GRAYSCALE_2",Imgcodecs.IMREAD_REDUCED_GRAYSCALE_2),
+			new IntFlagItem("IMREAD_REDUCED_GRAYSCALE_4",Imgcodecs.IMREAD_REDUCED_GRAYSCALE_4),
+			new IntFlagItem("IMREAD_REDUCED_GRAYSCALE_8",Imgcodecs.IMREAD_REDUCED_GRAYSCALE_8),
 		};
 		odb.addComboBox("Flags", intFlagItemList, ifi);
 		odb.addTextBox("Output Name", "Image Read Output", this.getOutputNameObject());

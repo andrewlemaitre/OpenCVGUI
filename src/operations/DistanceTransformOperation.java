@@ -27,21 +27,21 @@ public class DistanceTransformOperation extends OpenCVOperation {
 		odb.addSourceMatSelector("Input Operation", this );
 	
 		IntFlagItem[] distanceTypes = {
-				new IntFlagItem("DIST_USER", -1),
-				new IntFlagItem("DIST_L1 ", 1),
-				new IntFlagItem("DIST_L2 ", 2),
-				new IntFlagItem("DIST_C", 3),
-				new IntFlagItem("DIST_L12 ", 4),
-				new IntFlagItem("DIST_FAIR ", 5),
-				new IntFlagItem("DIST_WELSCH ", 6),
-				new IntFlagItem("DIST_HUBER ", 7)
+				new IntFlagItem("DIST_USER",Imgproc.DIST_USER),
+				new IntFlagItem("DIST_L1 ",Imgproc.DIST_L1 ),
+				new IntFlagItem("DIST_L2 ",Imgproc.DIST_L2 ),
+				new IntFlagItem("DIST_C",Imgproc.DIST_C),
+				new IntFlagItem("DIST_L12 ",Imgproc.DIST_L12 ),
+				new IntFlagItem("DIST_FAIR ",Imgproc.DIST_FAIR ),
+				new IntFlagItem("DIST_WELSCH ",Imgproc.DIST_WELSCH ),
+				new IntFlagItem("DIST_HUBER ",Imgproc.DIST_HUBER )
 		};
 		odb.addComboBox("Distance Type", distanceTypes, distanceType);
 	
 		IntFlagItem[] maskSizes = {
-				new IntFlagItem("DIST_MASK_3", 3),
-				new IntFlagItem("DIST_MASK_5", 5),
-				new IntFlagItem("DIST_MASK_PRECISE", 0),
+				new IntFlagItem("DIST_MASK_3",Imgproc.DIST_MASK_3),
+				new IntFlagItem("DIST_MASK_5",Imgproc.DIST_MASK_5),
+				new IntFlagItem("DIST_MASK_PRECISE",Imgproc.DIST_MASK_PRECISE),
 		};
 		odb.addComboBox("Mask Size", maskSizes, maskSize);
 	

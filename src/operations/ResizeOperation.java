@@ -73,15 +73,15 @@ public class ResizeOperation extends OpenCVOperation {
 		 * because they are not valid interpolation flags even though they are in the documentation.
 		*/
 		IntFlagItem[] interpolationFlags = {
-				new IntFlagItem("INTER_NEAREST",0),
-				new IntFlagItem("INTER_LINEAR",1),
-				new IntFlagItem("INTER_CUBIC",2),
-				new IntFlagItem("INTER_AREA",3),
-				new IntFlagItem("INTER_LANCZOS4",4),
-				new IntFlagItem("INTER_LINEAR_EXACT",5),
-//				new IntFlagItem("INTER_MAX ",7),
-//				new IntFlagItem("WARP_FILL_OUTLIERS",8),
-//				new IntFlagItem("WARP_INVERSE_MAP",16)
+				new IntFlagItem("INTER_NEAREST",Imgproc.INTER_NEAREST),
+				new IntFlagItem("INTER_LINEAR",Imgproc.INTER_LINEAR),
+				new IntFlagItem("INTER_CUBIC",Imgproc.INTER_CUBIC),
+				new IntFlagItem("INTER_AREA",Imgproc.INTER_AREA),
+				new IntFlagItem("INTER_LANCZOS4",Imgproc.INTER_LANCZOS4),
+				new IntFlagItem("INTER_LINEAR_EXACT",Imgproc.INTER_LINEAR_EXACT),
+//				new IntFlagItem("INTER_MAX ",Imgproc.INTER_MAX ),
+//				new IntFlagItem("WARP_FILL_OUTLIERS",Imgproc.WARP_FILL_OUTLIERS),
+//				new IntFlagItem("WARP_INVERSE_MAP",Imgproc.WARP_INVERSE_MAP)
 		};
 		
 		odb.addComboBox("Interpolation Type", interpolationFlags, interpolationFlag);
