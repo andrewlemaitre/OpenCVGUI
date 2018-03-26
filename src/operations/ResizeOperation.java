@@ -36,31 +36,7 @@ public class ResizeOperation extends OpenCVOperation {
 		return ro;
 	}
 	
-    private SpinnerNumberModel getAbsXNumberModel() {
-        SpinnerNumberModel absDimX = new SpinnerNumberModel( 0, 0, null, 1);
-        absDimX.setValue( (int)absoluteResizeDims.getWidth() );
-        return absDimX;
-    }
-    
-    private SpinnerNumberModel getAbsYNumberModel() {
-        SpinnerNumberModel absDimY = new SpinnerNumberModel( 0, 0, null, 1 );
-        absDimY.setValue( (int)absoluteResizeDims.getHeight() );
-        return absDimY;
-    }
-
-    private SpinnerNumberModel getScaleXNumberModel() {
-        SpinnerNumberModel scaleX = new SpinnerNumberModel(0d, 0d, null, 0.1d);
-        scaleX.setValue( (double)scaleFactorDims.getWidth() );
-        return scaleX;
-    }
-
-    private SpinnerNumberModel getScaleYNumberModel() {
-        SpinnerNumberModel scaleY = new SpinnerNumberModel(0d,0d, null,0.1d);
-        scaleY.setValue( (double)scaleFactorDims.getHeight() );
-        return scaleY;
-    }
-
-	@Override
+    @Override
 	public JDialog openDialogBox() {
 		OperationDialogBox odb = new OperationDialogBox();
 		odb.addTextBox("Operation Name", "Resize Operation", this.getOutputNameObject());
@@ -129,5 +105,29 @@ public class ResizeOperation extends OpenCVOperation {
 	        return false;
 		return true;
 	}
+
+    private SpinnerNumberModel getAbsXNumberModel() {
+        SpinnerNumberModel absDimX = new SpinnerNumberModel( 0, 0, null, 1);
+        absDimX.setValue( (int)absoluteResizeDims.getWidth() );
+        return absDimX;
+    }
+
+    private SpinnerNumberModel getAbsYNumberModel() {
+        SpinnerNumberModel absDimY = new SpinnerNumberModel( 0, 0, null, 1 );
+        absDimY.setValue( (int)absoluteResizeDims.getHeight() );
+        return absDimY;
+    }
+
+    private SpinnerNumberModel getScaleXNumberModel() {
+        SpinnerNumberModel scaleX = new SpinnerNumberModel(0d, 0d, null, 0.1d);
+        scaleX.setValue( (double)scaleFactorDims.getWidth() );
+        return scaleX;
+    }
+
+    private SpinnerNumberModel getScaleYNumberModel() {
+        SpinnerNumberModel scaleY = new SpinnerNumberModel(0d,0d, null,0.1d);
+        scaleY.setValue( (double)scaleFactorDims.getHeight() );
+        return scaleY;
+    }
 
 }
