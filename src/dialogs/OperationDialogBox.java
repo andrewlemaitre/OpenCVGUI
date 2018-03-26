@@ -83,6 +83,27 @@ public class OperationDialogBox {
 		
 	}
 	
+   public JSpinner[] add1DDimension( String label, PassableDouble passableDouble, SpinnerNumberModel xModel )
+    {
+        addMigRow();
+        addSettingLabel( label );
+
+        //Create a new JSpinner model for the x (or width) value of the dimension
+        JSpinner dimXSpinner = new JSpinner( xModel );
+        dimXSpinner.setPreferredSize( new Dimension( 60, 20 ) );
+        dimXSpinner.setMinimumSize( new Dimension( 60, 20 ) );
+        
+        //Add change listeners to the spinners
+        dimXSpinner.addChangeListener( evt -> passableDouble.setValue( (double)dimXSpinner.getValue() ) ); 
+
+        //Add the spinners and the x label between them to the dialog.
+        addSettingControl( dimXSpinner, "", "flowx" );
+        
+        elementCount++;
+        
+        return new JSpinner[] { dimXSpinner };
+    }
+	
 	public JSpinner[] add2DDimension( String label, Dimension2D dimension, SpinnerNumberModel xModel, SpinnerNumberModel yModel, boolean isSquare )
 	{
 		addMigRow();
