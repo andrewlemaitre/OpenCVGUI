@@ -159,13 +159,15 @@ public class OpenCVHarnessWindow extends JFrame {
 	}
 	
 	private void addTestingOperations() {
+        this.addOperation( new operations.CvtColorOperation() );
+        this.addOperation( new operations.DistanceTransformOperation() );
         ImReadOperation iro = (ImReadOperation) this.addOperation( new operations.ImReadOperation() );
         iro.setOutputName("Image Read test");
         iro.getFile().setValue( new File("C:/Users/lemaitrea/Documents/Skittles_1.jpg"));
         this.addOperation( new operations.ResizeOperation() );
-        this.addOperation( new operations.CvtColorOperation() );
         this.addOperation( new operations.ThresholdOperation() );
-        this.addOperation( new operations.DistanceTransformOperation() );
+        this.addOperation( new operations.TranslationOperation() );
+        this.addOperation( new operations.RotationOperation() );
 	}
 	
 	public JList<OpenCVOperation> getImageOperationsJList() {
