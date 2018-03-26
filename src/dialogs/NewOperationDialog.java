@@ -56,9 +56,11 @@ public class NewOperationDialog extends JDialog {
 		
 		comboBox = new JComboBox<>();
 		comboBox.setRenderer( new MyCellRenderer() );
+        comboBox.addItem( new AffineTransformOperation() );
 		comboBox.addItem( new CvtColorOperation() );
         comboBox.addItem( new DistanceTransformOperation() );
         comboBox.addItem( new ImReadOperation() );
+        comboBox.addItem( new PerspectiveTransformOperation() );
         comboBox.addItem( new ResizeOperation() );
         comboBox.addItem( new RotationOperation() );
         comboBox.addItem( new ThresholdOperation() );
