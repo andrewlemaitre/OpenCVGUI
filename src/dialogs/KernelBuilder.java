@@ -193,23 +193,15 @@ public class KernelBuilder {
     }
 
     private void resize() {
-        System.out.println("Running resize function");
         Mat clone = kernelData.clone();
-        System.out.println("Clonedata:");
-        System.out.println(clone.dump());
         Imgproc.resize(kernelData, kernelData, new Size( (int)resizeXTextField.getValue(), (int)resizeYTextField.getValue() ) );
         
-        System.out.printf("New kernelData size: %dx%d\n",kernelData.width(), kernelData.height());
         for( int row = 0; row < kernelData.height(); row++ ) {
-            System.out.printf("Iterating over row %d\n",row);
             for( int col = 0; col < kernelData.width(); col ++ ) {
-                System.out.printf("\tIterating over col %d\n",col);
                 if( col < clone.width() && row < clone.height() ) {
-                    System.out.printf("\t\tCloning cell data\n");
                     double[] data = clone.get(row, col);
                     kernelData.put(row, col, data);
                 } else {
-                    System.out.printf("\t\tCreating new cell data\n");
                     kernelData.put(row, col, new float[] {0f} );
                 }
             }
@@ -227,13 +219,11 @@ public class KernelBuilder {
     }
     
     private void clearRows() {
-        System.out.println("Clear rows");
         rowList.clear();
         kernelBox.removeAll();
     }
 
     private void createRows( Mat kernelData ) {
-        System.out.println("createRows");
         for( int i = 0; i < kernelData.rows(); i++ ) {
             Mat rowData = kernelData.row(i);
             KernelRow kr = new KernelRow( rowData );
@@ -294,7 +284,6 @@ public class KernelBuilder {
         }
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("Clicked scale kernel");
             Core.multiply(kernelData, new Scalar((float)scaleNumeratorTextField.getValue()/(float)scaleDenominatorTextField.getValue()), kernelData);
             refreshDialog();
         }
@@ -307,7 +296,6 @@ public class KernelBuilder {
         }
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("Clicked resize button");
             resize();
         }
     }
@@ -324,9 +312,7 @@ public class KernelBuilder {
         
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
-            System.out.println("Value changed to :" + evt.getNewValue() );
             data.put(0, location, (double)evt.getNewValue());
-            System.out.println(data.dump());
         }
     }
 
