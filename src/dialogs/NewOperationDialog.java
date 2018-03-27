@@ -58,10 +58,14 @@ public class NewOperationDialog extends JDialog {
 		comboBox.setRenderer( new MyCellRenderer() );
 		comboBox.addItem( new AdaptiveThresholdOperation() );
         comboBox.addItem( new AffineTransformOperation() );
+        comboBox.addItem( new BilateralFilterOperation() );
+        comboBox.addItem( new BlurOperation() );
 		comboBox.addItem( new Convolution2DOperation() );
         comboBox.addItem( new CvtColorOperation() );
         comboBox.addItem( new DistanceTransformOperation() );
+        comboBox.addItem( new GaussianBlurOperation());
         comboBox.addItem( new ImReadOperation() );
+        comboBox.addItem( new MedianBlurOperation() );
         comboBox.addItem( new PerspectiveTransformOperation() );
         comboBox.addItem( new ResizeOperation() );
         comboBox.addItem( new RotationOperation() );

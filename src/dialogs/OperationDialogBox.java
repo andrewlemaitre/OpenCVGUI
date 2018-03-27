@@ -82,7 +82,7 @@ public class OperationDialogBox {
 		
 	}
 	
-    public JSpinner[] add1DDimension( String label, PassableInt PassableInt, SpinnerNumberModel xModel ) {
+    public JSpinner[] add1DDimension( String label, PassableInt passableInt, SpinnerNumberModel xModel ) {
         addMigRow();
         addSettingLabel( label );
 
@@ -92,7 +92,7 @@ public class OperationDialogBox {
         dimXSpinner.setMinimumSize( new Dimension( 60, 20 ) );
         
         //Add change listeners to the spinners
-        dimXSpinner.addChangeListener( evt -> PassableInt.setValue( (int)dimXSpinner.getValue() ) ); 
+        dimXSpinner.addChangeListener( evt -> passableInt.setValue( (int)dimXSpinner.getValue() ) ); 
 
         //Add the spinners and the x label between them to the dialog.
         addSettingControl( dimXSpinner, "", "flowx" );
