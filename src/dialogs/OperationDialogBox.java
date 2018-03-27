@@ -26,6 +26,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.BadLocationException;
 
+import org.opencv.core.Mat;
+
 import net.miginfocom.swing.MigLayout;
 import operations.OpenCVOperation;
 import listeners.*;
@@ -51,8 +53,7 @@ public class OperationDialogBox {
 	MigLayout migLayout = new MigLayout("", "[right][grow]", "");
 	JDialog operationDialog;
 	
-	public OperationDialogBox( )
-	{
+	public OperationDialogBox( ) {
 		operationDialog = new JDialog();
 		operationDialog.setSize(600,300);
 		operationDialog.getContentPane().setLayout(new BoxLayout(operationDialog.getContentPane(), BoxLayout.PAGE_AXIS));
@@ -72,19 +73,16 @@ public class OperationDialogBox {
 		return operationDialog;
 	}
 	
-	public void repack()
-	{
+	public void repack() {
 		operationDialog.setSize(600,300);
 		operationDialog.pack();
 	}
 	
-	public void addButton()
-	{
+	public void addButton() {
 		
 	}
 	
-   public JSpinner[] add1DDimension( String label, PassableDouble passableDouble, SpinnerNumberModel xModel )
-    {
+    public JSpinner[] add1DDimension( String label, PassableDouble passableDouble, SpinnerNumberModel xModel ) {
         addMigRow();
         addSettingLabel( label );
 
@@ -104,8 +102,7 @@ public class OperationDialogBox {
         return new JSpinner[] { dimXSpinner };
     }
 	
-	public JSpinner[] add2DDimension( String label, Dimension2D dimension, SpinnerNumberModel xModel, SpinnerNumberModel yModel, boolean isSquare )
-	{
+	public JSpinner[] add2DDimension( String label, Dimension2D dimension, SpinnerNumberModel xModel, SpinnerNumberModel yModel, boolean isSquare ) {
 		addMigRow();
 		addSettingLabel( label );
 
@@ -138,8 +135,26 @@ public class OperationDialogBox {
 		return new JSpinner[] { dimXSpinner, dimYSpinner };
 	}
 
-	public void addFileChooser( String label, String fileFilterLabel, PassableFile passableFile, String... validExtensions )
-	{
+	public void addKernelBuilder( String label, Mat kernelData ) {
+	    addMigRow();
+	    addSettingLabel( label );
+	    
+	    JButton button = new JButton("Edit Kernel");
+	    addSettingControl( button );
+	    button.addActionListener( new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                KernelBuilder kb = new KernelBuilder( kernelData );
+                kb.getDialog().setVisible(true);
+                kb.getDialog().pack();
+            }
+	    });
+	    
+	    elementCount++;
+	    
+	}
+	
+	public void addFileChooser( String label, String fileFilterLabel, PassableFile passableFile, String... validExtensions ) {
 		addMigRow();
 		addSettingLabel( label );
 		
@@ -177,8 +192,7 @@ public class OperationDialogBox {
 		
 	}
 	
-	public void addSourceMatSelector( String label, OpenCVOperation openCVOperation )
-	{
+	public void addSourceMatSelector( String label, OpenCVOperation openCVOperation ) {
 		addMigRow();
 		addSettingLabel( label );
 		
@@ -207,8 +221,7 @@ public class OperationDialogBox {
 		});
 	}
 	
-	public JComboBox<IntFlagItem> addComboBox( String label, IntFlagItem[] itemList, PassableIntFlagItem passableIntFlagItem )
-	{
+	public JComboBox<IntFlagItem> addComboBox( String label, IntFlagItem[] itemList, PassableIntFlagItem passableIntFlagItem ) {
 		addMigRow();
 		addSettingLabel( label );
 		
@@ -251,8 +264,7 @@ public class OperationDialogBox {
 		return comboBox;
 	}
 	
-	public void addPopUpMenu( String label, IntFlagItem intFlagItem, JPopupMenu popupMenu )
-	{
+	public void addPopUpMenu( String label, IntFlagItem intFlagItem, JPopupMenu popupMenu ) {
 		addMigRow();
 		addSettingLabel( label );
 
@@ -271,13 +283,11 @@ public class OperationDialogBox {
 
 	}
 	
-	public void addRadioButtonGroup()
-	{
+	public void addRadioButtonGroup() {
 		
 	}
 	
-	public void addCheckboxes()
-	{
+	public void addCheckboxes() {
 		
 	}
 	
@@ -390,8 +400,7 @@ public class OperationDialogBox {
 		}
 	}
 
-	private void menuRecursiveButtonAdd( Component popupMenu, JButton popupMenuButton )
-	{
+	private void menuRecursiveButtonAdd( Component popupMenu, JButton popupMenuButton ) {
 		if( popupMenu instanceof JPopupMenu )
 		{
 			Component[] cc = ((JPopupMenu)popupMenu).getComponents();
@@ -425,18 +434,15 @@ public class OperationDialogBox {
 		}
 	}
 
-	private void addSettingControl( Component component )
-	{
+	private void addSettingControl( Component component ) {
 		settingsPanel.add(component, String.format("cell 1 %d", elementCount));
 	}
 
-	private void addSettingControl( Component component, String constraints )
-	{
+	private void addSettingControl( Component component, String constraints ) {
 		settingsPanel.add(component, String.format("cell 1 %d,"+constraints, elementCount));
 	}
 
-	private void addSettingControl( Component component, String constraints, String prependedConstraints)
-	{
+	private void addSettingControl( Component component, String constraints, String prependedConstraints) {
 		settingsPanel.add(component, String.format(prependedConstraints+","+"cell 1 %d,"+constraints, elementCount));
 	}
 	
