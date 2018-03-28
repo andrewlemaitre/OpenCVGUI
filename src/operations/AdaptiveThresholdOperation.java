@@ -58,7 +58,7 @@ public class AdaptiveThresholdOperation extends OpenCVOperation {
         
         odb.add1DDimension("Subtracted Constant", subtractedConstant, getSubtractedConstantModel());
         
-        odb.addTextBox("Output Name", "Resize Output", this.getOutputNameObject());
+        odb.addTextBox("Output Name", "Adaptive Threshold Output", this.getOutputNameObject());
         
         return odb.getDialog();
     }
