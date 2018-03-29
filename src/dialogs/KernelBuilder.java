@@ -28,6 +28,9 @@ import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
+
+import miscellaneous.MultiLineToolTips;
+
 import java.awt.Color;
 import javax.swing.JLabel;
 import java.awt.Insets;
@@ -270,8 +273,10 @@ public class KernelBuilder {
     private void normalizeKernel() {
         
         //Can't normalize an empty kernel..
-        if( kernelData.empty() )
+        if( kernelData.empty() || kernelData.total() == 0 || kernelData == null )
             return;
+        
+        System.out.println("Total:"+kernelData.total());
         
         int nonZeroElements = 0;
         double sum = 0;
@@ -284,6 +289,9 @@ public class KernelBuilder {
                     sum += kernelData.get(row, col)[0];
             }
         }
+        
+        if( nonZeroElements == 0 )
+            return;
         
         //Find the average value of all the non-zero values.
         double average = sum/nonZeroElements;
@@ -371,7 +379,7 @@ public class KernelBuilder {
         public ScaleAction() {
             super();
             putValue( Action.NAME, "Scale" );
-            putValue( Action.SHORT_DESCRIPTION, "Scales the kernel by the fraction specified in the text fields above this button." );
+            putValue( Action.SHORT_DESCRIPTION, MultiLineToolTips.splitToolTip( "Scales the kernel by the fraction specified in the text fields above this button." ) );
         }
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -384,9 +392,10 @@ public class KernelBuilder {
         public ResizeAction() {
             super();
             putValue( Action.NAME, "Resize" );
-            putValue( Action.SHORT_DESCRIPTION, "Resizes the kernel to the specified width x height. "
-                    + "No interpolation is applied. New rows and columns will be filled with 0. "
-                    + "If size is decreased, the values will be lost in the removed rows." );
+            putValue( Action.SHORT_DESCRIPTION, MultiLineToolTips.splitToolTip( "Resizes the kernel to the specified width x height. "
+                                                                                + "No interpolation is applied. New rows and columns "
+                                                                                + "will be filled with 0. If the size is decreased, the "
+                                                                                + "values will be lost in the removed rows/cols." ) );
         }
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -398,7 +407,7 @@ public class KernelBuilder {
         public OnesAction() {
             super();
             putValue( Action.NAME, "Ones" );
-            putValue( Action.SHORT_DESCRIPTION, "Fills the entire kernel with 1's. This is identical to the MORPH_RECT structuring element." );
+            putValue( Action.SHORT_DESCRIPTION, MultiLineToolTips.splitToolTip( "Fills the entire kernel with 1's. This is identical to the MORPH_RECT structuring element." ) );
         }
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -410,31 +419,32 @@ public class KernelBuilder {
         public CrossAction() {
             super();
             putValue( Action.NAME, "Cross" );
-            putValue( Action.SHORT_DESCRIPTION, "Fills the kernel with 1's in a cross shape." );
+            putValue( Action.SHORT_DESCRIPTION, MultiLineToolTips.splitToolTip( "Fills the kernel with 1's in a cross shape." ) );
         }
         @Override
         public void actionPerformed(ActionEvent e) {
             setStructuringElement(Imgproc.MORPH_CROSS);
         }
     }
-    
+
     private class EllipseAction extends AbstractAction {
         public EllipseAction() {
             super();
             putValue( Action.NAME, "Ellipse" );
-            putValue( Action.SHORT_DESCRIPTION, "Fills the kernel with 1's in an ellipse shape." );
+            putValue( Action.SHORT_DESCRIPTION, MultiLineToolTips.splitToolTip(  "Fills the kernel with 1's in an ellipse shape." ) );
         }
         @Override
         public void actionPerformed(ActionEvent e) {
             setStructuringElement(Imgproc.MORPH_ELLIPSE);
         }
     }
-    
+        
+
     private class NormalizeAction extends AbstractAction {
         public NormalizeAction() {
             super();
             putValue( Action.NAME, "Normalize" );
-            putValue( Action.SHORT_DESCRIPTION, "Normalizes the kernel. Scales the kernel so that the average value of the non-zero elements is equal to 1.");
+            putValue( Action.SHORT_DESCRIPTION, MultiLineToolTips.splitToolTip( "Normalizes the kernel. Scales the kernel so that the average value of the non-zero elements is equal to 1." ) );
         }
         @Override
         public void actionPerformed(ActionEvent e) {
