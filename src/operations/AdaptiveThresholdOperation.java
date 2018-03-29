@@ -49,7 +49,7 @@ public class AdaptiveThresholdOperation extends OpenCVOperation {
 
         IntFlagItem[] thresholdTypeList = {
                 new IntFlagItem("THRESH_BINARY",Imgproc.THRESH_BINARY),
-                new IntFlagItem("THRESH_BINARY_INV)",Imgproc.THRESH_BINARY_INV)
+                new IntFlagItem("THRESH_BINARY_INV",Imgproc.THRESH_BINARY_INV)
         };
         odb.addComboBox("Threshold Type", thresholdTypeList, thresholdType);
 

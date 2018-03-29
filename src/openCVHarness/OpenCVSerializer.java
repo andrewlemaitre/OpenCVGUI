@@ -50,7 +50,7 @@ public class OpenCVSerializer {
         System.out.println("Length:" + operationsList.size());
         
         for( OpenCVOperation op : operationsList ) {
-            Helper.getWebcamHarnessWindow().addOperation( op );
+            Helper.getWebcamHarnessWindow().getListManager().addOperation( op );
             op.createNewOutputMat();
         }
     }

@@ -1,67 +1,45 @@
 package openCVHarness;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.MouseInfo;
-import java.awt.Toolkit;
-import java.awt.datatransfer.Transferable;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.ArrayList;
-
-import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
-import javax.swing.DropMode;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
-import javax.swing.ListCellRenderer;
-import javax.swing.TransferHandler;
-import javax.swing.border.LineBorder;
-import dialogs.NewOperationDialog;
-import miscellaneous.Helper;
-import miscellaneous.OperationMenuItem;
-import operations.ImReadOperation;
-import operations.OpenCVOperation;
-import operations.OpenCVOperation.OpenCVOperationTransferable;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
+import dialogs.NewOperationDialog;
+
+import miscellaneous.Helper;
+
+import operations.ImReadOperation;
+
+
 @SuppressWarnings("serial")
 public class OpenCVHarnessWindow extends JFrame {
 
-	/**
-	 * 
-	 */
+	/**	 */
 	private static final long serialVersionUID = 1L;
 	OpenCVHarness webcamHarness;
 	ImagePanel imagePanel;
 	ImagePanelOrganizer imagePanelOrganizer;
 	JPanel operationsListPanel;
-	JList<OpenCVOperation> imageOperationsJList;
+	OperationsListManager operationsListManager = new OperationsListManager();
 	
 	BufferedImage image;
-	DefaultListModel<OpenCVOperation> operationsList;
 
 	private final Action runOperationsAction = new RunOperationsAction();
-	private final Action addOperationAction = new AddOperationAction();
+	private final Action createNewOperationDialogAction = new CreateNewOperationDialogAction();
 	private final Action removeOperationAction = new RemoveOperationAction();
 	private final Action copyOperationAction = new CopyOperationAction();
 	private final Action editOperationAction = new EditOperationAction();
@@ -111,15 +89,15 @@ public class OpenCVHarnessWindow extends JFrame {
 		operationsPanel.add(operationsListPanel);
 		operationsListPanel.setLayout( new BoxLayout(operationsListPanel, BoxLayout.PAGE_AXIS));
 
-		operationsList = new DefaultListModel<>();
-		imageOperationsJList = new JList<>( operationsList );
-		imageOperationsJList.addMouseListener( new ImageOperationsListListener() );
-		imageOperationsJList.setCellRenderer( new ImageOperationsCellRenderer() );
-		imageOperationsJList.setTransferHandler( new ListTransferHandler() );
-		imageOperationsJList.setDragEnabled( true );
-		imageOperationsJList.setDropMode( DropMode.ON_OR_INSERT );
+//		operationsList = new DefaultListModel<>();
+//		imageOperationsJList = new JList<>( operationsList );
+//		imageOperationsJList.addMouseListener( new ImageOperationsListListener() );
+//		imageOperationsJList.setCellRenderer( new ImageOperationsCellRenderer() );
+//		imageOperationsJList.setTransferHandler( new ListTransferHandler() );
+//		imageOperationsJList.setDragEnabled( true );
+//		imageOperationsJList.setDropMode( DropMode.ON_OR_INSERT );
 		
-		JScrollPane operationsListScrollPane = new JScrollPane(imageOperationsJList);
+		JScrollPane operationsListScrollPane = new JScrollPane( operationsListManager.getOperationsJList() );
 		operationsListScrollPane.setPreferredSize( new Dimension(368, 240));
 		operationsListPanel.add(operationsListScrollPane);
 		
@@ -128,7 +106,7 @@ public class OpenCVHarnessWindow extends JFrame {
 		operationsListPanel.add(operationsListButtonPanel);
 		
 				JButton addOperationButton = new JButton();
-				addOperationButton.setAction(addOperationAction);
+				addOperationButton.setAction(createNewOperationDialogAction);
 				operationsListButtonPanel.add(addOperationButton);
 				JButton CopyOperationButton = new JButton();
 				CopyOperationButton.setAction(copyOperationAction);
@@ -159,96 +137,55 @@ public class OpenCVHarnessWindow extends JFrame {
 	}
 	
 	private void addTestingOperations() {
-        this.addOperation( new operations.CvtColorOperation() );
-        this.addOperation( new operations.DistanceTransformOperation() );
-        ImReadOperation iro = (ImReadOperation) this.addOperation( new operations.ImReadOperation() );
+        operationsListManager.addOperation( new operations.CvtColorOperation() );
+        operationsListManager.addOperation( new operations.DistanceTransformOperation() );
+        ImReadOperation iro = (ImReadOperation) operationsListManager.addOperation( new operations.ImReadOperation() );
         iro.setOutputName("Image Read test");
         iro.getFile().setValue( new File("C:/Users/lemaitrea/Documents/Skittles_1.jpg"));
-        this.addOperation( new operations.ResizeOperation() );
-        this.addOperation( new operations.ThresholdOperation() );
-        this.addOperation( new operations.TranslationOperation() );
-        this.addOperation( new operations.RotationOperation() );
+        operationsListManager.addOperation( new operations.ResizeOperation() );
+        operationsListManager.addOperation( new operations.ThresholdOperation() );
+        operationsListManager.addOperation( new operations.TranslationOperation() );
+        operationsListManager.addOperation( new operations.RotationOperation() );
 	}
 	
-	public JList<OpenCVOperation> getImageOperationsJList() {
-		return imageOperationsJList;
-	}
-
-	public DefaultListModel<OpenCVOperation> getOperationsList() {
-		return operationsList;
+	public OperationsListManager getListManager() {
+	    return operationsListManager;
 	}
 	
-	public ArrayList<OpenCVOperation> getOperationsArrayList() {
-	    DefaultListModel<OpenCVOperation> operationsList = getOperationsList();
-	    ArrayList<OpenCVOperation> operationsArrayList = new ArrayList<>();
-	    for( int i = 0; i < operationsList.size(); i++ ) {
-	        operationsArrayList.add( operationsList.getElementAt(i));
-	    }
-	    return operationsArrayList;
-	}
+//	public ArrayList<OpenCVOperation> getOperationsArrayList() {
+//	    DefaultListModel<OpenCVOperation> operationsList = operationsListManager.getOperationsList();
+//	    ArrayList<OpenCVOperation> operationsArrayList = new ArrayList<>();
+//	    for( int i = 0; i < operationsList.size(); i++ ) {
+//	        operationsArrayList.add( operationsList.getElementAt(i));
+//	    }
+//	    return operationsArrayList;
+//	}
 	
 	void refreshMainView() {
 		this.revalidate();
 		this.repaint();
 	}
 	
-	void editOperation() {
-		OpenCVOperation selectedOperation = imageOperationsJList.getSelectedValue();
-		if( selectedOperation != null ) {
-			JDialog dialog = selectedOperation.openDialogBox( );
-			
-			dialog.addWindowListener(new WindowAdapter() {
-			    @Override
-			    public void windowClosed(WindowEvent e) {
-			        refreshMainView();
-			    }
-			});
-			
-			dialog.setLocationRelativeTo( this );
-			dialog.setVisible(true);
-		} else {
-			System.err.println("Edit operation failed because no operation is selected");
-		}
-	}
-
-	public OpenCVOperation addOperation( OpenCVOperation op ) {
-		operationsList.addElement(op);
-		return op;
-	}
-	
-	void addOperation() {
+	void createNewOperationDialog() {
 		NewOperationDialog nod = new NewOperationDialog( this );
 		nod.setLocationRelativeTo(this);
 		nod.setVisible(true);
 	}
 	
-	void copyOperation() {
-		if( imageOperationsJList.getSelectedIndex() >= 0 && operationsList.getSize() > 0)
-		{
-			OpenCVOperation operationToCopy = operationsList.get(imageOperationsJList.getSelectedIndex());
-			addOperation( operationToCopy.newOperationCopy() );
-		}
-	}
-	
 	void runOperations() {
-		if( operationsList.size() == 0 ) {
+		if( operationsListManager.getSize() == 0 ) {
 			System.err.println("There are no operations to run.");
 			return;
 		}
-		for( int i = 0; i < operationsList.size(); i++ )
+		for( int i = 0; i < operationsListManager.getSize(); i++ )
 		{
-			operationsList.getElementAt(i).performOperation();
+			operationsListManager.getElementAt(i).performOperation();
 		}
 		for( ImagePanel ip : imagePanelOrganizer.getImagePanels() )
 		{
 			ip.revalidate();
 			ip.repaint();
 		}
-	}
-	
-	void removeSelectedElement() {
-		if( imageOperationsJList.getSelectedIndex() >= 0 && operationsList.getSize() > 0)
-			operationsList.removeElementAt( this.imageOperationsJList.getSelectedIndex() );
 	}
 
     private class LoadOperationsAction extends AbstractAction {
@@ -286,7 +223,7 @@ public class OpenCVHarnessWindow extends JFrame {
             if(returnVal == JFileChooser.APPROVE_OPTION) {
                 File saveFile = chooser.getSelectedFile();
                 System.out.println("Save as file " + saveFile.getPath());
-                OpenCVSerializer.serializeOperations( getOperationsArrayList(), saveFile.getPath( ));
+                OpenCVSerializer.serializeOperations( operationsListManager.getOperationsArrayList(), saveFile.getPath());
             }
 	    }
 	}
@@ -301,13 +238,13 @@ public class OpenCVHarnessWindow extends JFrame {
 		}
 	}
 	
-	private class AddOperationAction extends AbstractAction {
-		public AddOperationAction() {
+	private class CreateNewOperationDialogAction extends AbstractAction {
+		public CreateNewOperationDialogAction() {
 			putValue(NAME, "New Operation");
 			putValue(SHORT_DESCRIPTION, "Opens a dialog to create new operations.");
 		}
 		public void actionPerformed(ActionEvent e) {
-			addOperation();
+			createNewOperationDialog();
 		}
 	}
 	
@@ -317,23 +254,7 @@ public class OpenCVHarnessWindow extends JFrame {
 			putValue(SHORT_DESCRIPTION, "Edit the settings of the selected operation.");
 		}
 		public void actionPerformed(ActionEvent e) {
-			OpenCVOperation selectedOperation = imageOperationsJList.getSelectedValue();
-			if( selectedOperation != null ) {
-				JDialog dialog = selectedOperation.openDialogBox( );
-				
-				dialog.addWindowListener(new WindowAdapter() {
-				    @Override
-				    public void windowClosed(WindowEvent e) {
-				        refreshMainView();
-				    }
-				});
-				
-				dialog.setLocationRelativeTo( Helper.getWebcamHarnessWindow() );
-				dialog.setVisible(true);
-				dialog.pack();
-			} else {
-				System.err.println("Edit operation failed because no operation is selected");
-			}
+		    operationsListManager.editSelectedOperation();
 		}
 	}
 	
@@ -343,7 +264,7 @@ public class OpenCVHarnessWindow extends JFrame {
 			putValue(SHORT_DESCRIPTION, "Remove the topmost selected operation.");
 		}
 		public void actionPerformed(ActionEvent e) {
-			removeSelectedElement();
+            operationsListManager.removeSelectedElement();
 		}
 	}
 	
@@ -353,7 +274,7 @@ public class OpenCVHarnessWindow extends JFrame {
 			putValue(SHORT_DESCRIPTION, "This button will create a new version of the currently selected operation.");
 		}
 		public void actionPerformed(ActionEvent e) {
-			copyOperation();
+		    operationsListManager.copySelectedOperation();
 		}
 	}
 	
@@ -369,205 +290,4 @@ public class OpenCVHarnessWindow extends JFrame {
 			imagePanelOrganizer.addPanel( ip );
 		}
 	}
-	
-    private class ImageOperationsCellRenderer extends JLabel implements ListCellRenderer<OpenCVOperation> {
-        public ImageOperationsCellRenderer() {
-            setOpaque(true);
-        }
-        
-		@Override
-		public Component getListCellRendererComponent(JList<? extends OpenCVOperation> list, 
-														OpenCVOperation value,
-														int index, 
-														boolean isSelected, 
-														boolean cellHasFocus) {
-			setText( value.getOperationName() );
-			
-			Color background;
-			Color foreground;
-			
-			if( isSelected ) {
-				background = new Color(184,207,229);
-				foreground = Color.BLACK;
-				this.setBorder( new LineBorder( new Color( 99, 130, 191 )));
-			} else {
-				if( value.isValid() ) {
-					background = Color.GREEN;
-					foreground = Color.BLACK;
-					this.setBorder( new LineBorder( Color.GREEN ));
-				} else {
-					background = Color.YELLOW;
-					foreground = Color.BLACK;
-					this.setBorder( new LineBorder( Color.YELLOW ));
-				}
-			}
-			
-			setBackground( background );
-			setForeground( foreground );
-			
-			return this;
-			
-		}
-    }
-    
-	//TODO: Make edit operations here and on the button call a editOperation( int i ) function so we have a common code base for creating edit dialogs, showing them and packing them.
-	private class ImageOperationsListListener extends MouseAdapter {
-		@Override
-	    public void mouseClicked(MouseEvent evt) {
-			
-	        JList<?> list = (JList<?>)evt.getSource();
-	        
-	        //If the click count is equal to two and we have clicked the left mouse button.
-	        if (evt.getClickCount() == 2 && evt.getButton() == MouseEvent.BUTTON1 ) {
-	            int index = list.locationToIndex(evt.getPoint());
-	            if( index >= 0 ) {
-	            	JDialog odb = operationsList.getElementAt(index).openDialogBox();
-	            	odb.pack();
-	            	java.awt.Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
-	            	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	            	int x, y;
-	            	
-	            	if( mouseLocation.x + odb.getWidth() > screenSize.getWidth() ) {
-	            		x = (int)screenSize.getWidth()-odb.getWidth();
-	            	} else {
-	            		x = mouseLocation.x;
-	            	}
-	            	
-	            	if( mouseLocation.y + odb.getHeight() > screenSize.getHeight() ) {
-	            		y = (int)screenSize.getHeight()-odb.getHeight();
-	            	} else {
-	            		y = mouseLocation.y;
-	            	}
-	            		odb.setLocation( x, y );
-	            		
-	            	odb.setVisible(true);
-	            }
-	        } else if ( list.locationToIndex(evt.getPoint()) >= 0 && evt.getButton() == MouseEvent.BUTTON3 ) {
-	        	int selectedIndex = list.locationToIndex(evt.getPoint());
-	    		
-	    		JPopupMenu jpm = new JPopupMenu();
-	    		JMenu inputOperationsMenu = getInputOperationsForPopupMenu(selectedIndex);
-	    		jpm.add(inputOperationsMenu);
-	    		
-	    		jpm.show( evt.getComponent(), evt.getX(), evt.getY());
-	        }
-	        
-	    }
-	}
-	
-	private class ListTransferHandler extends TransferHandler {
-        
-	    private TransferSupport transferSupport;
-	    
-	    public ListTransferHandler() {
-	        super();
-        }
-	    
-	    @Override
-	    public boolean canImport( TransferSupport transferSupport ) {
-            // we only import OpenCVOperations
-            if (!transferSupport.isDataFlavorSupported(OpenCVOperation.OpenCVOperationTransferable.OPENCV_OPERATION_DATA_FLAVOR))
-                return false;
-            return true;
-        }
-	    
-	    @Override
-        public boolean importData( TransferSupport transferSupport) {
-	        
-	        this.transferSupport = transferSupport;
-
-	        if( canImport( transferSupport ) ) {
-                return true;
-	        }
-	        return false;
-        }
-	    
-	    @Override
-        public int getSourceActions(JComponent c) {
-            return TransferHandler.MOVE;
-        }
-	    
-	    @Override
-        protected Transferable createTransferable(JComponent c) {
-	        Transferable transferable = null;
-            if (c instanceof JList) {
-                @SuppressWarnings("unchecked")
-                JList<OpenCVOperation> list = (JList<OpenCVOperation>) c;
-                Object value = list.getSelectedValue();
-                if (value instanceof OpenCVOperation) {
-                    OpenCVOperation operation = (OpenCVOperation) value;
-                    transferable = operation.getTransferable( list.getSelectedIndex() );
-                }
-            }
-            return transferable;
-        }
-	    
-	    @Override
-	    protected void exportDone( JComponent source, Transferable data, int action ) {
-	        
-	        JList<?> list = (JList<?>)source;
-	        @SuppressWarnings("unchecked")
-            DefaultListModel<OpenCVOperation> listModel = (DefaultListModel<OpenCVOperation>)list.getModel();
-	        JList.DropLocation dropLocation;
-	        int dropIndex;
-	        int originalIndex = ((OpenCVOperationTransferable)data).getOriginalIndex();
-	        OpenCVOperation originalOperation = ((OpenCVOperationTransferable)data).getOriginalOperation();
-	        
-	        if( transferSupport == null ) {
-	            return;
-	        }
-
-	        if( !(transferSupport.getComponent() instanceof JList) )
-	            return;
-	        
-	        System.out.println(transferSupport.getComponent());
-            dropLocation = (JList.DropLocation)transferSupport.getDropLocation();
-            dropIndex = dropLocation.getIndex();
-	        
-	        if( dropLocation.isInsert() ) {
-                if( dropIndex < originalIndex ) {
-                    listModel.removeElement(originalOperation);
-                    listModel.add( dropIndex, originalOperation);
-                } else if( dropIndex == originalIndex || dropIndex == originalIndex+1 ) {
-//                    System.out.println("Dropped into list where it already is.");
-                } else {
-                    listModel.add( dropIndex, originalOperation);
-                    listModel.removeElement(originalOperation);
-                }
-    	    } else {
-    	        if( originalIndex > dropIndex ) {
-//                    System.out.println("Dropped on another above.");
-    	        } else if ( originalIndex == dropIndex ) {
-//    	            System.out.println("Dropped on itself.");
-    	        } else {
-    	            OpenCVOperation targetOperation = listModel.getElementAt(dropIndex);
-//                    System.out.println("Dropped on another below.");
-//                    System.out.println("Dropped " + originalOperation + " on " + targetOperation);
-                    targetOperation.setInputOperation(originalOperation);
-    	        }
-    	    }
-	    }
-	}
-    
-	private JMenu getInputOperationsForPopupMenu( int selectedIndex )
-    {
-    	//Create a new JMenu
-    	JMenu inputOperationsMenu = new JMenu("Input Operation");
-    	
-		for( int i = 0; i < selectedIndex; i++ ) {
-			//Get each operation up to the selected index (The element that we right clicked in the JList)
-			//Create a new OperationMenu item for each operation, add it to the JMenu and set its text to the operation output name.
-			OpenCVOperation selectedOperation = operationsList.getElementAt( i );
-			JMenuItem newMenuItem = new OperationMenuItem( selectedOperation );
-			inputOperationsMenu.add(newMenuItem);
-			newMenuItem.setText(selectedOperation.getOutputName());
-			
-			//Add a listener to the operationmenuitem that will set the inputoperation of the right clicked operation to the selected operationmenuitem.
-			newMenuItem.addActionListener( e -> {
-				operationsList.getElementAt( selectedIndex ).setInputOperation( ((OperationMenuItem)newMenuItem).getOpenCVOperation() );
-			});
-		}
-		return inputOperationsMenu;
-    }
-
 }

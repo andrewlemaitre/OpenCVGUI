@@ -69,7 +69,7 @@ public class SrcMatSelectorDialog extends JDialog {
 	
 	void populatePanel() {
 		OpenCVHarnessWindow whw = Helper.getWebcamHarnessWindow();
-		DefaultListModel<OpenCVOperation> imageOpList = whw.getOperationsList();
+		DefaultListModel<OpenCVOperation> imageOpList = whw.getListManager().getOperationsList();
 		int foundIndex = 0;
 		for( int i = 0; i < imageOpList.getSize(); i++ ) {
 			if( imageOpList.get(i).equals(parentOperation) ) {

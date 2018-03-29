@@ -18,8 +18,8 @@ public class CvtColorOperation extends OpenCVOperation {
 	private final int unselectedFlag = -2;
 	
 	public CvtColorOperation(){
-		this.setOperationName("Convert Color Name");
-		this.setOutputName("Convert Color Name");
+		this.setOperationName("Convert Color Operation");
+		this.setOutputName("Convert Color Output");
 		this.selectedColorConversion.setValue( unselectedFlag );
 	}
 	

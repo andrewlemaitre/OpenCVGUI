@@ -289,6 +289,9 @@ public class KernelBuilder {
                     sum += kernelData.get(row, col)[0];
             }
         }
+
+        System.out.println("NonzeroElements:"+nonZeroElements);
+        System.out.println("Sum:"+sum);
         
         if( nonZeroElements == 0 )
             return;
@@ -296,6 +299,9 @@ public class KernelBuilder {
         //Find the average value of all the non-zero values.
         double average = sum/nonZeroElements;
         double scale = 1/average;
+        
+        System.out.println("average:"+nonZeroElements);
+        System.out.println("scale:"+sum);
         
         Core.multiply( kernelData, new Scalar(scale), kernelData);
         refreshDialog();

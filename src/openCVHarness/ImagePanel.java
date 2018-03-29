@@ -90,7 +90,7 @@ public class ImagePanel {
 	private JMenu createOperationsJMenu() {
     	JMenu newMenu = new JMenu("Select Viewer Input");
     	
-    	DefaultListModel<OpenCVOperation> operationsList = Helper.getWebcamHarnessWindow().getOperationsList();
+    	DefaultListModel<OpenCVOperation> operationsList = Helper.getWebcamHarnessWindow().getListManager().getOperationsList();
     	for( int i = 0; i < operationsList.getSize(); i++ ) {
 			OpenCVOperation selectedOperation = operationsList.getElementAt( i );
 			OperationMenuItem newMenuItem = new OperationMenuItem( selectedOperation );
@@ -215,7 +215,7 @@ public class ImagePanel {
             if( canImport( transferSupport ) ) {
                 try {
                     long droppedOperationID = ((OpenCVOperation)transferSupport.getTransferable().getTransferData( OpenCVOperationTransferable.OPENCV_OPERATION_DATA_FLAVOR )).getID();
-                    ArrayList<OpenCVOperation> operationsList = Helper.getWebcamHarnessWindow().getOperationsArrayList();
+                    ArrayList<OpenCVOperation> operationsList = Helper.getWebcamHarnessWindow().getListManager().getOperationsArrayList();
                     for( OpenCVOperation op : operationsList ) {
                         if( op.getID() == droppedOperationID ) {
                             System.out.println("importing image panel data");

@@ -42,13 +42,9 @@ public final class MultiLineToolTips {
         int stringPosition = 0;
 
         while (stringPosition < toolTip.length()) {
-            System.out.println("while.");
             if (stringPosition + desiredLength < toolTip.length()) {
-                System.out.println("less than.");
                 String tipSubstring = toolTip.substring(stringPosition, stringPosition + desiredLength);
-                System.out.println("substring:"+toolTip.substring(stringPosition, stringPosition + desiredLength));
                 int lastSpace = tipSubstring.lastIndexOf(' ');
-                System.out.println("lastSpace:"+lastSpace);
                 if (lastSpace == -1 || lastSpace == 0 ) {
                     parts.add(toolTip.substring(stringPosition+1, stringPosition + desiredLength));
                     stringPosition += desiredLength;
