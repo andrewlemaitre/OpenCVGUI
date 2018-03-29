@@ -1,3 +1,7 @@
+#miscellaneous
+.classpath
+
+
 # Compiled class file
 *.com
 *.class
@@ -44,3 +48,5 @@ Thumbs.db
 
 # Directories
 testFiles/
+bin/
+.settings/
