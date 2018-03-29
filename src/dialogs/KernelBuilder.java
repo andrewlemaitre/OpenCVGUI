@@ -10,11 +10,11 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeListenerProxy;
 import java.util.ArrayList;
 import java.awt.Component;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
@@ -24,13 +24,10 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
 
 import org.opencv.core.Core;
-import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
-import org.w3c.dom.events.MouseEvent;
-
 import java.awt.Color;
 import javax.swing.JLabel;
 import java.awt.Insets;
@@ -65,14 +62,13 @@ public class KernelBuilder {
         Component tpGlue1 = Box.createHorizontalGlue();
         topPane.add(tpGlue1);
         
-        Box tpBox = Box.createHorizontalBox();
-        tpBox.setPreferredSize(new Dimension(120, 25));
-        tpBox.setMinimumSize(new Dimension(150, 25));
-        tpBox.setMaximumSize(new Dimension(150, 25));
-        topPane.add(tpBox);
+        Box resizeBox = Box.createHorizontalBox();
+        topPane.add(resizeBox);
         
         resizeXTextField = new JFormattedTextField();
-        resizeXTextField.setMaximumSize(new Dimension(2147483647, 21));
+        resizeXTextField.setMinimumSize(new Dimension(40, 20));
+        resizeXTextField.setPreferredSize(new Dimension(40, 20));
+        resizeXTextField.setMaximumSize(new Dimension(40, 21));
         resizeXTextField.setHorizontalAlignment(SwingConstants.CENTER);
         resizeXTextField.setValue((int)kernelData.width());
         resizeXTextField.addPropertyChangeListener("value", new PropertyChangeListener() {
@@ -82,13 +78,15 @@ public class KernelBuilder {
                     resizeXTextField.setValue( 1 );
             }
         });
-        tpBox.add(resizeXTextField);
+        resizeBox.add(resizeXTextField);
         
         JLabel resizeSeparatorLabel = new JLabel("X");
-        tpBox.add(resizeSeparatorLabel);
+        resizeBox.add(resizeSeparatorLabel);
         
         resizeYTextField = new JFormattedTextField();
-        resizeYTextField.setMaximumSize(new Dimension(2147483647, 21));
+        resizeYTextField.setMinimumSize(new Dimension(40, 20));
+        resizeYTextField.setPreferredSize(new Dimension(40, 20));
+        resizeYTextField.setMaximumSize(new Dimension(40, 21));
         resizeYTextField.setHorizontalAlignment(SwingConstants.CENTER);
         resizeYTextField.setValue((int)kernelData.height());
         resizeYTextField.addPropertyChangeListener("value", new PropertyChangeListener() {
@@ -98,11 +96,33 @@ public class KernelBuilder {
                     resizeYTextField.setValue( 1 );
             }
         });
-        tpBox.add(resizeYTextField);
+        resizeBox.add(resizeYTextField);
         
         JButton resizeButton = new JButton();
+        resizeButton.setMargin(new Insets(2, 10, 2, 10));
         resizeButton.setAction( new ResizeAction() );
-        tpBox.add(resizeButton);
+        resizeBox.add(resizeButton);
+        
+        Component horizontalStrut = Box.createHorizontalStrut(20);
+        topPane.add(horizontalStrut);
+        
+        JButton onesButton = new JButton();
+        onesButton.setAction( new OnesAction() );
+        topPane.add(onesButton);
+        
+        Component horizontalStrut_1 = Box.createHorizontalStrut(20);
+        topPane.add(horizontalStrut_1);
+        
+        JButton crossButton = new JButton();
+        crossButton.setAction( new CrossAction() );
+        topPane.add(crossButton);
+        
+        Component horizontalStrut_2 = Box.createHorizontalStrut(20);
+        topPane.add(horizontalStrut_2);
+        
+        JButton ellipseButton = new JButton();
+        ellipseButton.setAction( new EllipseAction() );
+        topPane.add(ellipseButton);
         
         Component tpGlue2 = Box.createHorizontalGlue();
         topPane.add(tpGlue2);
@@ -171,6 +191,21 @@ public class KernelBuilder {
         scaleButton.setAction( new ScaleAction() );
         lpBox.add(scaleButton);
         
+        Component verticalStrut_3 = Box.createVerticalStrut(20);
+        verticalStrut_3.setPreferredSize(new Dimension(0, 10));
+        verticalStrut_3.setMinimumSize(new Dimension(0, 10));
+        verticalStrut_3.setMaximumSize(new Dimension(32767, 10));
+        lpBox.add(verticalStrut_3);
+        
+        JButton normalizeButton = new JButton();
+        normalizeButton.setMargin(new Insets(2, 0, 2, 0));
+        normalizeButton.setPreferredSize(new Dimension(65, 23));
+        normalizeButton.setMinimumSize(new Dimension(65, 23));
+        normalizeButton.setMaximumSize(new Dimension(65, 23));
+        normalizeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        normalizeButton.setAction( new NormalizeAction() );
+        lpBox.add(normalizeButton);
+        
         Component verticalGlue_1 = Box.createVerticalGlue();
         lpBox.add(verticalGlue_1);
         
@@ -232,6 +267,61 @@ public class KernelBuilder {
         }
     }
     
+    private void normalizeKernel() {
+        
+        //Can't normalize an empty kernel..
+        if( kernelData.empty() )
+            return;
+        
+        int nonZeroElements = 0;
+        double sum = 0;
+        
+        //Calculate the number of non-zero values and sum their values.
+        for( int row = 0; row < kernelData.height(); row++ ) {
+            for( int col = 0; col < kernelData.width(); col++ ) {
+                if( kernelData.get(row, col)[0] != 0 )
+                    nonZeroElements++;
+                    sum += kernelData.get(row, col)[0];
+            }
+        }
+        
+        //Find the average value of all the non-zero values.
+        double average = sum/nonZeroElements;
+        double scale = 1/average;
+        
+        Core.multiply( kernelData, new Scalar(scale), kernelData);
+        refreshDialog();
+        
+    }
+
+    private void setStructuringElement( int type ) {
+        Mat tempMat = null;
+        Size kernelSize = new Size(kernelData.width(), kernelData.height() );
+        switch( type ) {
+            case Imgproc.CV_SHAPE_RECT: {
+                tempMat = Imgproc.getStructuringElement( type, kernelSize );
+                break;
+            }
+            case Imgproc.MORPH_CROSS: {
+                tempMat = Imgproc.getStructuringElement( type, kernelSize );
+                break;
+            }
+            case Imgproc.MORPH_ELLIPSE: {
+                tempMat = Imgproc.getStructuringElement( type, kernelSize );
+                break;
+            }
+        }
+        
+        for( int row = 0; row < kernelData.height(); row++ ) {
+            for( int col = 0; col < kernelData.width(); col ++ ) {
+                double[] data = tempMat.get(row, col);
+                kernelData.put(row, col, data);
+            }
+        }
+        
+        refreshDialog();
+    }
+
     private class KernelRow {
         
         Mat data;
@@ -280,7 +370,8 @@ public class KernelBuilder {
     private class ScaleAction extends AbstractAction {
         public ScaleAction() {
             super();
-            putValue("Name", "Scale");
+            putValue( Action.NAME, "Scale" );
+            putValue( Action.SHORT_DESCRIPTION, "Scales the kernel by the fraction specified in the text fields above this button." );
         }
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -292,11 +383,62 @@ public class KernelBuilder {
     private class ResizeAction extends AbstractAction {
         public ResizeAction() {
             super();
-            putValue("Name", "Resize");
+            putValue( Action.NAME, "Resize" );
+            putValue( Action.SHORT_DESCRIPTION, "Resizes the kernel to the specified width x height. "
+                    + "No interpolation is applied. New rows and columns will be filled with 0. "
+                    + "If size is decreased, the values will be lost in the removed rows." );
         }
         @Override
         public void actionPerformed(ActionEvent e) {
             resize();
+        }
+    }
+    
+    private class OnesAction extends AbstractAction {
+        public OnesAction() {
+            super();
+            putValue( Action.NAME, "Ones" );
+            putValue( Action.SHORT_DESCRIPTION, "Fills the entire kernel with 1's. This is identical to the MORPH_RECT structuring element." );
+        }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            setStructuringElement(Imgproc.MORPH_RECT);
+        }
+    }
+    
+    private class CrossAction extends AbstractAction {
+        public CrossAction() {
+            super();
+            putValue( Action.NAME, "Cross" );
+            putValue( Action.SHORT_DESCRIPTION, "Fills the kernel with 1's in a cross shape." );
+        }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            setStructuringElement(Imgproc.MORPH_CROSS);
+        }
+    }
+    
+    private class EllipseAction extends AbstractAction {
+        public EllipseAction() {
+            super();
+            putValue( Action.NAME, "Ellipse" );
+            putValue( Action.SHORT_DESCRIPTION, "Fills the kernel with 1's in an ellipse shape." );
+        }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            setStructuringElement(Imgproc.MORPH_ELLIPSE);
+        }
+    }
+    
+    private class NormalizeAction extends AbstractAction {
+        public NormalizeAction() {
+            super();
+            putValue( Action.NAME, "Normalize" );
+            putValue( Action.SHORT_DESCRIPTION, "Normalizes the kernel. Scales the kernel so that the average value of the non-zero elements is equal to 1.");
+        }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            normalizeKernel();
         }
     }
     
