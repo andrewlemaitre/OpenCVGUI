@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -24,19 +23,14 @@ import miscellaneous.Helper;
 
 import operations.ImReadOperation;
 
-
 @SuppressWarnings("serial")
 public class OpenCVHarnessWindow extends JFrame {
 
-	/**	 */
+	/** Default serial ID */
 	private static final long serialVersionUID = 1L;
 	OpenCVHarness webcamHarness;
-	ImagePanel imagePanel;
 	ImagePanelOrganizer imagePanelOrganizer;
-	JPanel operationsListPanel;
 	OperationsListManager operationsListManager = new OperationsListManager();
-	
-	BufferedImage image;
 
 	private final Action runOperationsAction = new RunOperationsAction();
 	private final Action createNewOperationDialogAction = new CreateNewOperationDialogAction();
@@ -66,8 +60,7 @@ public class OpenCVHarnessWindow extends JFrame {
 		imagePanelOrganizer = new ImagePanelOrganizer();
 		viewerPanel.add(imagePanelOrganizer.getOrganizerPanel());
 
-		imagePanel = new ImagePanel();
-		imagePanelOrganizer.addPanel(imagePanel);
+		imagePanelOrganizer.createNewImagePanel();
 		JPanel viewerControlsPanel = new JPanel();
 		viewerPanel.add(viewerControlsPanel, BorderLayout.SOUTH);
 		viewerControlsPanel.setLayout(new BoxLayout(viewerControlsPanel, BoxLayout.X_AXIS));
@@ -85,7 +78,7 @@ public class OpenCVHarnessWindow extends JFrame {
 		JPanel operationsPanel = new JPanel();
 		getContentPane().add(operationsPanel, BorderLayout.EAST);
 		
-		operationsListPanel = new JPanel();
+		JPanel operationsListPanel = new JPanel();
 		operationsPanel.add(operationsListPanel);
 		operationsListPanel.setLayout( new BoxLayout(operationsListPanel, BoxLayout.PAGE_AXIS));
 
@@ -151,15 +144,6 @@ public class OpenCVHarnessWindow extends JFrame {
 	public OperationsListManager getListManager() {
 	    return operationsListManager;
 	}
-	
-//	public ArrayList<OpenCVOperation> getOperationsArrayList() {
-//	    DefaultListModel<OpenCVOperation> operationsList = operationsListManager.getOperationsList();
-//	    ArrayList<OpenCVOperation> operationsArrayList = new ArrayList<>();
-//	    for( int i = 0; i < operationsList.size(); i++ ) {
-//	        operationsArrayList.add( operationsList.getElementAt(i));
-//	    }
-//	    return operationsArrayList;
-//	}
 	
 	void refreshMainView() {
 		this.revalidate();
@@ -286,8 +270,7 @@ public class OpenCVHarnessWindow extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			ImagePanel ip = new ImagePanel();
-			imagePanelOrganizer.addPanel( ip );
+			imagePanelOrganizer.createNewImagePanel();
 		}
 	}
 }

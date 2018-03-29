@@ -40,12 +40,35 @@ public class ImagePanelOrganizer {
 		return imagePanelHolder;
 	}
 	
-	public void addPanel( ImagePanel imagePanel )
+	public void createNewImagePanel() {
+	    //Create new image panel and set its parent organizer to this image panel organizer.
+	    ImagePanel imagePanel = new ImagePanel();
+        imagePanel.setParentOrganizer( this );
+        
+        //Add the new image panel to the panels list.
+        panelList.add( imagePanel );
+        
+        //Add the new image panel to the image panels holder and the mig layout.
+	    imagePanelHolder.add(imagePanel.getDrawingPanel());
+	    migLayout.addLayoutComponent(imagePanel.getDrawingPanel(), "");
+	    
+	    //Organize the panels since we added a new one.
+	    organizePanels();
+	}
+	
+	public void addImagePanel( ImagePanel imagePanel )
 	{
-		imagePanelHolder.add(imagePanel.getDrawingPanel(), "cell 0 0,grow");
-		panelList.add( imagePanel );
-		migLayout.addLayoutComponent(imagePanel.getDrawingPanel(), "");
+        //Set the image panel's parent organizer to this image panel organizer.
 		imagePanel.setParentOrganizer( this );
+		
+	    //Add the new image panel to the panels list.
+		panelList.add( imagePanel );
+
+        //Add the new image panel to the image panels holder and the mig layout.
+        imagePanelHolder.add(imagePanel.getDrawingPanel());
+		migLayout.addLayoutComponent(imagePanel.getDrawingPanel(), "");
+		
+		//Organize the panels since we added a new one.
 		organizePanels();
 	}
 	

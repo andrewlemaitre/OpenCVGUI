@@ -24,12 +24,7 @@ public class OpenCVHarness {
 	}
 	
 	public OpenCVHarness() {
-		initialize();
-	}
-	
-	void initialize()
-	{
-		openCVHarnessWindow = new OpenCVHarnessWindow( this);
+        openCVHarnessWindow = new OpenCVHarnessWindow( this);
 	}
 
 }
