@@ -7,14 +7,14 @@ import javax.swing.JPopupMenu;
 import org.opencv.imgproc.Imgproc;
 
 import dialogs.OperationDialogBox;
-import miscellaneous.IntFlagItem;
 import miscellaneous.IntFlagMenuItem;
+import passableTypes.IntegerFlag;
 
 public class CvtColorOperation extends OpenCVOperation {
 
 	/** Generated serial ID*/
     private static final long serialVersionUID = -2059644508847351793L;
-    IntFlagItem selectedColorConversion = new IntFlagItem();
+    IntegerFlag selectedColorConversion = new IntegerFlag();
 	private final int unselectedFlag = -2;
 	
 	public CvtColorOperation(){

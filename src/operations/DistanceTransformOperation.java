@@ -5,14 +5,14 @@ import javax.swing.JDialog;
 import org.opencv.imgproc.Imgproc;
 
 import dialogs.OperationDialogBox;
-import miscellaneous.IntFlagItem;
+import passableTypes.IntegerFlag;
 
 public class DistanceTransformOperation extends OpenCVOperation {
 
     /** Generated serial ID*/
     private static final long serialVersionUID = 1058056779285391129L;
-    IntFlagItem distanceType = new IntFlagItem();
-    IntFlagItem maskSize = new IntFlagItem();
+    IntegerFlag distanceType = new IntegerFlag();
+    IntegerFlag maskSize = new IntegerFlag();
 	
 	public DistanceTransformOperation()
 	{
@@ -27,22 +27,22 @@ public class DistanceTransformOperation extends OpenCVOperation {
 		odb.addTextBox("Operation Name", "Distance Transform Name", this.getOperationNameObject());
 		odb.addSourceMatSelector("Input Operation", this );
 	
-		IntFlagItem[] distanceTypes = {
-				new IntFlagItem("DIST_USER",Imgproc.DIST_USER),
-				new IntFlagItem("DIST_L1 ",Imgproc.DIST_L1 ),
-				new IntFlagItem("DIST_L2 ",Imgproc.DIST_L2 ),
-				new IntFlagItem("DIST_C",Imgproc.DIST_C),
-				new IntFlagItem("DIST_L12 ",Imgproc.DIST_L12 ),
-				new IntFlagItem("DIST_FAIR ",Imgproc.DIST_FAIR ),
-				new IntFlagItem("DIST_WELSCH ",Imgproc.DIST_WELSCH ),
-				new IntFlagItem("DIST_HUBER ",Imgproc.DIST_HUBER )
+		IntegerFlag[] distanceTypes = {
+				new IntegerFlag("DIST_USER",Imgproc.DIST_USER),
+				new IntegerFlag("DIST_L1 ",Imgproc.DIST_L1 ),
+				new IntegerFlag("DIST_L2 ",Imgproc.DIST_L2 ),
+				new IntegerFlag("DIST_C",Imgproc.DIST_C),
+				new IntegerFlag("DIST_L12 ",Imgproc.DIST_L12 ),
+				new IntegerFlag("DIST_FAIR ",Imgproc.DIST_FAIR ),
+				new IntegerFlag("DIST_WELSCH ",Imgproc.DIST_WELSCH ),
+				new IntegerFlag("DIST_HUBER ",Imgproc.DIST_HUBER )
 		};
 		odb.addComboBox("Distance Type", distanceTypes, distanceType);
 	
-		IntFlagItem[] maskSizes = {
-				new IntFlagItem("DIST_MASK_3",Imgproc.DIST_MASK_3),
-				new IntFlagItem("DIST_MASK_5",Imgproc.DIST_MASK_5),
-				new IntFlagItem("DIST_MASK_PRECISE",Imgproc.DIST_MASK_PRECISE),
+		IntegerFlag[] maskSizes = {
+				new IntegerFlag("DIST_MASK_3",Imgproc.DIST_MASK_3),
+				new IntegerFlag("DIST_MASK_5",Imgproc.DIST_MASK_5),
+				new IntegerFlag("DIST_MASK_PRECISE",Imgproc.DIST_MASK_PRECISE),
 		};
 		odb.addComboBox("Mask Size", maskSizes, maskSize);
 	

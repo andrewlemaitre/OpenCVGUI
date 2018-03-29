@@ -7,7 +7,7 @@ import org.opencv.core.Core;
 import org.opencv.imgproc.Imgproc;
 
 import dialogs.OperationDialogBox;
-import miscellaneous.IntFlagItem;
+import passableTypes.IntegerFlag;
 import passableTypes.PassableDouble;
 import passableTypes.PassableInt;
 
@@ -18,13 +18,13 @@ public class BilateralFilterOperation extends OpenCVOperation {
     PassableInt filterSize = new PassableInt(1);
     PassableDouble sigmaColor = new PassableDouble(0d);
     PassableDouble sigmaSpace = new PassableDouble(0d);
-    IntFlagItem borderType = new IntFlagItem();
+    IntegerFlag borderType = new IntegerFlag();
     
     public BilateralFilterOperation() {
         super();
         this.setOperationName("Bilateral Filter Operation");
         this.setOutputName("Bilateral Filter Output");
-        borderType.setValue( new IntFlagItem("BORDER_CONSTANT",Core.BORDER_CONSTANT));
+        borderType.setValue( new IntegerFlag("BORDER_CONSTANT",Core.BORDER_CONSTANT));
     }
 
     @Override
@@ -43,16 +43,16 @@ public class BilateralFilterOperation extends OpenCVOperation {
         odb.add1DDimension("Sigma Color", sigmaColor, getSigmaColorModel() );
         odb.add1DDimension("Sigma Space", sigmaSpace, getSigmaSpaceModel() );
         
-        IntFlagItem[] borderTypeList = {
-          new IntFlagItem("BORDER_CONSTANT",Core.BORDER_CONSTANT),
-          new IntFlagItem("BORDER_REPLICATE",Core.BORDER_REPLICATE),
-          new IntFlagItem("BORDER_REFLECT",Core.BORDER_REFLECT),
+        IntegerFlag[] borderTypeList = {
+          new IntegerFlag("BORDER_CONSTANT",Core.BORDER_CONSTANT),
+          new IntegerFlag("BORDER_REPLICATE",Core.BORDER_REPLICATE),
+          new IntegerFlag("BORDER_REFLECT",Core.BORDER_REFLECT),
 //          new IntFlagItem("BORDER_WRAP",Core.BORDER_WRAP), // Not valid for Gaussian blur. See https://stackoverflow.com/questions/35454351/opencv-border-mode-issue-with-blur-filter
-          new IntFlagItem("BORDER_REFLECT_101",Core.BORDER_REFLECT_101),
+          new IntegerFlag("BORDER_REFLECT_101",Core.BORDER_REFLECT_101),
 //          new IntFlagItem("BORDER_TRANSPARENT",Core.BORDER_TRANSPARENT), //Throws an error, possibly unsupported for blur.
-          new IntFlagItem("BORDER_REFLECT101",Core.BORDER_REFLECT101), //Same as Reflect_101
-          new IntFlagItem("BORDER_DEFAULT",Core.BORDER_DEFAULT), //Same as Reflect_101 and Reflect101.
-          new IntFlagItem("BORDER_ISOLATED",Core.BORDER_ISOLATED),
+          new IntegerFlag("BORDER_REFLECT101",Core.BORDER_REFLECT101), //Same as Reflect_101
+          new IntegerFlag("BORDER_DEFAULT",Core.BORDER_DEFAULT), //Same as Reflect_101 and Reflect101.
+          new IntegerFlag("BORDER_ISOLATED",Core.BORDER_ISOLATED),
         };
         odb.addComboBox("Border Type", borderTypeList, borderType);
         

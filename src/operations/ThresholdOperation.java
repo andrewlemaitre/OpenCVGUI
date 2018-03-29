@@ -5,7 +5,7 @@ import javax.swing.JDialog;
 import org.opencv.imgproc.Imgproc;
 
 import dialogs.OperationDialogBox;
-import miscellaneous.IntFlagItem;
+import passableTypes.IntegerFlag;
 import passableTypes.PassableInt;
 
 public class ThresholdOperation extends OpenCVOperation {
@@ -14,8 +14,8 @@ public class ThresholdOperation extends OpenCVOperation {
     private static final long serialVersionUID = -1065117793316618879L;
     PassableInt thresholdValue = new PassableInt( 20 );
 	PassableInt maxThresholdValue = new PassableInt( 255 );
-	IntFlagItem threshFlag = new IntFlagItem( "THRESH_BINARY", Imgproc.THRESH_BINARY );
-	IntFlagItem additionalThreshFlag = new IntFlagItem( "NONE", 0);
+	IntegerFlag threshFlag = new IntegerFlag( "THRESH_BINARY", Imgproc.THRESH_BINARY );
+	IntegerFlag additionalThreshFlag = new IntegerFlag( "NONE", 0);
 	
 	public ThresholdOperation()
 	{
@@ -33,20 +33,20 @@ public class ThresholdOperation extends OpenCVOperation {
 		odb.addSliderSetting("Threshold Min", 0, 255, thresholdValue.getValue(), thresholdValue);
 		odb.addSliderSetting("Threshold Max", 0, 255, maxThresholdValue.getValue(), maxThresholdValue);
 		
-		IntFlagItem[] threshTypes = {
-				new IntFlagItem("THRESH_BINARY",Imgproc.THRESH_BINARY),
-				new IntFlagItem("THRESH_BINARY_INV",Imgproc.THRESH_BINARY_INV),
-				new IntFlagItem("THRESH_TRUNC",Imgproc.THRESH_TRUNC),
-				new IntFlagItem("THRESH_TOZERO",Imgproc.THRESH_TOZERO),
-				new IntFlagItem("THRESH_TOZERO_INV",Imgproc.THRESH_TOZERO_INV)
+		IntegerFlag[] threshTypes = {
+				new IntegerFlag("THRESH_BINARY",Imgproc.THRESH_BINARY),
+				new IntegerFlag("THRESH_BINARY_INV",Imgproc.THRESH_BINARY_INV),
+				new IntegerFlag("THRESH_TRUNC",Imgproc.THRESH_TRUNC),
+				new IntegerFlag("THRESH_TOZERO",Imgproc.THRESH_TOZERO),
+				new IntegerFlag("THRESH_TOZERO_INV",Imgproc.THRESH_TOZERO_INV)
 		};
 		odb.addComboBox("Threshold Type", threshTypes, threshFlag);
 		
-		IntFlagItem[] additionalThreshTypes = {
-				new IntFlagItem("NONE",0),
-				new IntFlagItem("THRESH_MASK",Imgproc.THRESH_MASK),
-				new IntFlagItem("THRESH_OTSU",Imgproc.THRESH_OTSU),
-				new IntFlagItem("THRESH_TRIANGLE ",Imgproc.THRESH_TRIANGLE)
+		IntegerFlag[] additionalThreshTypes = {
+				new IntegerFlag("NONE",0),
+				new IntegerFlag("THRESH_MASK",Imgproc.THRESH_MASK),
+				new IntegerFlag("THRESH_OTSU",Imgproc.THRESH_OTSU),
+				new IntegerFlag("THRESH_TRIANGLE ",Imgproc.THRESH_TRIANGLE)
 		};
 		odb.addComboBox("Threshold Type", additionalThreshTypes, additionalThreshFlag);
 		

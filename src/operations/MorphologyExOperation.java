@@ -12,14 +12,14 @@ import org.opencv.core.Point;
 import org.opencv.imgproc.Imgproc;
 
 import dialogs.OperationDialogBox;
-import miscellaneous.IntFlagItem;
+import passableTypes.IntegerFlag;
 import passableTypes.PassableInt;
 
 public class MorphologyExOperation extends OpenCVOperation {
 
     /** Generated serial ID */
     private static final long serialVersionUID = -3113605158326090377L;
-    IntFlagItem operationType = new IntFlagItem();
+    IntegerFlag operationType = new IntegerFlag();
     transient Mat kernel = Mat.ones(1,  1, CvType.CV_32F );
     Dimension2D anchorPoint = new Dimension(-1,-1);
     PassableInt iterations = new PassableInt(1);
@@ -28,7 +28,7 @@ public class MorphologyExOperation extends OpenCVOperation {
         super();
         this.setOperationName("MorphologyEx Operation");
         this.setOutputName("MorphologyEx Output");
-        operationType.setValue(new IntFlagItem("MORPH_ERODE",Imgproc.MORPH_ERODE));
+        operationType.setValue(new IntegerFlag("MORPH_ERODE",Imgproc.MORPH_ERODE));
     }
 
     @Override
@@ -42,15 +42,15 @@ public class MorphologyExOperation extends OpenCVOperation {
         odb.addTextBox( "Operation Name", "Erode Operation", this.getOperationNameObject() );
         odb.addSourceMatSelector( "Input Operation", this );
         
-        IntFlagItem[] operationTypesList = {
-            new IntFlagItem("MORPH_ERODE",Imgproc.MORPH_ERODE),
-            new IntFlagItem("MORPH_DILATE",Imgproc.MORPH_DILATE),
-            new IntFlagItem("MORPH_OPEN",Imgproc.MORPH_OPEN),
-            new IntFlagItem("MORPH_CLOSE",Imgproc.MORPH_CLOSE),
-            new IntFlagItem("MORPH_GRADIENT",Imgproc.MORPH_GRADIENT),
-            new IntFlagItem("MORPH_TOPHAT",Imgproc.MORPH_TOPHAT),
-            new IntFlagItem("MORPH_BLACKHAT",Imgproc.MORPH_BLACKHAT),
-            new IntFlagItem("MORPH_HITMISS",Imgproc.MORPH_HITMISS)
+        IntegerFlag[] operationTypesList = {
+            new IntegerFlag("MORPH_ERODE",Imgproc.MORPH_ERODE),
+            new IntegerFlag("MORPH_DILATE",Imgproc.MORPH_DILATE),
+            new IntegerFlag("MORPH_OPEN",Imgproc.MORPH_OPEN),
+            new IntegerFlag("MORPH_CLOSE",Imgproc.MORPH_CLOSE),
+            new IntegerFlag("MORPH_GRADIENT",Imgproc.MORPH_GRADIENT),
+            new IntegerFlag("MORPH_TOPHAT",Imgproc.MORPH_TOPHAT),
+            new IntegerFlag("MORPH_BLACKHAT",Imgproc.MORPH_BLACKHAT),
+            new IntegerFlag("MORPH_HITMISS",Imgproc.MORPH_HITMISS)
         };
         
         odb.addComboBox("Morph type", operationTypesList, operationType);

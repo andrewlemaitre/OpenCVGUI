@@ -10,8 +10,8 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 import dialogs.OperationDialogBox;
-import miscellaneous.IntFlagItem;
 import passableTypes.DoubleDimension;
+import passableTypes.IntegerFlag;
 
 public class ResizeOperation extends OpenCVOperation {
 
@@ -19,7 +19,7 @@ public class ResizeOperation extends OpenCVOperation {
     private static final long serialVersionUID = -1284828314506751508L;
     Dimension2D absoluteResizeDims = new Dimension(0,0);
     Dimension2D scaleFactorDims = new DoubleDimension(0,0);
-    IntFlagItem interpolationFlag = new IntFlagItem();
+    IntegerFlag interpolationFlag = new IntegerFlag();
 	
 	public ResizeOperation() {
 		super();
@@ -46,13 +46,13 @@ public class ResizeOperation extends OpenCVOperation {
 		/* TODO: The INTER_MAX, WARP_FILL_OUTLIERS and WARP_INVERSE_MAP flags have been commented out 
 		 * because they are not valid interpolation flags even though they are in the documentation.
 		*/
-		IntFlagItem[] interpolationFlags = {
-				new IntFlagItem("INTER_NEAREST",Imgproc.INTER_NEAREST),
-				new IntFlagItem("INTER_LINEAR",Imgproc.INTER_LINEAR),
-				new IntFlagItem("INTER_CUBIC",Imgproc.INTER_CUBIC),
-				new IntFlagItem("INTER_AREA",Imgproc.INTER_AREA),
-				new IntFlagItem("INTER_LANCZOS4",Imgproc.INTER_LANCZOS4),
-				new IntFlagItem("INTER_LINEAR_EXACT",Imgproc.INTER_LINEAR_EXACT),
+		IntegerFlag[] interpolationFlags = {
+				new IntegerFlag("INTER_NEAREST",Imgproc.INTER_NEAREST),
+				new IntegerFlag("INTER_LINEAR",Imgproc.INTER_LINEAR),
+				new IntegerFlag("INTER_CUBIC",Imgproc.INTER_CUBIC),
+				new IntegerFlag("INTER_AREA",Imgproc.INTER_AREA),
+				new IntegerFlag("INTER_LANCZOS4",Imgproc.INTER_LANCZOS4),
+				new IntegerFlag("INTER_LINEAR_EXACT",Imgproc.INTER_LINEAR_EXACT),
 //				new IntFlagItem("INTER_MAX ",Imgproc.INTER_MAX ),
 //				new IntFlagItem("WARP_FILL_OUTLIERS",Imgproc.WARP_FILL_OUTLIERS),
 //				new IntFlagItem("WARP_INVERSE_MAP",Imgproc.WARP_INVERSE_MAP)

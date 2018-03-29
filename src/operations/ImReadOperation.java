@@ -7,7 +7,7 @@ import javax.swing.JDialog;
 import org.opencv.imgcodecs.Imgcodecs;
 
 import dialogs.OperationDialogBox;
-import miscellaneous.IntFlagItem;
+import passableTypes.IntegerFlag;
 import passableTypes.PassableFile;
 
 public class ImReadOperation extends OpenCVOperation {
@@ -15,12 +15,13 @@ public class ImReadOperation extends OpenCVOperation {
 	/** Generated serial ID */
     private static final long serialVersionUID = 6526718592030838820L;
     PassableFile passableFile = new PassableFile();
-	IntFlagItem ifi = new IntFlagItem();
+	IntegerFlag ifi = new IntegerFlag();
 	
 	public ImReadOperation()
 	{
 		this.setOperationName("Imread Name");
 		this.setOutputName("Imread Output");
+		this.ifi.setValue("No Flags Set", -2);
 	}
 
 	@Override
@@ -31,20 +32,20 @@ public class ImReadOperation extends OpenCVOperation {
 		String[] validFileTypes = {"gif", "jpg", "jpeg"};
 		odb.addFileChooser("Load Image", "Images (gif, jpg, jpeg)", passableFile, validFileTypes);
 		
-		IntFlagItem[] intFlagItemList = {
-			new IntFlagItem("No Flags Set", -2),
-			new IntFlagItem("IMREAD_UNCHANGED",Imgcodecs.IMREAD_UNCHANGED),
-			new IntFlagItem("IMREAD_GRAYSCALE",Imgcodecs.IMREAD_GRAYSCALE),
-			new IntFlagItem("IMREAD_COLOR",Imgcodecs.IMREAD_COLOR),
-			new IntFlagItem("IMREAD_ANYDEPTH",Imgcodecs.IMREAD_ANYDEPTH),
-			new IntFlagItem("IMREAD_ANYCOLOR",Imgcodecs.IMREAD_ANYCOLOR),
-			new IntFlagItem("IMREAD_LOAD_GDAL",Imgcodecs.IMREAD_LOAD_GDAL),
-			new IntFlagItem("IMREAD_REDUCED_COLOR_2",Imgcodecs.IMREAD_REDUCED_COLOR_2),
-			new IntFlagItem("IMREAD_REDUCED_COLOR_4",Imgcodecs.IMREAD_REDUCED_COLOR_4),
-			new IntFlagItem("IMREAD_REDUCED_COLOR_8",Imgcodecs.IMREAD_REDUCED_COLOR_8),
-			new IntFlagItem("IMREAD_REDUCED_GRAYSCALE_2",Imgcodecs.IMREAD_REDUCED_GRAYSCALE_2),
-			new IntFlagItem("IMREAD_REDUCED_GRAYSCALE_4",Imgcodecs.IMREAD_REDUCED_GRAYSCALE_4),
-			new IntFlagItem("IMREAD_REDUCED_GRAYSCALE_8",Imgcodecs.IMREAD_REDUCED_GRAYSCALE_8),
+		IntegerFlag[] intFlagItemList = {
+			new IntegerFlag("No Flags Set", -2),
+			new IntegerFlag("IMREAD_UNCHANGED",Imgcodecs.IMREAD_UNCHANGED),
+			new IntegerFlag("IMREAD_GRAYSCALE",Imgcodecs.IMREAD_GRAYSCALE),
+			new IntegerFlag("IMREAD_COLOR",Imgcodecs.IMREAD_COLOR),
+			new IntegerFlag("IMREAD_ANYDEPTH",Imgcodecs.IMREAD_ANYDEPTH),
+			new IntegerFlag("IMREAD_ANYCOLOR",Imgcodecs.IMREAD_ANYCOLOR),
+			new IntegerFlag("IMREAD_LOAD_GDAL",Imgcodecs.IMREAD_LOAD_GDAL),
+			new IntegerFlag("IMREAD_REDUCED_COLOR_2",Imgcodecs.IMREAD_REDUCED_COLOR_2),
+			new IntegerFlag("IMREAD_REDUCED_COLOR_4",Imgcodecs.IMREAD_REDUCED_COLOR_4),
+			new IntegerFlag("IMREAD_REDUCED_COLOR_8",Imgcodecs.IMREAD_REDUCED_COLOR_8),
+			new IntegerFlag("IMREAD_REDUCED_GRAYSCALE_2",Imgcodecs.IMREAD_REDUCED_GRAYSCALE_2),
+			new IntegerFlag("IMREAD_REDUCED_GRAYSCALE_4",Imgcodecs.IMREAD_REDUCED_GRAYSCALE_4),
+			new IntegerFlag("IMREAD_REDUCED_GRAYSCALE_8",Imgcodecs.IMREAD_REDUCED_GRAYSCALE_8),
 		};
 		odb.addComboBox("Flags", intFlagItemList, ifi);
 		odb.addTextBox("Output Name", "Image Read Output", this.getOutputNameObject());
@@ -57,7 +58,7 @@ public class ImReadOperation extends OpenCVOperation {
 		    return;
 		
 		File file = null;
-		int flag = -2;
+		int flag = ifi.getValue();
 		
 		if( passableFile.getValue() != null ) {
 			file = passableFile.getValue();

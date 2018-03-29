@@ -3,13 +3,13 @@ package listeners;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import miscellaneous.IntFlagItem;
+import passableTypes.IntegerFlag;
 
 public abstract class ComboBoxListener implements ActionListener {
 
-	protected IntFlagItem i;
+	protected IntegerFlag i;
 	
-	public ComboBoxListener( IntFlagItem i ) {
+	public ComboBoxListener( IntegerFlag i ) {
 		this.i = i;
 	}
 	

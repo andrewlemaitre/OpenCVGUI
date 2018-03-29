@@ -1,18 +1,18 @@
-package miscellaneous;
+package passableTypes;
 
 import java.io.Serializable;
 
-public class IntFlagItem implements Serializable {
+public class IntegerFlag implements Serializable {
 
     /** Generated serial id */
     private static final long serialVersionUID = 435057375374010000L;
     String name;
 	int value;
 	
-	public IntFlagItem(){
+	public IntegerFlag(){
 	}
 	
-	public IntFlagItem( String name, int value ){
+	public IntegerFlag( String name, int value ){
 		this.name = name;
 		this.value = value;
 	}
@@ -23,11 +23,11 @@ public class IntFlagItem implements Serializable {
 		if( o == this )
 			return true;
 		
-		if( !(o instanceof IntFlagItem) ){
+		if( !(o instanceof IntegerFlag) ){
 			return false;
 		}
 		
-		IntFlagItem ifi = (IntFlagItem)o;
+		IntegerFlag ifi = (IntegerFlag)o;
 		
 		return ifi.getName().compareTo(this.getName()) == 0 &&
 				ifi.getValue() == this.getValue();
@@ -54,7 +54,7 @@ public class IntFlagItem implements Serializable {
 	    this.value = value;
 	}
 	
-    public void setValue( IntFlagItem ifi ) {
+    public void setValue( IntegerFlag ifi ) {
         this.name = ifi.getName();
         this.value = ifi.getValue();
     }

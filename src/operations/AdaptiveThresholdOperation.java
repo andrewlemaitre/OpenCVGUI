@@ -5,7 +5,7 @@ import javax.swing.SpinnerNumberModel;
 import org.opencv.imgproc.Imgproc;
 
 import dialogs.OperationDialogBox;
-import miscellaneous.IntFlagItem;
+import passableTypes.IntegerFlag;
 import passableTypes.PassableInt;
 
 public class AdaptiveThresholdOperation extends OpenCVOperation {
@@ -15,8 +15,8 @@ public class AdaptiveThresholdOperation extends OpenCVOperation {
     PassableInt maxValue = new PassableInt( 255 );
     PassableInt blockSize = new PassableInt( 3 );
     PassableInt subtractedConstant = new PassableInt( 1 );
-    IntFlagItem adaptiveMethod = new IntFlagItem();
-    IntFlagItem thresholdType = new IntFlagItem();
+    IntegerFlag adaptiveMethod = new IntegerFlag();
+    IntegerFlag thresholdType = new IntegerFlag();
     
     
     public AdaptiveThresholdOperation() {
@@ -41,15 +41,15 @@ public class AdaptiveThresholdOperation extends OpenCVOperation {
         
         odb.add1DDimension("Max Value", maxValue, getMaxValueModel());
 
-        IntFlagItem[] adaptiveMethodList = {
-                new IntFlagItem("ADAPTIVE_THRESH_MEAN_C",Imgproc.ADAPTIVE_THRESH_MEAN_C),
-                new IntFlagItem("ADAPTIVE_THRESH_GAUSSIAN_C",Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C)
+        IntegerFlag[] adaptiveMethodList = {
+                new IntegerFlag("ADAPTIVE_THRESH_MEAN_C",Imgproc.ADAPTIVE_THRESH_MEAN_C),
+                new IntegerFlag("ADAPTIVE_THRESH_GAUSSIAN_C",Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C)
         };
         odb.addComboBox("Adaptive Method", adaptiveMethodList, adaptiveMethod);
 
-        IntFlagItem[] thresholdTypeList = {
-                new IntFlagItem("THRESH_BINARY",Imgproc.THRESH_BINARY),
-                new IntFlagItem("THRESH_BINARY_INV",Imgproc.THRESH_BINARY_INV)
+        IntegerFlag[] thresholdTypeList = {
+                new IntegerFlag("THRESH_BINARY",Imgproc.THRESH_BINARY),
+                new IntegerFlag("THRESH_BINARY_INV",Imgproc.THRESH_BINARY_INV)
         };
         odb.addComboBox("Threshold Type", thresholdTypeList, thresholdType);
 
