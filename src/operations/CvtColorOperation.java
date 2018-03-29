@@ -12,7 +12,9 @@ import miscellaneous.IntFlagMenuItem;
 
 public class CvtColorOperation extends OpenCVOperation {
 
-	IntFlagItem selectedColorConversion = new IntFlagItem();
+	/** Generated serial ID*/
+    private static final long serialVersionUID = -2059644508847351793L;
+    IntFlagItem selectedColorConversion = new IntFlagItem();
 	private final int unselectedFlag = -2;
 	
 	public CvtColorOperation(){

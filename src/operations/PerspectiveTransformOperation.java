@@ -16,6 +16,8 @@ import passableTypes.DoubleDimension;
 
 public class PerspectiveTransformOperation extends OpenCVOperation {
 
+    /** Generated serial ID */
+    private static final long serialVersionUID = 7855071774735900891L;
     Dimension2D point1 = new DoubleDimension();
     Dimension2D point2 = new DoubleDimension();
     Dimension2D point3 = new DoubleDimension();

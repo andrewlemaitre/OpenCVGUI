@@ -7,7 +7,6 @@ import org.opencv.imgproc.Imgproc;
 import dialogs.OperationDialogBox;
 import miscellaneous.IntFlagItem;
 import passableTypes.PassableInt;
-import passableTypes.PassableIntFlagItem;
 
 public class AdaptiveThresholdOperation extends OpenCVOperation {
 
@@ -16,16 +15,16 @@ public class AdaptiveThresholdOperation extends OpenCVOperation {
     PassableInt maxValue = new PassableInt( 255 );
     PassableInt blockSize = new PassableInt( 3 );
     PassableInt subtractedConstant = new PassableInt( 1 );
-    PassableIntFlagItem adaptiveMethod = new PassableIntFlagItem();
-    PassableIntFlagItem thresholdType = new PassableIntFlagItem();
+    IntFlagItem adaptiveMethod = new IntFlagItem();
+    IntFlagItem thresholdType = new IntFlagItem();
     
     
     public AdaptiveThresholdOperation() {
         super();
         this.setOperationName("Adaptive Threshold Operation");
         this.setOutputName("Adaptive Threshold Output");
-        this.adaptiveMethod.setValue( new IntFlagItem("ADAPTIVE_THRESH_MEAN_C",Imgproc.ADAPTIVE_THRESH_MEAN_C) );
-        this.thresholdType.setValue( new IntFlagItem("THRESH_BINARY",Imgproc.THRESH_BINARY) );
+        this.adaptiveMethod.setValue( "ADAPTIVE_THRESH_MEAN_C",Imgproc.ADAPTIVE_THRESH_MEAN_C );
+        this.thresholdType.setValue( "THRESH_BINARY",Imgproc.THRESH_BINARY );
     }
 
     @Override
@@ -71,8 +70,8 @@ public class AdaptiveThresholdOperation extends OpenCVOperation {
         Imgproc.adaptiveThreshold(  getInputMat(), 
                                     getOutputMat(), 
                                     maxValue.getValue(), 
-                                    adaptiveMethod.getValue().getValue(), 
-                                    thresholdType.getValue().getValue(), 
+                                    adaptiveMethod.getValue(), 
+                                    thresholdType.getValue(), 
                                     blockSize.getValue(), 
                                     subtractedConstant.getValue());
     }

@@ -1,8 +1,5 @@
 package operations;
 
-import java.awt.Dimension;
-import java.awt.geom.Dimension2D;
-
 import javax.swing.JDialog;
 import javax.swing.SpinnerNumberModel;
 
@@ -13,14 +10,15 @@ import dialogs.OperationDialogBox;
 import miscellaneous.IntFlagItem;
 import passableTypes.PassableDouble;
 import passableTypes.PassableInt;
-import passableTypes.PassableIntFlagItem;
 
 public class BilateralFilterOperation extends OpenCVOperation {
 
+    /** Generated serial ID */
+    private static final long serialVersionUID = -1227250091069625529L;
     PassableInt filterSize = new PassableInt(1);
     PassableDouble sigmaColor = new PassableDouble(0d);
     PassableDouble sigmaSpace = new PassableDouble(0d);
-    PassableIntFlagItem borderType = new PassableIntFlagItem();
+    IntFlagItem borderType = new IntFlagItem();
     
     public BilateralFilterOperation() {
         super();

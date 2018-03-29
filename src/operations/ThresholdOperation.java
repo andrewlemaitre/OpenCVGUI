@@ -7,14 +7,15 @@ import org.opencv.imgproc.Imgproc;
 import dialogs.OperationDialogBox;
 import miscellaneous.IntFlagItem;
 import passableTypes.PassableInt;
-import passableTypes.PassableIntFlagItem;
 
 public class ThresholdOperation extends OpenCVOperation {
 
-	PassableInt thresholdValue = new PassableInt( 20 );
+	/** Generated serial ID */
+    private static final long serialVersionUID = -1065117793316618879L;
+    PassableInt thresholdValue = new PassableInt( 20 );
 	PassableInt maxThresholdValue = new PassableInt( 255 );
-	PassableIntFlagItem threshFlag = new PassableIntFlagItem( "THRESH_BINARY", Imgproc.THRESH_BINARY );
-	PassableIntFlagItem additionalThreshFlag = new PassableIntFlagItem( "NONE", 0);
+	IntFlagItem threshFlag = new IntFlagItem( "THRESH_BINARY", Imgproc.THRESH_BINARY );
+	IntFlagItem additionalThreshFlag = new IntFlagItem( "NONE", 0);
 	
 	public ThresholdOperation()
 	{
@@ -65,7 +66,7 @@ public class ThresholdOperation extends OpenCVOperation {
 				this.getOutputMat(), 
 				thresholdValue.getValue(), 
 				maxThresholdValue.getValue(), 
-				threshFlag.getValue().getValue()+additionalThreshFlag.getValue().getValue());
+				threshFlag.getValue()+additionalThreshFlag.getValue());
 	}
 
 	@Override

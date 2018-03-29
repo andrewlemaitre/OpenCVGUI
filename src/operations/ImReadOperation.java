@@ -9,12 +9,13 @@ import org.opencv.imgcodecs.Imgcodecs;
 import dialogs.OperationDialogBox;
 import miscellaneous.IntFlagItem;
 import passableTypes.PassableFile;
-import passableTypes.PassableIntFlagItem;
 
 public class ImReadOperation extends OpenCVOperation {
 
-	PassableFile passableFile = new PassableFile();
-	PassableIntFlagItem ifi = new PassableIntFlagItem();
+	/** Generated serial ID */
+    private static final long serialVersionUID = 6526718592030838820L;
+    PassableFile passableFile = new PassableFile();
+	IntFlagItem ifi = new IntFlagItem();
 	
 	public ImReadOperation()
 	{
@@ -58,9 +59,6 @@ public class ImReadOperation extends OpenCVOperation {
 		File file = null;
 		int flag = -2;
 		
-		if( ifi.getValue() != null ) {
-			flag = ifi.getValue().getValue();
-		}
 		if( passableFile.getValue() != null ) {
 			file = passableFile.getValue();
 		}

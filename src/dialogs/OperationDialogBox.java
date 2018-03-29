@@ -241,7 +241,7 @@ public class OperationDialogBox {
 		});
 	}
 	
-	public JComboBox<IntFlagItem> addComboBox( String label, IntFlagItem[] itemList, PassableIntFlagItem passableIntFlagItem ) {
+	public JComboBox<IntFlagItem> addComboBox( String label, IntFlagItem[] itemList, IntFlagItem flagToModify ) {
 		addMigRow();
 		addSettingLabel( label );
 		
@@ -250,14 +250,13 @@ public class OperationDialogBox {
 		
 		elementCount++;
 
-		for( IntFlagItem ifi : itemList )
-		{
+		for(IntFlagItem ifi : itemList){
 			comboBox.addItem( ifi );
 		}
 		
 		comboBox.setRenderer( new ComboBoxRenderer() );
 		
-		comboBox.addActionListener( new ComboBoxListener( passableIntFlagItem ){
+		comboBox.addActionListener( new ComboBoxListener( flagToModify ){
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				@SuppressWarnings("unchecked")
@@ -267,11 +266,11 @@ public class OperationDialogBox {
 		});
 
 		//If we have already picked an intflagitem previously then we should show that in the combo box.
-        if( passableIntFlagItem.getValue() != null ) {
+        if( flagToModify != null && flagToModify.getName() != null && (flagToModify.getName() != null || !flagToModify.getName().equals("")) ) {
             //Search for a matching intflagitem in the combobox list.
             for( int i = 0; i < comboBox.getItemCount(); i++ )
             {
-                if( comboBox.getItemAt(i).equals(passableIntFlagItem.getValue()) )
+                if( comboBox.getItemAt(i).equals(flagToModify) )
                 {
                     comboBox.setSelectedIndex(i);
                     break;

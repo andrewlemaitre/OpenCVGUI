@@ -12,22 +12,20 @@ import org.opencv.imgproc.Imgproc;
 import dialogs.OperationDialogBox;
 import miscellaneous.IntFlagItem;
 import passableTypes.DoubleDimension;
-import passableTypes.PassableIntFlagItem;
 
 public class ResizeOperation extends OpenCVOperation {
 
-    /**
-     * 
-     */
+    /** Generated serial ID */
     private static final long serialVersionUID = -1284828314506751508L;
     Dimension2D absoluteResizeDims = new Dimension(0,0);
     Dimension2D scaleFactorDims = new DoubleDimension(0,0);
-	PassableIntFlagItem interpolationFlag = new PassableIntFlagItem();
+    IntFlagItem interpolationFlag = new IntFlagItem();
 	
 	public ResizeOperation() {
 		super();
 		this.setOperationName("Resize Operation");
 		this.setOutputName("Resize Output");
+		interpolationFlag.setValue("INTER_NEAREST",Imgproc.INTER_NEAREST);
 	}
 
 	@Override
@@ -81,7 +79,7 @@ public class ResizeOperation extends OpenCVOperation {
                     new Size( absoluteResizeDims.getWidth(), absoluteResizeDims.getHeight() ), 
                     scaleFactorDims.getWidth(), 
                     scaleFactorDims.getHeight(),
-                    interpolationFlag.getValue().getValue() );
+                    interpolationFlag.getValue() );
         } catch ( NullPointerException e ) {
             e.printStackTrace();
         }

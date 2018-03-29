@@ -6,12 +6,13 @@ import org.opencv.imgproc.Imgproc;
 
 import dialogs.OperationDialogBox;
 import miscellaneous.IntFlagItem;
-import passableTypes.PassableIntFlagItem;
 
 public class DistanceTransformOperation extends OpenCVOperation {
 
-	PassableIntFlagItem distanceType = new PassableIntFlagItem();
-	PassableIntFlagItem maskSize = new PassableIntFlagItem();
+    /** Generated serial ID*/
+    private static final long serialVersionUID = 1058056779285391129L;
+    IntFlagItem distanceType = new IntFlagItem();
+    IntFlagItem maskSize = new IntFlagItem();
 	
 	public DistanceTransformOperation()
 	{
@@ -61,8 +62,8 @@ public class DistanceTransformOperation extends OpenCVOperation {
 		Imgproc.distanceTransform( 
 				this.getInputOperation().getOutputMat(), 
 				this.getOutputMat(), 
-				distanceType.getValue().getValue(), 
-				maskSize.getValue().getValue());
+				distanceType.getValue(), 
+				maskSize.getValue());
 
 //		this.outputMat.convertTo(outputMat, org.opencv.core.CvType.CV_8U, 1);
 	}

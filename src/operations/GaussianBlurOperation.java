@@ -13,14 +13,15 @@ import org.opencv.imgproc.Imgproc;
 import dialogs.OperationDialogBox;
 import miscellaneous.IntFlagItem;
 import passableTypes.PassableDouble;
-import passableTypes.PassableIntFlagItem;
 
 public class GaussianBlurOperation extends OpenCVOperation {
 
+    /**Generated serial ID*/
+    private static final long serialVersionUID = -1466707249518722675L;
     Dimension2D kernelSize = new Dimension( 1, 1 );
     PassableDouble sigmaX = new PassableDouble(0d);
     PassableDouble sigmaY = new PassableDouble(0d);
-    PassableIntFlagItem borderType = new PassableIntFlagItem();
+    IntFlagItem borderType = new IntFlagItem();
     
     public GaussianBlurOperation() {
         super();
@@ -67,7 +68,7 @@ public class GaussianBlurOperation extends OpenCVOperation {
         if( isValid() == false )
             return;
         Size ksize = new Size( kernelSize.getWidth(), kernelSize.getHeight() );        
-        Imgproc.GaussianBlur(getInputMat(), getOutputMat(), ksize, sigmaX.getValue(), sigmaY.getValue(), borderType.getValue().getValue());
+        Imgproc.GaussianBlur(getInputMat(), getOutputMat(), ksize, sigmaX.getValue(), sigmaY.getValue(), borderType.getValue());
     }
 
     @Override

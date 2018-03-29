@@ -1,8 +1,6 @@
 package operations;
 
 import javax.swing.JDialog;
-import javax.swing.JPopupMenu;
-
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
@@ -11,6 +9,8 @@ import dialogs.OperationDialogBox;
 
 public class Convolution2DOperation extends OpenCVOperation {
 
+    /** Generated serial ID*/
+    private static final long serialVersionUID = 1251931278856836509L;
     transient Mat kernelData = Mat.ones(1, 1, CvType.CV_32F);
     
     public Convolution2DOperation() {

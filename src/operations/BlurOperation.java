@@ -13,7 +13,6 @@ import org.opencv.imgproc.Imgproc;
 
 import dialogs.OperationDialogBox;
 import miscellaneous.IntFlagItem;
-import passableTypes.PassableIntFlagItem;
 
 public class BlurOperation extends OpenCVOperation {
 
@@ -21,7 +20,7 @@ public class BlurOperation extends OpenCVOperation {
     private static final long serialVersionUID = 4200928567269729796L;
     Dimension2D kernelSize = new Dimension( 1, 1 );
     Dimension2D anchorPoint = new Dimension(-1,-1);
-    PassableIntFlagItem borderType = new PassableIntFlagItem();
+    IntFlagItem borderType = new IntFlagItem();
     
     public BlurOperation() {
         super();
@@ -68,7 +67,7 @@ public class BlurOperation extends OpenCVOperation {
             return;
         Point anchor = new Point(anchorPoint.getWidth(), anchorPoint.getHeight());
         Size ksize = new Size( kernelSize.getWidth(), kernelSize.getHeight() );
-        Imgproc.blur(getInputMat(), getOutputMat(), ksize, anchor, borderType.getValue().getValue());
+        Imgproc.blur(getInputMat(), getOutputMat(), ksize, anchor, borderType.getValue());
     }
 
     @Override

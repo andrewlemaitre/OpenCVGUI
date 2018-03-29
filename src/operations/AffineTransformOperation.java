@@ -16,6 +16,8 @@ import passableTypes.DoubleDimension;
 
 public class AffineTransformOperation extends OpenCVOperation {
 
+    /** Generated serial ID */
+    private static final long serialVersionUID = -9114348354967838690L;
     Dimension2D point1 = new DoubleDimension();
     Dimension2D point2 = new DoubleDimension();
     Dimension2D point3 = new DoubleDimension();

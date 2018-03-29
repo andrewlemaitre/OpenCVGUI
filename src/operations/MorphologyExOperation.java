@@ -14,13 +14,12 @@ import org.opencv.imgproc.Imgproc;
 import dialogs.OperationDialogBox;
 import miscellaneous.IntFlagItem;
 import passableTypes.PassableInt;
-import passableTypes.PassableIntFlagItem;
 
 public class MorphologyExOperation extends OpenCVOperation {
 
     /** Generated serial ID */
     private static final long serialVersionUID = -3113605158326090377L;
-    PassableIntFlagItem operationType = new PassableIntFlagItem();
+    IntFlagItem operationType = new IntFlagItem();
     transient Mat kernel = Mat.ones(1,  1, CvType.CV_32F );
     Dimension2D anchorPoint = new Dimension(-1,-1);
     PassableInt iterations = new PassableInt(1);
@@ -68,7 +67,7 @@ public class MorphologyExOperation extends OpenCVOperation {
         if( isValid() == false )
             return;
         Point anchor = new Point( anchorPoint.getWidth(), anchorPoint.getHeight() );
-        Imgproc.morphologyEx(getInputMat(), getOutputMat(), operationType.getValue().getValue(), kernel, anchor, iterations.getValue());
+        Imgproc.morphologyEx(getInputMat(), getOutputMat(), operationType.getValue(), kernel, anchor, iterations.getValue());
     }
 
     @Override
