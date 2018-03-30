@@ -30,12 +30,12 @@ import miscellaneous.OperationMenuItem;
 import operations.OpenCVOperation;
 import operations.OpenCVOperation.OpenCVOperationTransferable;
 
-public class OperationsListManager {
+public class OperationsManager {
 
     JList<OpenCVOperation> operationsJList;
     DefaultListModel<OpenCVOperation> operationsList;
     
-    public OperationsListManager() {
+    public OperationsManager() {
         operationsList = new DefaultListModel<>();
         operationsJList = new JList<>( operationsList );
         operationsJList.addMouseListener( new ImageOperationsListListener() );
@@ -97,6 +97,18 @@ public class OperationsListManager {
           OpenCVOperation operationToCopy = this.getSelectedValue();
           this.addOperation( operationToCopy.newOperationCopy() );
         }
+    }
+    
+    public void runOperations() {
+        if( this.getSize() == 0 ) {
+            System.err.println("There are no operations to run.");
+            return;
+        }
+        for( int i = 0; i < this.getSize(); i++ )
+        {
+            this.getElementAt(i).performOperation();
+        }
+        Helper.getWebcamHarnessWindow().refreshMainView();
     }
     
     public void editSelectedOperation() {
