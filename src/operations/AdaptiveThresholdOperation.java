@@ -5,6 +5,7 @@ import javax.swing.SpinnerNumberModel;
 import org.opencv.imgproc.Imgproc;
 
 import dialogs.OperationDialogBox;
+import passableTypes.IOData;
 import passableTypes.IntegerFlag;
 import passableTypes.PassableInt;
 
@@ -25,6 +26,8 @@ public class AdaptiveThresholdOperation extends OpenCVOperation {
         this.setOutputName("Adaptive Threshold Output");
         this.adaptiveMethod.setValue( "ADAPTIVE_THRESH_MEAN_C",Imgproc.ADAPTIVE_THRESH_MEAN_C );
         this.thresholdType.setValue( "THRESH_BINARY",Imgproc.THRESH_BINARY );
+        this.addDataInput( new IOData.ImageMat(this, IOData.IOType.INPUT));
+        this.addDataOutput( new IOData.ImageMat(this, IOData.IOType.OUTPUT));
     }
 
     @Override

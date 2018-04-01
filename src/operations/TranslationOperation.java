@@ -11,6 +11,7 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 import dialogs.OperationDialogBox;
+import passableTypes.IOData;
 
 public class TranslationOperation extends OpenCVOperation {
 
@@ -22,6 +23,8 @@ public class TranslationOperation extends OpenCVOperation {
         super();
         this.setOperationName("Translation Operation");
         this.setOutputName("Translation Output");
+        this.addDataInput( new IOData.ImageMat(this, IOData.IOType.INPUT));
+        this.addDataOutput( new IOData.ImageMat(this, IOData.IOType.OUTPUT));
     }
 
     @Override

@@ -5,6 +5,7 @@ import javax.swing.JDialog;
 import org.opencv.imgproc.Imgproc;
 
 import dialogs.OperationDialogBox;
+import passableTypes.IOData;
 import passableTypes.IntegerFlag;
 import passableTypes.PassableInt;
 
@@ -21,6 +22,8 @@ public class ThresholdOperation extends OpenCVOperation {
 	{
 		this.setOperationName( "Threshold Operation ");
 		this.setOutputName( "Threshold Output ");
+        this.addDataInput( new IOData.ImageMat(this, IOData.IOType.INPUT));
+        this.addDataOutput( new IOData.ImageMat(this, IOData.IOType.OUTPUT));
 	}
 	
 	@Override

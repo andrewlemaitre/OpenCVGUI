@@ -13,6 +13,7 @@ import org.opencv.imgproc.Imgproc;
 
 import dialogs.OperationDialogBox;
 import passableTypes.DoubleDimension;
+import passableTypes.IOData;
 
 public class PerspectiveTransformOperation extends OpenCVOperation {
 
@@ -31,6 +32,8 @@ public class PerspectiveTransformOperation extends OpenCVOperation {
         super();
         this.setOperationName("Perspective Tranform Operation");
         this.setOutputName("Perspective Tranform Output");
+        this.addDataInput( new IOData.ImageMat(this, IOData.IOType.INPUT));
+        this.addDataOutput( new IOData.ImageMat(this, IOData.IOType.OUTPUT));
     }
 
     @Override

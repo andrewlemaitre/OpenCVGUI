@@ -82,7 +82,7 @@ public class OpenCVHarnessWindow extends JFrame {
 		operationsPanel.add(operationsListPanel);
 		operationsListPanel.setLayout( new BoxLayout(operationsListPanel, BoxLayout.PAGE_AXIS));
 		
-		JScrollPane operationsListScrollPane = new JScrollPane( operationsManager.getOperationsJList() );
+		JScrollPane operationsListScrollPane = new JScrollPane( operationsManager.getOperationsTree() );
 		operationsListScrollPane.setPreferredSize( new Dimension(368, 240));
 		operationsListPanel.add(operationsListScrollPane);
 		
@@ -224,7 +224,7 @@ public class OpenCVHarnessWindow extends JFrame {
 			putValue(SHORT_DESCRIPTION, "Remove the topmost selected operation.");
 		}
 		public void actionPerformed(ActionEvent e) {
-            operationsManager.removeSelectedElement();
+            operationsManager.removeSelectedOperation();
 		}
 	}
 	

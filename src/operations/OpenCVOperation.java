@@ -5,13 +5,14 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.JDialog;
-
 import org.opencv.core.Mat;
 
 import passableTypes.PassableString;
+import passableTypes.IOData;
 
 /**
  *  This is the abstract class from which all other OpenCV operations are derived.
@@ -27,9 +28,13 @@ public abstract class OpenCVOperation implements Serializable {
     /** The OpenCVOperation that this operation will get it's input data from. */
     private OpenCVOperation inputOperation;
     /** The Mat that this openCVOperation will put output data in. */
-    transient private Mat outputMat = new Mat();
     private long ID;
+    transient private Mat outputMat = new Mat();
     transient private static Random r = new Random();
+    private ArrayList<IOData<?>> inputs = new ArrayList<IOData<?>>();
+    private ArrayList<IOData<?>> outputs = new ArrayList<IOData<?>>();
+    private ArrayList<OpenCVOperation> parentOperations = new ArrayList<>();
+    private ArrayList<OpenCVOperation> childOperations = new ArrayList<>();
 
     public OpenCVOperation() {
         ID = r.nextLong();
@@ -41,6 +46,30 @@ public abstract class OpenCVOperation implements Serializable {
     
     public void createNewOutputMat() {
         outputMat = new Mat();
+    }
+    
+    protected final void addDataInput( IOData<?> ioData ) {
+        inputs.add( ioData );
+    }
+    
+    protected final void addDataOutput( IOData<?> ioData ) {
+        outputs.add( ioData );
+    }
+    
+    public final ArrayList<IOData<?>> getInputs() {
+        return inputs;
+    }
+    
+    public final ArrayList<IOData<?>> getOutputs() {
+        return outputs;
+    }
+    
+    public final ArrayList<OpenCVOperation> getParentOperations() {
+        return parentOperations;
+    }
+    
+    public final ArrayList<OpenCVOperation> getChildOperations() {
+        return childOperations;
     }
     
     /**

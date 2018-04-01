@@ -13,6 +13,7 @@ import org.opencv.imgproc.Imgproc;
 
 import dialogs.OperationDialogBox;
 import passableTypes.DoubleDimension;
+import passableTypes.IOData;
 
 public class AffineTransformOperation extends OpenCVOperation {
 
@@ -29,6 +30,8 @@ public class AffineTransformOperation extends OpenCVOperation {
         super();
         this.setOperationName("Affine Tranform Operation");
         this.setOutputName("Affine Tranform Output");
+        this.addDataInput( new IOData.ImageMat(this, IOData.IOType.INPUT));
+        this.addDataOutput( new IOData.ImageMat(this, IOData.IOType.OUTPUT));
     }
 
     @Override

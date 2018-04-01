@@ -12,6 +12,7 @@ import org.opencv.imgproc.Imgproc;
 
 import dialogs.OperationDialogBox;
 import passableTypes.DoubleDimension;
+import passableTypes.IOData;
 import passableTypes.PassableDouble;
 
 
@@ -27,6 +28,8 @@ public class RotationOperation extends OpenCVOperation {
         super();
         this.setOperationName("Rotation Operation");
         this.setOutputName("Rotation Output");
+        this.addDataInput( new IOData.ImageMat(this, IOData.IOType.INPUT));
+        this.addDataOutput( new IOData.ImageMat(this, IOData.IOType.OUTPUT));
     }
 
     @Override

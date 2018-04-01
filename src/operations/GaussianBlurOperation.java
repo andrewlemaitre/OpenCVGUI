@@ -11,6 +11,7 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 import dialogs.OperationDialogBox;
+import passableTypes.IOData;
 import passableTypes.IntegerFlag;
 import passableTypes.PassableDouble;
 
@@ -28,6 +29,8 @@ public class GaussianBlurOperation extends OpenCVOperation {
         this.setOperationName("Gaussian Blur Operation");
         this.setOutputName("Gaussian Blur Output");
         borderType.setValue( new IntegerFlag("BORDER_CONSTANT",Core.BORDER_CONSTANT));
+        this.addDataInput( new IOData.ImageMat(this, IOData.IOType.INPUT));
+        this.addDataOutput( new IOData.ImageMat(this, IOData.IOType.OUTPUT));
     }
 
     @Override

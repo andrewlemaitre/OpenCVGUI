@@ -7,6 +7,7 @@ import org.opencv.core.Core;
 import org.opencv.imgproc.Imgproc;
 
 import dialogs.OperationDialogBox;
+import passableTypes.IOData;
 import passableTypes.IntegerFlag;
 import passableTypes.PassableDouble;
 import passableTypes.PassableInt;
@@ -25,6 +26,8 @@ public class BilateralFilterOperation extends OpenCVOperation {
         this.setOperationName("Bilateral Filter Operation");
         this.setOutputName("Bilateral Filter Output");
         borderType.setValue( new IntegerFlag("BORDER_CONSTANT",Core.BORDER_CONSTANT));
+        this.addDataInput( new IOData.ImageMat(this, IOData.IOType.INPUT));
+        this.addDataOutput( new IOData.ImageMat(this, IOData.IOType.OUTPUT));
     }
 
     @Override

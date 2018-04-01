@@ -12,6 +12,7 @@ import org.opencv.core.Point;
 import org.opencv.imgproc.Imgproc;
 
 import dialogs.OperationDialogBox;
+import passableTypes.IOData;
 import passableTypes.IntegerFlag;
 import passableTypes.PassableInt;
 
@@ -29,6 +30,8 @@ public class MorphologyExOperation extends OpenCVOperation {
         this.setOperationName("MorphologyEx Operation");
         this.setOutputName("MorphologyEx Output");
         operationType.setValue(new IntegerFlag("MORPH_ERODE",Imgproc.MORPH_ERODE));
+        this.addDataInput( new IOData.ImageMat(this, IOData.IOType.INPUT));
+        this.addDataOutput( new IOData.ImageMat(this, IOData.IOType.OUTPUT));
     }
 
     @Override

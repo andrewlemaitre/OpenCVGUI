@@ -12,6 +12,7 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 import dialogs.OperationDialogBox;
+import passableTypes.IOData;
 import passableTypes.IntegerFlag;
 
 public class BlurOperation extends OpenCVOperation {
@@ -27,6 +28,8 @@ public class BlurOperation extends OpenCVOperation {
         this.setOperationName("Blur Operation");
         this.setOutputName("Blur Output");
         borderType.setValue( new IntegerFlag("BORDER_CONSTANT",Core.BORDER_CONSTANT));
+        this.addDataInput( new IOData.ImageMat(this, IOData.IOType.INPUT));
+        this.addDataOutput( new IOData.ImageMat(this, IOData.IOType.OUTPUT));
     }
 
     @Override

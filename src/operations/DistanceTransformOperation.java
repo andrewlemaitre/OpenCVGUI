@@ -5,6 +5,7 @@ import javax.swing.JDialog;
 import org.opencv.imgproc.Imgproc;
 
 import dialogs.OperationDialogBox;
+import passableTypes.IOData;
 import passableTypes.IntegerFlag;
 
 public class DistanceTransformOperation extends OpenCVOperation {
@@ -18,6 +19,8 @@ public class DistanceTransformOperation extends OpenCVOperation {
 	{
 		this.setOperationName( "Distance Transform Operation ");
 		this.setOutputName( "Distance Transform Output ");
+        this.addDataInput( new IOData.ImageMat(this, IOData.IOType.INPUT));
+        this.addDataOutput( new IOData.ImageMat(this, IOData.IOType.OUTPUT));
 	}
 	
 	//TODO: Add controls to enable both version of DistanceTransform. Maybe.

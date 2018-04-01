@@ -11,6 +11,7 @@ import org.opencv.imgproc.Imgproc;
 
 import dialogs.OperationDialogBox;
 import passableTypes.DoubleDimension;
+import passableTypes.IOData;
 import passableTypes.IntegerFlag;
 
 public class ResizeOperation extends OpenCVOperation {
@@ -26,6 +27,8 @@ public class ResizeOperation extends OpenCVOperation {
 		this.setOperationName("Resize Operation");
 		this.setOutputName("Resize Output");
 		interpolationFlag.setValue("INTER_NEAREST",Imgproc.INTER_NEAREST);
+        this.addDataInput( new IOData.ImageMat(this, IOData.IOType.INPUT));
+        this.addDataOutput( new IOData.ImageMat(this, IOData.IOType.OUTPUT));
 	}
 
 	@Override

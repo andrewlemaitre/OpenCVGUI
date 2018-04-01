@@ -6,6 +6,7 @@ import javax.swing.SpinnerNumberModel;
 import org.opencv.imgproc.Imgproc;
 
 import dialogs.OperationDialogBox;
+import passableTypes.IOData;
 import passableTypes.PassableInt;
 
 public class MedianBlurOperation extends OpenCVOperation {
@@ -18,6 +19,8 @@ public class MedianBlurOperation extends OpenCVOperation {
         super();
         this.setOperationName("Median Blur Operation");
         this.setOutputName("Median Blur Output");
+        this.addDataInput( new IOData.ImageMat(this, IOData.IOType.INPUT));
+        this.addDataOutput( new IOData.ImageMat(this, IOData.IOType.OUTPUT));
     }
 
     @Override

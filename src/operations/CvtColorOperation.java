@@ -8,6 +8,7 @@ import org.opencv.imgproc.Imgproc;
 
 import dialogs.OperationDialogBox;
 import miscellaneous.IntFlagMenuItem;
+import passableTypes.IOData;
 import passableTypes.IntegerFlag;
 
 public class CvtColorOperation extends OpenCVOperation {
@@ -21,6 +22,8 @@ public class CvtColorOperation extends OpenCVOperation {
 		this.setOperationName("Convert Color Operation");
 		this.setOutputName("Convert Color Output");
 		this.selectedColorConversion.setValue( unselectedFlag );
+        this.addDataInput( new IOData.ImageMat(this, IOData.IOType.INPUT));
+        this.addDataOutput( new IOData.ImageMat(this, IOData.IOType.OUTPUT));
 	}
 	
 	@Override

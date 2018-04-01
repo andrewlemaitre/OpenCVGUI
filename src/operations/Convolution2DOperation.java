@@ -6,6 +6,7 @@ import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
 import dialogs.OperationDialogBox;
+import passableTypes.IOData;
 
 public class Convolution2DOperation extends OpenCVOperation {
 
@@ -17,6 +18,8 @@ public class Convolution2DOperation extends OpenCVOperation {
         super();
         this.setOperationName("2D Convolution Operation");
         this.setOutputName("2D Convolution Output");
+        this.addDataInput( new IOData.ImageMat(this, IOData.IOType.INPUT));
+        this.addDataOutput( new IOData.ImageMat(this, IOData.IOType.OUTPUT));
     }
 
     @Override

@@ -12,6 +12,7 @@ import org.opencv.core.Point;
 import org.opencv.imgproc.Imgproc;
 
 import dialogs.OperationDialogBox;
+import passableTypes.IOData;
 import passableTypes.PassableInt;
 
 public class DilateOperation extends OpenCVOperation {
@@ -26,6 +27,8 @@ public class DilateOperation extends OpenCVOperation {
         super();
         this.setOperationName("Dilate Operation");
         this.setOutputName("Dilate Output");
+        this.addDataInput( new IOData.ImageMat(this, IOData.IOType.INPUT));
+        this.addDataOutput( new IOData.ImageMat(this, IOData.IOType.OUTPUT));
     }
 
     @Override

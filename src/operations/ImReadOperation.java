@@ -7,6 +7,8 @@ import javax.swing.JDialog;
 import org.opencv.imgcodecs.Imgcodecs;
 
 import dialogs.OperationDialogBox;
+import passableTypes.IOData;
+import passableTypes.IOData.IOType;
 import passableTypes.IntegerFlag;
 import passableTypes.PassableFile;
 
@@ -22,6 +24,8 @@ public class ImReadOperation extends OpenCVOperation {
 		this.setOperationName("Imread Name");
 		this.setOutputName("Imread Output");
 		this.ifi.setValue("No Flags Set", -2);
+//        this.addDataInput( new IOData.ImageMat( this, IOType.INPUT ) );
+        this.addDataOutput( new IOData.ImageMat( this, IOType.OUTPUT ) );
 	}
 
 	@Override
