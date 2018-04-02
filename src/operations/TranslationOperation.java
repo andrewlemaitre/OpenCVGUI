@@ -15,10 +15,10 @@ import passableTypes.IOData;
 
 public class TranslationOperation extends OpenCVOperation {
 
-    /** Generated serial ID */
+    /** Generated serial id. */
     private static final long serialVersionUID = -2603659127294991627L;
     Dimension offset = new Dimension();
-    
+
     public TranslationOperation() {
         super();
         this.setOperationName("Translation Operation");
@@ -35,44 +35,44 @@ public class TranslationOperation extends OpenCVOperation {
     @Override
     public JDialog openDialogBox() {
         OperationDialogBox odb = new OperationDialogBox();
-        odb.addTextBox( "Operation Name", "Translation Operation", this.getOperationNameObject() );
-        odb.addSourceMatSelector( "Input Operation", this );
-        odb.add2DDimension( "Displacement", offset, getXModel(), getYModel(), false );
-        odb.addTextBox( "Output Name", "Translation Output", this.getOutputNameObject() );
+        odb.addTextBox("Operation Name", "Translation Operation", this.getOperationNameObject());
+        odb.addSourceMatSelector("Input Operation", this);
+        odb.add2DDimension("Displacement", offset, getXModel(), getYModel(), false);
+        odb.addTextBox("Output Name", "Translation Output", this.getOutputNameObject());
         return odb.getDialog();
     }
 
     @Override
     public void performOperation() {
-        if( isValid() == false )
+        if(isValid() == false)
             return;
-        
-        Mat translationMatrix = new Mat(2, 3, CvType.CV_32F );
-        translationMatrix.put(0, 0, 1f, 0f, offset.getWidth() );
-        translationMatrix.put(1, 0, 0f, 1f, offset.getHeight() );
-        
+
+        Mat translationMatrix = new Mat(2, 3, CvType.CV_32F);
+        translationMatrix.put(0, 0, 1f, 0f, offset.getWidth());
+        translationMatrix.put(1, 0, 0f, 1f, offset.getHeight());
+
         int inputWidth = getInputMat().width(),
             inputHeight = getInputMat().height();
 
-        Imgproc.warpAffine( getInputMat(), getOutputMat(), translationMatrix, new Size(inputWidth, inputHeight) );
+        Imgproc.warpAffine(getInputMat(), getOutputMat(), translationMatrix, new Size(inputWidth, inputHeight));
     }
 
     @Override
     public boolean isValid() {
-        if( this.getInputOperation() == null )
+        if(this.getInputOperation() == null)
             return false;
         return true;
     }
 
     private SpinnerNumberModel getXModel() {
         SpinnerNumberModel xModel = new SpinnerNumberModel( 0, null, null, 1);
-        xModel.setValue( (int)offset.getWidth() );
+        xModel.setValue((int)offset.getWidth());
         return xModel;
     }
 
     private SpinnerNumberModel getYModel() {
         SpinnerNumberModel yModel = new SpinnerNumberModel( 0, null, null, 1);
-        yModel.setValue( (int)offset.getHeight() );
+        yModel.setValue((int)offset.getHeight());
         return yModel;
     }
 

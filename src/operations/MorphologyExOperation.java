@@ -18,13 +18,13 @@ import passableTypes.PassableInt;
 
 public class MorphologyExOperation extends OpenCVOperation {
 
-    /** Generated serial ID */
+    /** Generated serial id. */
     private static final long serialVersionUID = -3113605158326090377L;
     IntegerFlag operationType = new IntegerFlag();
-    transient Mat kernel = Mat.ones(1,  1, CvType.CV_32F );
+    transient Mat kernel = Mat.ones(1,  1, CvType.CV_32F);
     Dimension2D anchorPoint = new Dimension(-1,-1);
     PassableInt iterations = new PassableInt(1);
-    
+
     public MorphologyExOperation() {
         super();
         this.setOperationName("MorphologyEx Operation");
@@ -42,9 +42,9 @@ public class MorphologyExOperation extends OpenCVOperation {
     @Override
     public JDialog openDialogBox() {
         OperationDialogBox odb = new OperationDialogBox();
-        odb.addTextBox( "Operation Name", "Erode Operation", this.getOperationNameObject() );
-        odb.addSourceMatSelector( "Input Operation", this );
-        
+        odb.addTextBox("Operation Name", "Erode Operation", this.getOperationNameObject());
+        odb.addSourceMatSelector("Input Operation", this);
+
         IntegerFlag[] operationTypesList = {
             new IntegerFlag("MORPH_ERODE",Imgproc.MORPH_ERODE),
             new IntegerFlag("MORPH_DILATE",Imgproc.MORPH_DILATE),
@@ -55,46 +55,46 @@ public class MorphologyExOperation extends OpenCVOperation {
             new IntegerFlag("MORPH_BLACKHAT",Imgproc.MORPH_BLACKHAT),
             new IntegerFlag("MORPH_HITMISS",Imgproc.MORPH_HITMISS)
         };
-        
+
         odb.addComboBox("Morph type", operationTypesList, operationType);
         odb.addKernelBuilder("Kernel", kernel);
         odb.add2DDimension("Anchor", anchorPoint, getAnchorXModel(), getAnchorYModel(), false);
-        odb.add1DDimension("Iterations", iterations, getIterationsModel() );
-        
+        odb.add1DDimension("Iterations", iterations, getIterationsModel());
+
         odb.addTextBox("Output Name", "Erode Output", this.getOutputNameObject());
         return odb.getDialog();
     }
 
     @Override
     public void performOperation() {
-        if( isValid() == false )
+        if(isValid() == false)
             return;
-        Point anchor = new Point( anchorPoint.getWidth(), anchorPoint.getHeight() );
+        Point anchor = new Point(anchorPoint.getWidth(), anchorPoint.getHeight());
         Imgproc.morphologyEx(getInputMat(), getOutputMat(), operationType.getValue(), kernel, anchor, iterations.getValue());
     }
 
     @Override
     public boolean isValid() {
-        if( getInputOperation() == null )
+        if(getInputOperation() == null)
             return false;
         return true;
     }
-    
+
     private SpinnerNumberModel getAnchorXModel() {
-        SpinnerNumberModel model = new SpinnerNumberModel( -1, -1, null, 1 );
-        model.setValue( (int)anchorPoint.getWidth() );
+        SpinnerNumberModel model = new SpinnerNumberModel(-1, -1, null, 1);
+        model.setValue((int)anchorPoint.getWidth());
         return model;
     }
-    
+
     private SpinnerNumberModel getAnchorYModel() {
-        SpinnerNumberModel model = new SpinnerNumberModel( -1, -1, null, 1 );
-        model.setValue( (int)anchorPoint.getHeight() );
+        SpinnerNumberModel model = new SpinnerNumberModel(-1, -1, null, 1);
+        model.setValue((int)anchorPoint.getHeight());
         return model;
     }
-    
+
     private SpinnerNumberModel getIterationsModel() {
-        SpinnerNumberModel model = new SpinnerNumberModel( 1, 1, null, 1 );
-        model.setValue( (int)iterations.getValue() );
+        SpinnerNumberModel model = new SpinnerNumberModel(1, 1, null, 1);
+        model.setValue((int)iterations.getValue());
         return model;
     }
 

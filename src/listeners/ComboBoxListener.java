@@ -7,11 +7,11 @@ import passableTypes.IntegerFlag;
 
 public abstract class ComboBoxListener implements ActionListener {
 
-	protected IntegerFlag i;
-	
-	public ComboBoxListener( IntegerFlag i ) {
-		this.i = i;
-	}
-	
-	public abstract void actionPerformed(ActionEvent e);
+    protected IntegerFlag i;
+
+    public ComboBoxListener(IntegerFlag i) {
+        this.i = i;
+    }
+
+    public abstract void actionPerformed(ActionEvent e);
 }

@@ -17,7 +17,7 @@ import passableTypes.IOData;
 
 public class PerspectiveTransformOperation extends OpenCVOperation {
 
-    /** Generated serial ID */
+    /** Generated serial id. */
     private static final long serialVersionUID = 7855071774735900891L;
     Dimension2D point1 = new DoubleDimension();
     Dimension2D point2 = new DoubleDimension();
@@ -27,7 +27,7 @@ public class PerspectiveTransformOperation extends OpenCVOperation {
     Dimension2D point6 = new DoubleDimension();
     Dimension2D point7 = new DoubleDimension();
     Dimension2D point8 = new DoubleDimension();
-    
+
     public PerspectiveTransformOperation() {
         super();
         this.setOperationName("Perspective Tranform Operation");
@@ -44,8 +44,8 @@ public class PerspectiveTransformOperation extends OpenCVOperation {
     @Override
     public JDialog openDialogBox() {
         OperationDialogBox odb = new OperationDialogBox();
-        odb.addTextBox( "Operation Name", "Perspective Transform Operation", this.getOperationNameObject() );
-        odb.addSourceMatSelector( "Input Operation", this );
+        odb.addTextBox("Operation Name", "Perspective Transform Operation", this.getOperationNameObject());
+        odb.addSourceMatSelector("Input Operation", this);
         odb.add2DDimension("Point 1", point1, getModel(point1.getWidth()), getModel(point1.getHeight()), false);
         odb.add2DDimension("Point 2", point2, getModel(point2.getWidth()), getModel(point2.getHeight()), false);
         odb.add2DDimension("Point 3", point3, getModel(point3.getWidth()), getModel(point3.getHeight()), false);
@@ -54,15 +54,15 @@ public class PerspectiveTransformOperation extends OpenCVOperation {
         odb.add2DDimension("Point 6", point6, getModel(point6.getWidth()), getModel(point6.getHeight()), false);
         odb.add2DDimension("Point 7", point7, getModel(point7.getWidth()), getModel(point7.getHeight()), false);
         odb.add2DDimension("Point 8", point8, getModel(point8.getWidth()), getModel(point8.getHeight()), false);
-        odb.addTextBox( "Output Name", "Perspective Transform Output", this.getOutputNameObject() );
+        odb.addTextBox("Output Name", "Perspective Transform Output", this.getOutputNameObject());
         return odb.getDialog();
     }
 
     @Override
     public void performOperation() {
-        if( isValid() == false )
+        if(isValid() == false)
             return;
-        
+
         Point p1 = dimensionToPoint(point1);
         Point p2 = dimensionToPoint(point2);
         Point p3 = dimensionToPoint(point3);
@@ -71,29 +71,29 @@ public class PerspectiveTransformOperation extends OpenCVOperation {
         Point p6 = dimensionToPoint(point6);
         Point p7 = dimensionToPoint(point7);
         Point p8 = dimensionToPoint(point8);
-        MatOfPoint2f points1 = new MatOfPoint2f( p1, p2, p3, p4 );
-        MatOfPoint2f points2 = new MatOfPoint2f( p5, p6, p7, p8 );
-        
+        MatOfPoint2f points1 = new MatOfPoint2f(p1, p2, p3, p4);
+        MatOfPoint2f points2 = new MatOfPoint2f(p5, p6, p7, p8);
+
         Mat perspectiveTransform = Imgproc.getPerspectiveTransform(points1, points2);
-        Imgproc.warpPerspective(getInputMat(), getOutputMat(), perspectiveTransform, new Size( getInputMat().width(), getInputMat().height() ));
+        Imgproc.warpPerspective(getInputMat(), getOutputMat(), perspectiveTransform, new Size( getInputMat().width(), getInputMat().height()));
     }
 
-    private Point dimensionToPoint( Dimension2D dim ) {
-        Point p = new Point( dim.getWidth(), dim.getHeight() );
+    private Point dimensionToPoint(Dimension2D dim) {
+        Point p = new Point(dim.getWidth(), dim.getHeight());
         return p;
     }
-    
+
     @Override
     public boolean isValid() {
-        if( getInputOperation() == null )
+        if(getInputOperation() == null)
             return false;
         return true;
     }
-    
+
     /** @return The SpinnerNumberModel for the point spinners */
-    private SpinnerNumberModel getModel( double initialValue ) {
+    private SpinnerNumberModel getModel(double initialValue) {
         SpinnerNumberModel model = new SpinnerNumberModel( 0d, null, null, 1d);
-        model.setValue( initialValue );
+        model.setValue(initialValue);
         return model;
     }
 

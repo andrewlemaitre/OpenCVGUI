@@ -13,23 +13,23 @@ import operations.OpenCVOperation;
 public class OpenCVSerializer {
 
     public OpenCVSerializer() {
-        
+
     }
-    
-    static public void serializeOperations( ArrayList<OpenCVOperation> operationList, String saveFilePath ) {
+
+    static public void serializeOperations(ArrayList<OpenCVOperation> operationList, String saveFilePath) {
         try {
             FileOutputStream fileOut = new FileOutputStream(saveFilePath);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(operationList);
             out.close();
             fileOut.close();
-            System.out.printf("Operations data serialized in " + saveFilePath );
+            System.out.printf("Operations data serialized in " + saveFilePath);
          } catch (IOException i) {
             i.printStackTrace();
          }
     }
-    
-    static public void deserializeOperations( String loadFilePath ) {
+
+    static public void deserializeOperations(String loadFilePath) {
         ArrayList<OpenCVOperation> operationsList = null;
         try {
            FileInputStream fileIn = new FileInputStream(loadFilePath);
@@ -44,13 +44,13 @@ public class OpenCVSerializer {
            c.printStackTrace();
            return;
         }
-        
+
         System.out.println("Deserialized operations list:");
         System.out.println(operationsList);
         System.out.println("Length:" + operationsList.size());
-        
-        for( OpenCVOperation op : operationsList ) {
-            Helper.getWebcamHarnessWindow().getListManager().addOperation( op );
+
+        for(OpenCVOperation op : operationsList) {
+            Helper.getWebcamHarnessWindow().getListManager().addOperation( op);
             op.createNewOutputMat();
         }
     }

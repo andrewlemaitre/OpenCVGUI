@@ -17,12 +17,12 @@ import passableTypes.IntegerFlag;
 
 public class BlurOperation extends OpenCVOperation {
 
-    /** Generated serial ID */
+    /** Generated serial id. */
     private static final long serialVersionUID = 4200928567269729796L;
-    Dimension2D kernelSize = new Dimension( 1, 1 );
+    Dimension2D kernelSize = new Dimension(1, 1);
     Dimension2D anchorPoint = new Dimension(-1,-1);
     IntegerFlag borderType = new IntegerFlag();
-    
+
     public BlurOperation() {
         super();
         this.setOperationName("Blur Operation");
@@ -42,11 +42,11 @@ public class BlurOperation extends OpenCVOperation {
         OperationDialogBox odb = new OperationDialogBox();
         odb.addTextBox("Op Name", "Blur Operation", this.getOperationNameObject());
 
-        odb.addSourceMatSelector("Input Operation", this );
-        
-        odb.add2DDimension("Kernel Size", kernelSize, getKernelSizeXModel(), getKernelSizeYModel(), false );
+        odb.addSourceMatSelector("Input Operation", this);
+
+        odb.add2DDimension("Kernel Size", kernelSize, getKernelSizeXModel(), getKernelSizeYModel(), false);
         odb.add2DDimension("Anchor Point", anchorPoint, getAnchorXModel(), getAnchorYModel(), false);
-        
+
         IntegerFlag[] borderTypeList = {
           new IntegerFlag("BORDER_CONSTANT",Core.BORDER_CONSTANT),
           new IntegerFlag("BORDER_REPLICATE",Core.BORDER_REPLICATE),
@@ -59,47 +59,47 @@ public class BlurOperation extends OpenCVOperation {
           new IntegerFlag("BORDER_ISOLATED",Core.BORDER_ISOLATED),
         };
         odb.addComboBox("Border Type", borderTypeList, borderType);
-        
+
         odb.addTextBox("Output Name", "Blur Output", this.getOutputNameObject());
         return odb.getDialog();
     }
 
     @Override
     public void performOperation() {
-        if( isValid() == false )
+        if(isValid() == false)
             return;
         Point anchor = new Point(anchorPoint.getWidth(), anchorPoint.getHeight());
-        Size ksize = new Size( kernelSize.getWidth(), kernelSize.getHeight() );
+        Size ksize = new Size(kernelSize.getWidth(), kernelSize.getHeight());
         Imgproc.blur(getInputMat(), getOutputMat(), ksize, anchor, borderType.getValue());
     }
 
     @Override
     public boolean isValid() {
-        if( getInputOperation() == null )
+        if(getInputOperation() == null)
             return false;
         return true;
     }
-    
+
     private SpinnerNumberModel getKernelSizeXModel() {
-        SpinnerNumberModel model = new SpinnerNumberModel( 1, 1, null, 1 );
-        model.setValue( (int)kernelSize.getWidth() );
+        SpinnerNumberModel model = new SpinnerNumberModel(1, 1, null, 1);
+        model.setValue((int)kernelSize.getWidth());
         return model;
     }    
     private SpinnerNumberModel getKernelSizeYModel() {
-        SpinnerNumberModel model = new SpinnerNumberModel( 1, 1, null, 1 );
-        model.setValue( (int)kernelSize.getHeight() );
+        SpinnerNumberModel model = new SpinnerNumberModel(1, 1, null, 1);
+        model.setValue((int)kernelSize.getHeight());
         return model;
     }
-    
+
     private SpinnerNumberModel getAnchorXModel() {
-        SpinnerNumberModel model = new SpinnerNumberModel( -1, -1, null, 1 );
-        model.setValue( (int)anchorPoint.getWidth() );
+        SpinnerNumberModel model = new SpinnerNumberModel(-1, -1, null, 1);
+        model.setValue((int)anchorPoint.getWidth());
         return model;
     }
-    
+
     private SpinnerNumberModel getAnchorYModel() {
-        SpinnerNumberModel model = new SpinnerNumberModel( -1, -1, null, 1 );
-        model.setValue( (int)anchorPoint.getHeight() );
+        SpinnerNumberModel model = new SpinnerNumberModel(-1, -1, null, 1);
+        model.setValue((int)anchorPoint.getHeight());
         return model;
     }
 }

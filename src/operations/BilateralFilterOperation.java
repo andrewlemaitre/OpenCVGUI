@@ -14,13 +14,13 @@ import passableTypes.PassableInt;
 
 public class BilateralFilterOperation extends OpenCVOperation {
 
-    /** Generated serial ID */
+    /** Generated serial id. */
     private static final long serialVersionUID = -1227250091069625529L;
     PassableInt filterSize = new PassableInt(1);
     PassableDouble sigmaColor = new PassableDouble(0d);
     PassableDouble sigmaSpace = new PassableDouble(0d);
     IntegerFlag borderType = new IntegerFlag();
-    
+
     public BilateralFilterOperation() {
         super();
         this.setOperationName("Bilateral Filter Operation");
@@ -40,12 +40,12 @@ public class BilateralFilterOperation extends OpenCVOperation {
         OperationDialogBox odb = new OperationDialogBox();
         odb.addTextBox("Op Name", "Bilateral Filter Operation", this.getOperationNameObject());
 
-        odb.addSourceMatSelector("Input Operation", this );
-        
-        odb.add1DDimension("Filter Size", filterSize, getFilterSizeModel() );
-        odb.add1DDimension("Sigma Color", sigmaColor, getSigmaColorModel() );
-        odb.add1DDimension("Sigma Space", sigmaSpace, getSigmaSpaceModel() );
-        
+        odb.addSourceMatSelector("Input Operation", this);
+
+        odb.add1DDimension("Filter Size", filterSize, getFilterSizeModel());
+        odb.add1DDimension("Sigma Color", sigmaColor, getSigmaColorModel());
+        odb.add1DDimension("Sigma Space", sigmaSpace, getSigmaSpaceModel());
+
         IntegerFlag[] borderTypeList = {
           new IntegerFlag("BORDER_CONSTANT",Core.BORDER_CONSTANT),
           new IntegerFlag("BORDER_REPLICATE",Core.BORDER_REPLICATE),
@@ -58,45 +58,45 @@ public class BilateralFilterOperation extends OpenCVOperation {
           new IntegerFlag("BORDER_ISOLATED",Core.BORDER_ISOLATED),
         };
         odb.addComboBox("Border Type", borderTypeList, borderType);
-        
+
         odb.addTextBox("Output Name", "Bilateral Filter Output", this.getOutputNameObject());
         return odb.getDialog();
     }
 
     @Override
     public void performOperation() {
-        if( isValid() == false )
+        if(isValid() == false)
             return;
-        
+
         Imgproc.bilateralFilter(getInputMat(), 
                                 getOutputMat(), 
                                 filterSize.getValue(), 
                                 sigmaColor.getValue(), 
-                                sigmaSpace.getValue() );
+                                sigmaSpace.getValue());
     }
 
     @Override
     public boolean isValid() {
-        if( getInputOperation() == null )
+        if(getInputOperation() == null)
             return false;
         return true;
     }
-    
+
     private SpinnerNumberModel getFilterSizeModel() {
-        SpinnerNumberModel model = new SpinnerNumberModel( 1, 1, null, 1 );
-        model.setValue( (int)filterSize.getValue() );
+        SpinnerNumberModel model = new SpinnerNumberModel(1, 1, null, 1);
+        model.setValue((int)filterSize.getValue());
         return model;
     }    
-    
+
     private SpinnerNumberModel getSigmaColorModel() {
-        SpinnerNumberModel model = new SpinnerNumberModel( 0d, 0d, null, 1d );
-        model.setValue( sigmaColor.getValue() );
+        SpinnerNumberModel model = new SpinnerNumberModel(0d, 0d, null, 1d);
+        model.setValue(sigmaColor.getValue());
         return model;
     }
-    
+
     private SpinnerNumberModel getSigmaSpaceModel() {
-        SpinnerNumberModel model = new SpinnerNumberModel( 0d, 0d, null, 1d );
-        model.setValue( sigmaSpace.getValue() );
+        SpinnerNumberModel model = new SpinnerNumberModel(0d, 0d, null, 1d);
+        model.setValue(sigmaSpace.getValue());
         return model;
     }
 

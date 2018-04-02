@@ -12,13 +12,13 @@ public abstract class IOData<T> {
     public enum IOType {
         INPUT, OUTPUT
     }
-    
+
     private T data;
     private String name;
     private OpenCVOperation origin;
     private IOType ioType;
 
-    public IOData(final OpenCVOperation origin, String name, IOType ioType ) {
+    public IOData(final OpenCVOperation origin, String name, IOType ioType) {
         this.setOrigin(origin);
         this.setName(name);
         this.ioType = ioType;
@@ -31,11 +31,11 @@ public abstract class IOData<T> {
     public OpenCVOperation getOrigin() {
         return origin;
     }
-    
+
     public String getName() {
         return name;
     }
-    
+
     public IOType getIOType() {
         return ioType;
     }
@@ -43,24 +43,24 @@ public abstract class IOData<T> {
     private void setOrigin(final OpenCVOperation origin) {
         this.origin = origin;
     }
-    
-    private void setName( final String name ) {
+
+    private void setName(final String name) {
         this.name = name;
     }
-    
-    protected void setData( T data ) {
+
+    protected void setData(T data) {
         this.data = data;
     }
 
-    static public class ImageMat extends IOData<Mat> {
-        public ImageMat(final OpenCVOperation origin, IOType ioType ) {
-            super(origin, "Image Mat", ioType );
+    public static class ImageMat extends IOData<Mat> {
+        public ImageMat(final OpenCVOperation origin, IOType ioType) {
+            super(origin, "Image Mat", ioType);
         }
     }
-    
-    static public class ContoursList extends IOData<List<MatOfPoint>> {
+
+    public static class ContoursList extends IOData<List<MatOfPoint>> {
         public ContoursList(final OpenCVOperation origin, IOType ioType) {
-            super(origin, "Contours List", ioType );
+            super(origin, "Contours List", ioType);
         }
     }
 }

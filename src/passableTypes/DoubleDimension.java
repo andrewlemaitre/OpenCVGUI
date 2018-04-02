@@ -3,16 +3,31 @@ package passableTypes;
 import java.awt.geom.Dimension2D;
 import java.io.Serializable;
 
-public class DoubleDimension extends Dimension2D implements Serializable {
+/**
+ * Encapsulates the width and height of an object in double precision. It is not meant for use with Components.
+ * @author Andrew LeMaitre
+ */
+public final class DoubleDimension extends Dimension2D implements Serializable {
 
-    /** Generated serial id */
+    /** Generated serial id. */
     private static final long serialVersionUID = 48830963091945994L;
-    double width;
-    double height;
-    
-    public DoubleDimension() {}
-    
-    public DoubleDimension( double width, double height ) {
+    /** The width value of the DoubleDimension. */
+    private double width;
+    /** The height value of the DoubleDimension. */
+    private double height;
+
+    /** Creates a DoubleDimension with 0 width and 0 height. */
+    public DoubleDimension() {
+        this.width = 0;
+        this.height = 0;
+    }
+
+    /**
+     * Creates a DoubleDimension with preinitialized width and height values.
+     * @param width The width or 'x' value of the dimension.
+     * @param height The height or 'y' value of the dimension.
+     */
+    public DoubleDimension(final double width, final double height) {
         this.width = width;
         this.height = height;
     }
@@ -28,7 +43,7 @@ public class DoubleDimension extends Dimension2D implements Serializable {
     }
 
     @Override
-    public void setSize(double width, double height) {
+    public void setSize(final double width, final double height) {
         this.width = width;
         this.height = height;
     }

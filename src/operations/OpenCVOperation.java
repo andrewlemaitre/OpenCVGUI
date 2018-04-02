@@ -39,39 +39,39 @@ public abstract class OpenCVOperation implements Serializable {
     public OpenCVOperation() {
         ID = r.nextLong();
     }
-    
+
     final public long getID() {
         return ID;
     }
-    
+
     public void createNewOutputMat() {
         outputMat = new Mat();
     }
-    
-    protected final void addDataInput( IOData<?> ioData ) {
-        inputs.add( ioData );
+
+    protected final void addDataInput(IOData<?> ioData) {
+        inputs.add(ioData);
     }
-    
-    protected final void addDataOutput( IOData<?> ioData ) {
-        outputs.add( ioData );
+
+    protected final void addDataOutput(IOData<?> ioData) {
+        outputs.add(ioData);
     }
-    
+
     public final ArrayList<IOData<?>> getInputs() {
         return inputs;
     }
-    
+
     public final ArrayList<IOData<?>> getOutputs() {
         return outputs;
     }
-    
+
     public final ArrayList<OpenCVOperation> getParentOperations() {
         return parentOperations;
     }
-    
+
     public final ArrayList<OpenCVOperation> getChildOperations() {
         return childOperations;
     }
-    
+
     /**
      * @return A new instance (not a clone) of this operation type.
      */
@@ -122,11 +122,11 @@ public abstract class OpenCVOperation implements Serializable {
      * @return The Mat from the OpenCVOperation that supplies this operation with data.
      */
     public final Mat getInputMat() {
-        if( this.inputOperation != null )
+        if(this.inputOperation != null)
             return this.inputOperation.getOutputMat();
         else {
             System.err.println("Input operation is null.");
-            throw( new NullPointerException() );
+            throw(new NullPointerException());
         }
     }
 
@@ -171,34 +171,31 @@ public abstract class OpenCVOperation implements Serializable {
     public final PassableString getOperationNameObject() {
         return this.name;
     }
-    
-    public OpenCVOperationTransferable getTransferable( int originalIndex )
-    {
-        OpenCVOperationTransferable item = new OpenCVOperationTransferable( this, originalIndex );
+
+    public OpenCVOperationTransferable getTransferable(int originalIndex) {
+        OpenCVOperationTransferable item = new OpenCVOperationTransferable(this, originalIndex);
         return item;
     }
-    
+
     public static class OpenCVOperationTransferable implements Transferable {
 
         public static final DataFlavor OPENCV_OPERATION_DATA_FLAVOR = new DataFlavor(OpenCVOperation.class, "Java/OpenCVOperation");
         private OpenCVOperation openCVOperation;
         private int originalIndex;
-        
-        public OpenCVOperationTransferable( OpenCVOperation operation, int originalIndex ) {
+
+        public OpenCVOperationTransferable(OpenCVOperation operation, int originalIndex) {
             this.openCVOperation = operation;
             this.originalIndex = originalIndex;
         }
 
-        public int getOriginalIndex()
-        {
+        public int getOriginalIndex() {
             return originalIndex;
         }
-        
-        public OpenCVOperation getOriginalOperation()
-        {
+
+        public OpenCVOperation getOriginalOperation() {
             return openCVOperation;
         }
-        
+
         @Override
         public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
             return openCVOperation;
@@ -213,7 +210,7 @@ public abstract class OpenCVOperation implements Serializable {
         public boolean isDataFlavorSupported(DataFlavor flavor) {
             return flavor.equals(OPENCV_OPERATION_DATA_FLAVOR);
         }
-        
+
     }
 
 }

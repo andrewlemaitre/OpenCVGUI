@@ -21,150 +21,146 @@ import javax.swing.AbstractAction;
 import java.awt.event.ActionEvent;
 import javax.swing.Action;
 
-
 public class NewOperationDialog extends JDialog {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private final Action action = new SwingAction();
-	JComboBox<OpenCVOperation> comboBox;
-	OpenCVHarnessWindow whw;
-	private final Action closeAction = new CloseAction();
 
-	public NewOperationDialog( JFrame parent )
-	{
-		super(parent);
-		whw = (OpenCVHarnessWindow)parent;
-		setTitle("New Operation");
-		setModal(true);
-		this.setSize(599,258);
-		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		getContentPane().add(scrollPane);
-		
-		JPanel panel_4 = new JPanel();
-		scrollPane.setViewportView(panel_4);
-		panel_4.setLayout(new MigLayout("", "[right][grow]", "[][]"));
-		
-		JLabel lblNewLabel = new JLabel("New label");
-		panel_4.add(lblNewLabel, "cell 0 0");
-		
-		comboBox = new JComboBox<>();
-		comboBox.setRenderer( new MyCellRenderer() );
-		comboBox.addItem( new AdaptiveThresholdOperation() );
-        comboBox.addItem( new AffineTransformOperation() );
-        comboBox.addItem( new BilateralFilterOperation() );
-        comboBox.addItem( new BlurOperation() );
-		comboBox.addItem( new Convolution2DOperation() );
-        comboBox.addItem( new CvtColorOperation() );
-        comboBox.addItem( new DilateOperation() );
-        comboBox.addItem( new DistanceTransformOperation() );
-        comboBox.addItem( new ErodeOperation() );
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    private final Action action = new SwingAction();
+    JComboBox<OpenCVOperation> comboBox;
+    OpenCVHarnessWindow whw;
+    private final Action closeAction = new CloseAction();
+
+    public NewOperationDialog(JFrame parent) {
+        super(parent);
+        whw = (OpenCVHarnessWindow)parent;
+        setTitle("New Operation");
+        setModal(true);
+        this.setSize(599,258);
+        getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
+
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        getContentPane().add(scrollPane);
+
+        JPanel panel_4 = new JPanel();
+        scrollPane.setViewportView(panel_4);
+        panel_4.setLayout(new MigLayout("", "[right][grow]", "[][]"));
+
+        JLabel lblNewLabel = new JLabel("New label");
+        panel_4.add(lblNewLabel, "cell 0 0");
+
+        comboBox = new JComboBox<>();
+        comboBox.setRenderer(new MyCellRenderer());
+        comboBox.addItem(new AdaptiveThresholdOperation());
+        comboBox.addItem(new AffineTransformOperation());
+        comboBox.addItem(new BilateralFilterOperation());
+        comboBox.addItem(new BlurOperation());
+        comboBox.addItem(new Convolution2DOperation());
+        comboBox.addItem(new CvtColorOperation());
+        comboBox.addItem(new DilateOperation());
+        comboBox.addItem(new DistanceTransformOperation());
+        comboBox.addItem(new ErodeOperation());
         comboBox.addItem( new GaussianBlurOperation());
-        comboBox.addItem( new ImReadOperation() );
-        comboBox.addItem( new MedianBlurOperation() );
-        comboBox.addItem( new MorphologyExOperation() );
-        comboBox.addItem( new PerspectiveTransformOperation() );
-        comboBox.addItem( new ResizeOperation() );
-        comboBox.addItem( new RotationOperation() );
-        comboBox.addItem( new ThresholdOperation() );
-        comboBox.addItem( new TranslationOperation() );
-		panel_4.add(comboBox, "cell 1 0");
-		
-		JButton btnNewButton = new JButton("Create");
-		btnNewButton.setAction(action);
-		panel_4.add(btnNewButton, "cell 1 1");
-		
-		JButton btnNewButton_1 = new JButton("Cancel");
-		btnNewButton_1.setAction(closeAction);
-		panel_4.add(btnNewButton_1, "cell 1 1");
-		
-		this.pack();
-	}
-	
-	void createOperation()
-	{
-		OpenCVOperation operation = comboBox.getItemAt(comboBox.getSelectedIndex());
-//		 whw.newOperation( comboBox.getItemAt(comboBox.getSelectedIndex()).clone() );
-		whw.getListManager().addOperation( operation.newOperationCopy());
-	}
+        comboBox.addItem(new ImReadOperation());
+        comboBox.addItem(new MedianBlurOperation());
+        comboBox.addItem(new MorphologyExOperation());
+        comboBox.addItem(new PerspectiveTransformOperation());
+        comboBox.addItem(new ResizeOperation());
+        comboBox.addItem(new RotationOperation());
+        comboBox.addItem(new ThresholdOperation());
+        comboBox.addItem(new TranslationOperation());
+        panel_4.add(comboBox, "cell 1 0");
 
-	class MyCellRenderer extends JLabel implements ListCellRenderer<Object> {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
+        JButton btnNewButton = new JButton("Create");
+        btnNewButton.setAction(action);
+        panel_4.add(btnNewButton, "cell 1 1");
 
-		public MyCellRenderer() {
-			setOpaque(true);
-		}
+        JButton btnNewButton_1 = new JButton("Cancel");
+        btnNewButton_1.setAction(closeAction);
+        panel_4.add(btnNewButton_1, "cell 1 1");
 
-		public Component getListCellRendererComponent(JList<?> list,
-				Object value,
-				int index,
-				boolean isSelected,
-				boolean cellHasFocus) {
+        this.pack();
+    }
 
-			if( value instanceof OpenCVOperation ) {
-				setText( ((OpenCVOperation)value).getOperationName());
-			} else {
-				setText(value.toString());
-			}
+    void createOperation() {
+        OpenCVOperation operation = comboBox.getItemAt(comboBox.getSelectedIndex());
+//         whw.newOperation(comboBox.getItemAt(comboBox.getSelectedIndex()).clone());
+        whw.getListManager().addOperation( operation.newOperationCopy());
+    }
 
+    class MyCellRenderer extends JLabel implements ListCellRenderer<Object> {
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
 
-			Color background;
-			Color foreground;
+        public MyCellRenderer() {
+            setOpaque(true);
+        }
 
-			// check if this cell represents the current DnD drop location
-			JList.DropLocation dropLocation = list.getDropLocation();
-			if (dropLocation != null
-					&& !dropLocation.isInsert()
-					&& dropLocation.getIndex() == index) {
+        public Component getListCellRendererComponent(JList<?> list,
+                Object value,
+                int index,
+                boolean isSelected,
+                boolean cellHasFocus) {
 
-				background = Color.BLACK;
-				foreground = Color.RED;
+            if(value instanceof OpenCVOperation) {
+                setText( ((OpenCVOperation)value).getOperationName());
+            } else {
+                setText(value.toString());
+            }
 
-				// check if this cell is selected
-			} else if (isSelected) {
-				background = Color.WHITE;
-				foreground = Color.BLACK;
+            Color background;
+            Color foreground;
 
-				// unselected, and not the DnD drop location
-			} else {
-				background = new Color( 240, 240, 240 );
-				foreground = Color.BLACK;
-			};
+            // check if this cell represents the current DnD drop location
+            JList.DropLocation dropLocation = list.getDropLocation();
+            if (dropLocation != null
+                    && !dropLocation.isInsert()
+                    && dropLocation.getIndex() == index) {
 
-			setBackground(background);
-			setForeground(foreground);
+                background = Color.BLACK;
+                foreground = Color.RED;
 
-			return this;
-		}
-	}
-	
-	private class SwingAction extends AbstractAction {
-		private static final long serialVersionUID = 1L;
-		public SwingAction() {
-			putValue(NAME, "Create");
-			putValue(SHORT_DESCRIPTION, "Some short description");
-		}
-		public void actionPerformed(ActionEvent e) {
-			createOperation();
-		}
-	}
-	private class CloseAction extends AbstractAction {
-		private static final long serialVersionUID = 1L;
-		public CloseAction() {
-			putValue(NAME, "Close");
-			putValue(SHORT_DESCRIPTION, "Some short description");
-		}
-		public void actionPerformed(ActionEvent e) {
-			dispose();
-		}
-	}
+                // check if this cell is selected
+            } else if (isSelected) {
+                background = Color.WHITE;
+                foreground = Color.BLACK;
+
+                // unselected, and not the DnD drop location
+            } else {
+                background = new Color(240, 240, 240);
+                foreground = Color.BLACK;
+            };
+
+            setBackground(background);
+            setForeground(foreground);
+
+            return this;
+        }
+    }
+
+    private class SwingAction extends AbstractAction {
+        private static final long serialVersionUID = 1L;
+        public SwingAction() {
+            putValue(NAME, "Create");
+            putValue(SHORT_DESCRIPTION, "Some short description");
+        }
+        public void actionPerformed(ActionEvent e) {
+            createOperation();
+        }
+    }
+    private class CloseAction extends AbstractAction {
+        private static final long serialVersionUID = 1L;
+        public CloseAction() {
+            putValue(NAME, "Close");
+            putValue(SHORT_DESCRIPTION, "Some short description");
+        }
+        public void actionPerformed(ActionEvent e) {
+            dispose();
+        }
+    }
 }

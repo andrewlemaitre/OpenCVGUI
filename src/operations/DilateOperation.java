@@ -17,12 +17,12 @@ import passableTypes.PassableInt;
 
 public class DilateOperation extends OpenCVOperation {
 
-    /** Generated serial ID */
+    /** Generated serial id. */
     private static final long serialVersionUID = 726139196898106423L;
-    transient Mat kernel = Mat.ones(1,  1, CvType.CV_32F );
+    transient Mat kernel = Mat.ones(1,  1, CvType.CV_32F);
     Dimension2D anchorPoint = new Dimension(-1,-1);
     PassableInt iterations = new PassableInt(1);
-    
+
     public DilateOperation() {
         super();
         this.setOperationName("Dilate Operation");
@@ -39,47 +39,47 @@ public class DilateOperation extends OpenCVOperation {
     @Override
     public JDialog openDialogBox() {
         OperationDialogBox odb = new OperationDialogBox();
-        odb.addTextBox( "Operation Name", "Dilate Operation", this.getOperationNameObject() );
-        odb.addSourceMatSelector( "Input Operation", this );
-        
+        odb.addTextBox("Operation Name", "Dilate Operation", this.getOperationNameObject());
+        odb.addSourceMatSelector("Input Operation", this);
+
         odb.addKernelBuilder("Kernel", kernel);
         odb.add2DDimension("Anchor", anchorPoint, getAnchorXModel(), getAnchorYModel(), false);
-        odb.add1DDimension("Iterations", iterations, getIterationsModel() );
-        
+        odb.add1DDimension("Iterations", iterations, getIterationsModel());
+
         odb.addTextBox("Output Name", "Dilate Output", this.getOutputNameObject());
         return odb.getDialog();
     }
 
     @Override
     public void performOperation() {
-        if( isValid() == false )
+        if(isValid() == false)
             return;
-        Point anchor = new Point( anchorPoint.getWidth(), anchorPoint.getHeight() );
+        Point anchor = new Point(anchorPoint.getWidth(), anchorPoint.getHeight());
         Imgproc.dilate(getInputMat(), getOutputMat(), kernel, anchor, iterations.getValue());
     }
 
     @Override
     public boolean isValid() {
-        if( getInputOperation() == null )
+        if(getInputOperation() == null)
             return false;
         return true;
     }
 
     private SpinnerNumberModel getAnchorXModel() {
-        SpinnerNumberModel model = new SpinnerNumberModel( -1, -1, null, 1 );
-        model.setValue( (int)anchorPoint.getWidth() );
+        SpinnerNumberModel model = new SpinnerNumberModel(-1, -1, null, 1);
+        model.setValue((int)anchorPoint.getWidth());
         return model;
     }
-    
+
     private SpinnerNumberModel getAnchorYModel() {
-        SpinnerNumberModel model = new SpinnerNumberModel( -1, -1, null, 1 );
-        model.setValue( (int)anchorPoint.getHeight() );
+        SpinnerNumberModel model = new SpinnerNumberModel(-1, -1, null, 1);
+        model.setValue((int)anchorPoint.getHeight());
         return model;
     }
-    
+
     private SpinnerNumberModel getIterationsModel() {
-        SpinnerNumberModel model = new SpinnerNumberModel( 1, 1, null, 1 );
-        model.setValue( (int)iterations.getValue() );
+        SpinnerNumberModel model = new SpinnerNumberModel(1, 1, null, 1);
+        model.setValue((int)iterations.getValue());
         return model;
     }
 

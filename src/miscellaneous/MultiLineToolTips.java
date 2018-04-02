@@ -45,7 +45,7 @@ public final class MultiLineToolTips {
             if (stringPosition + desiredLength < toolTip.length()) {
                 String tipSubstring = toolTip.substring(stringPosition, stringPosition + desiredLength);
                 int lastSpace = tipSubstring.lastIndexOf(' ');
-                if (lastSpace == -1 || lastSpace == 0 ) {
+                if (lastSpace == -1 || lastSpace == 0) {
                     parts.add(toolTip.substring(stringPosition+1, stringPosition + desiredLength));
                     stringPosition += desiredLength;
                 } else {
