@@ -36,7 +36,7 @@ public class CvtColorOperation extends OpenCVOperation {
         OperationDialogBox odb = new OperationDialogBox();
         odb.addTextBox("Op Name", "Convert Color Operation", this.getOperationNameObject());
 
-        odb.addSourceMatSelector("Input Operation", this, outputImg);
+        odb.addSourceMatSelector("Input Operation", this, inputImg);
 
         JPopupMenu popupMenu = createPopupMenu();
         odb.addPopUpMenu("Convert Color Flag", selectedColorConversion, popupMenu);

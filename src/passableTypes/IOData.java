@@ -60,9 +60,14 @@ public abstract class IOData<T> {
     private void setName(final String name) {
         this.name = name;
     }
-
+    
     public void setData(T data) {
         this.data = data;
+    }
+
+    public void setData(T data, OpenCVOperation source) {
+        this.data = data;
+        this.dataSource = source;
     }
 
     public static class ImageMat extends IOData<Mat> {

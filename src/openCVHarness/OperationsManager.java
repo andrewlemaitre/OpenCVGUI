@@ -45,7 +45,9 @@ public class OperationsManager {
 
     public void runOperations() {
         ArrayList<OpenCVOperation> opList = operationsTree.getOperationArrayList();
+        System.out.println("Number of operations to run:" + opList.size() );
         for(OpenCVOperation operation : opList) {
+            System.out.println("Running operation: " + operation );
             operation.performOperation();
         }
     }

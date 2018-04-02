@@ -13,6 +13,8 @@ import javax.swing.JButton;
 import miscellaneous.Helper;
 import openCVHarness.OpenCVHarnessWindow;
 import operations.OpenCVOperation;
+import passableTypes.IOData;
+import passableTypes.IOData.IOType;
 
 import java.awt.Dimension;
 import javax.swing.AbstractAction;
@@ -26,19 +28,23 @@ import javax.swing.Action;
 public class SrcMatSelectorDialog extends JDialog {
 
     private static final long serialVersionUID = 1L;
-    OpenCVOperation parentOperation;
-    DefaultListModel<OpenCVOperation> availableSourceMatsList;
-    JList<OpenCVOperation> list;
+    DefaultListModel<IOData.ImageMat> availableSourceMatsList;
+    JList<IOData.ImageMat> list;
+    IOData.ImageMat imageMat;
     private final Action applySourceAction = new ApplySourceAction();
     private final Action closeAction = new CloseAction();
-
-    public SrcMatSelectorDialog(OpenCVOperation openCVOperation) {
+    
+    public SrcMatSelectorDialog(IOData.ImageMat imageMat) {
         super();
+        this.imageMat = imageMat;
+        initialize();
+    }
+    
+    void initialize() {
         setSize(new Dimension(300, 300));
         setType(Type.UTILITY);
         setModalityType(DEFAULT_MODALITY_TYPE);
         setTitle("Source Mat Selector");
-        parentOperation = openCVOperation;
 
         JPanel panel = new JPanel();
         getContentPane().add(panel, BorderLayout.CENTER);
@@ -71,15 +77,18 @@ public class SrcMatSelectorDialog extends JDialog {
     void populatePanel() {
         OpenCVHarnessWindow whw = Helper.getWebcamHarnessWindow();
         ArrayList<OpenCVOperation> operationsList = whw.getListManager().getOperationsArrayList();
+
+        ArrayList<IOData.ImageMat> list = whw.getListManager().getIODataArrayList( IOData.ImageMat.class, IOType.OUTPUT);
 //        DefaultListModel<OpenCVOperation> imageOpList = whw.getListManager().getOperationsList();
+//        System.out.println(list.size());
         int foundIndex = 0;
-        for(int i = 0; i < operationsList.size(); i++) {
-            if(operationsList.get(i).equals(parentOperation)) {
+        for(int i = 0; i < list.size(); i++) {
+            if(list.get(i).getParent().equals( imageMat.getParent() )) {
                 foundIndex = i;
                 break;
             }
             if(i == operationsList.size()-1) {
-                System.err.println("Parent operation was not found in the operations list.");
+                System.err.println("IOData Image Mat was not found in the list.");
                 return;
             }
         }
@@ -89,7 +98,7 @@ public class SrcMatSelectorDialog extends JDialog {
         }
 
         for(int i = 0; i < foundIndex; i++) {
-            availableSourceMatsList.addElement(operationsList.get(i));
+            availableSourceMatsList.addElement(list.get(i));
         }
     }
 
@@ -102,6 +111,7 @@ public class SrcMatSelectorDialog extends JDialog {
         public void actionPerformed(ActionEvent e) {
             if(list.getSelectedIndex() != -1) {
                 //TODO: Update the IOData.ImgData for the parent operation.
+                imageMat.setData( list.getSelectedValue().getData(), list.getSelectedValue().getParent() );
 //                parentOperation.setInputOperation(list.getSelectedValue());
                 dispose();
             }

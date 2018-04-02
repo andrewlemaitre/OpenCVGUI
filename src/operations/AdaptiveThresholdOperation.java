@@ -27,8 +27,8 @@ public class AdaptiveThresholdOperation extends OpenCVOperation {
         this.setOutputName("Adaptive Threshold Output");
         this.adaptiveMethod.setValue("ADAPTIVE_THRESH_MEAN_C",Imgproc.ADAPTIVE_THRESH_MEAN_C);
         this.thresholdType.setValue("THRESH_BINARY",Imgproc.THRESH_BINARY);
-        inputImg = new IOData.ImageMat(this, "Input Image", IOData.IOType.INPUT);
-        outputImg = new IOData.ImageMat(this, "Output Image", IOData.IOType.OUTPUT);
+        inputImg = new IOData.ImageMat(this, "Ad. Thresh. Input Image", IOData.IOType.INPUT);
+        outputImg = new IOData.ImageMat(this, "Ad. Thresh. Output Image", IOData.IOType.OUTPUT);
         this.addDataInput( inputImg );
         this.addDataOutput( outputImg );
     }
@@ -43,7 +43,7 @@ public class AdaptiveThresholdOperation extends OpenCVOperation {
         OperationDialogBox odb = new OperationDialogBox();
         odb.addTextBox("Operation Name", "Adaptive Threshold Operation", this.getOperationNameObject());
 
-        odb.addSourceMatSelector("Input Operation", this, outputImg);
+        odb.addSourceMatSelector("Input Operation", this, inputImg);
 
         odb.add1DDimension("Max Value", maxValue, getMaxValueModel());
 

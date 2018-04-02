@@ -215,9 +215,9 @@ public class OperationDialogBox {
         addSettingLabel(label);
 
         JButton button = new JButton();
-        if( ioImage != null )    {
+        if( ioImage.getSource() != null )    {
 //            button.setText(openCVOperation.getInputOperation().getOutputName());
-            button.setText("Select Input Operation2.");
+            button.setText(ioImage.getSource().getOperationName());
         } else {
             button.setText("Select Input Operation.");
         }
@@ -228,12 +228,14 @@ public class OperationDialogBox {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                SrcMatSelectorDialog smsd = new SrcMatSelectorDialog(openCVOperation);
+                SrcMatSelectorDialog smsd = new SrcMatSelectorDialog(ioImage);
                 smsd.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosed(final WindowEvent e) {
-                        if(ioImage != null) {
-                            button.setText("Select Input Operation3.");
+                        if(ioImage.getSource() != null) {
+//                            System.out.println(ioImage);
+//                            System.out.println(ioImage.getParent());
+                            button.setText(ioImage.getSource().getOperationName());
 //                            button.setText(openCVOperation.getInputOperation().getOutputName());
                         }
                     }
