@@ -17,12 +17,16 @@ public class ThresholdOperation extends OpenCVOperation {
     PassableInt maxThresholdValue = new PassableInt(255);
     IntegerFlag threshFlag = new IntegerFlag("THRESH_BINARY", Imgproc.THRESH_BINARY);
     IntegerFlag additionalThreshFlag = new IntegerFlag( "NONE", 0);
+    IOData.ImageMat inputImg;
+    IOData.ImageMat outputImg;
 
     public ThresholdOperation() {
         this.setOperationName( "Threshold Operation ");
         this.setOutputName( "Threshold Output ");
-        this.addDataInput( new IOData.ImageMat(this, IOData.IOType.INPUT));
-        this.addDataOutput( new IOData.ImageMat(this, IOData.IOType.OUTPUT));
+        inputImg = new IOData.ImageMat(this, "Input Image", IOData.IOType.INPUT);
+        outputImg = new IOData.ImageMat(this, "Output Image", IOData.IOType.OUTPUT);
+        this.addDataInput( inputImg );
+        this.addDataOutput( outputImg );
     }
 
     @Override
@@ -31,7 +35,7 @@ public class ThresholdOperation extends OpenCVOperation {
         OperationDialogBox odb = new OperationDialogBox();
         odb.addTextBox("Operation Name", "Threshold Name", this.getOperationNameObject());
 
-        odb.addSourceMatSelector("Input Operation", this);
+        odb.addSourceMatSelector("Input Operation", this, outputImg);
         odb.addSliderSetting("Threshold Min", 0, 255, thresholdValue.getValue(), thresholdValue);
         odb.addSliderSetting("Threshold Max", 0, 255, maxThresholdValue.getValue(), maxThresholdValue);
 
@@ -61,11 +65,11 @@ public class ThresholdOperation extends OpenCVOperation {
         if(this.isValid() == false)
             return;
 
-        if(this.getInputOperation().getOutputMat().empty())
+        if(this.inputImg.getData().empty())
             System.err.println("Input mat for threshold operation \"" + this.getOperationName() +"\" is empty. Did you configure the input operation?");
 
-        Imgproc.threshold(this.getInputOperation().getOutputMat(), 
-                this.getOutputMat(), 
+        Imgproc.threshold(this.inputImg.getData(), 
+                this.outputImg.getData(), 
                 thresholdValue.getValue(), 
                 maxThresholdValue.getValue(), 
                 threshFlag.getValue()+additionalThreshFlag.getValue());
@@ -79,7 +83,7 @@ public class ThresholdOperation extends OpenCVOperation {
 
     @Override
     public boolean isValid() {
-        if(getInputOperation() == null || threshFlag == null || additionalThreshFlag == null)
+        if(inputImg.getData().empty() || threshFlag == null || additionalThreshFlag == null)
             return false;
         return true;
     }

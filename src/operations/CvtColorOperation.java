@@ -17,13 +17,17 @@ public class CvtColorOperation extends OpenCVOperation {
     private static final long serialVersionUID = -2059644508847351793L;
     IntegerFlag selectedColorConversion = new IntegerFlag();
     private final int unselectedFlag = -2;
+    IOData.ImageMat inputImg;
+    IOData.ImageMat outputImg;
 
     public CvtColorOperation(){
         this.setOperationName("Convert Color Operation");
         this.setOutputName("Convert Color Output");
         this.selectedColorConversion.setValue(unselectedFlag);
-        this.addDataInput( new IOData.ImageMat(this, IOData.IOType.INPUT));
-        this.addDataOutput( new IOData.ImageMat(this, IOData.IOType.OUTPUT));
+        inputImg = new IOData.ImageMat(this, "Input Image", IOData.IOType.INPUT);
+        outputImg = new IOData.ImageMat(this, "Output Image", IOData.IOType.OUTPUT);
+        this.addDataInput( inputImg );
+        this.addDataOutput( outputImg );
     }
 
     @Override
@@ -32,7 +36,7 @@ public class CvtColorOperation extends OpenCVOperation {
         OperationDialogBox odb = new OperationDialogBox();
         odb.addTextBox("Op Name", "Convert Color Operation", this.getOperationNameObject());
 
-        odb.addSourceMatSelector("Input Operation", this);
+        odb.addSourceMatSelector("Input Operation", this, outputImg);
 
         JPopupMenu popupMenu = createPopupMenu();
         odb.addPopUpMenu("Convert Color Flag", selectedColorConversion, popupMenu);
@@ -46,7 +50,7 @@ public class CvtColorOperation extends OpenCVOperation {
         if(this.isValid() == false)
             return; 
 
-        Imgproc.cvtColor(this.getInputOperation().getOutputMat(), this.getOutputMat(), selectedColorConversion.getValue());
+        Imgproc.cvtColor(this.inputImg.getData(), this.outputImg.getData(), selectedColorConversion.getValue());
     }
 
     @Override
@@ -57,7 +61,7 @@ public class CvtColorOperation extends OpenCVOperation {
 
     @Override
     public boolean isValid() {
-        if(this.getInputOperation() == null || selectedColorConversion.getValue() == unselectedFlag || selectedColorConversion == null)
+        if(inputImg.getData().empty() || selectedColorConversion.getValue() == unselectedFlag || selectedColorConversion == null)
             return false;
         return true;
     }

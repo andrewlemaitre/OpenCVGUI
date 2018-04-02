@@ -13,13 +13,17 @@ public class Convolution2DOperation extends OpenCVOperation {
     /** Generated serial ID*/
     private static final long serialVersionUID = 1251931278856836509L;
     transient Mat kernelData = Mat.ones(1, 1, CvType.CV_32F);
+    IOData.ImageMat inputImg;
+    IOData.ImageMat outputImg;
 
     public Convolution2DOperation() {
         super();
         this.setOperationName("2D Convolution Operation");
         this.setOutputName("2D Convolution Output");
-        this.addDataInput( new IOData.ImageMat(this, IOData.IOType.INPUT));
-        this.addDataOutput( new IOData.ImageMat(this, IOData.IOType.OUTPUT));
+        inputImg = new IOData.ImageMat(this, "Input Image", IOData.IOType.INPUT);
+        outputImg = new IOData.ImageMat(this, "Output Image", IOData.IOType.OUTPUT);
+        this.addDataInput( inputImg );
+        this.addDataOutput( outputImg );
     }
 
     @Override
@@ -32,7 +36,7 @@ public class Convolution2DOperation extends OpenCVOperation {
         OperationDialogBox odb = new OperationDialogBox();
         odb.addTextBox("Op Name", "2D Convolution Operation", this.getOperationNameObject());
 
-        odb.addSourceMatSelector("Input Operation", this);
+        odb.addSourceMatSelector("Input Operation", this, outputImg);
 
         odb.addKernelBuilder("Kernel", kernelData);
 
@@ -45,12 +49,12 @@ public class Convolution2DOperation extends OpenCVOperation {
         if(isValid() == false)
             return;
 
-        Imgproc.filter2D(this.getInputMat(), this.getOutputMat(), -1, kernelData);
+        Imgproc.filter2D(this.inputImg.getData(), this.outputImg.getData(), -1, kernelData);
     }
 
     @Override
     public boolean isValid() {
-        if(getInputOperation() == null)
+        if(inputImg.getData().empty())
             return false;
         return true;
     }

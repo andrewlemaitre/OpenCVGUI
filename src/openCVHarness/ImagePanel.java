@@ -28,10 +28,13 @@ import miscellaneous.Helper;
 import miscellaneous.OperationMenuItem;
 import operations.OpenCVOperation;
 import operations.OpenCVOperation.OpenCVOperationTransferable;
+import passableTypes.IOData;
+import passableTypes.IOData.IOType;
 
 public class ImagePanel {
 
     OpenCVOperation inputOperation = null;
+    IOData.ImageMat inputImage = null;
     ImagePanelOrganizer parentOrganizer;
     DrawingPanel drawingPanel;
 
@@ -88,16 +91,16 @@ public class ImagePanel {
     private JMenu createOperationsJMenu() {
         JMenu newMenu = new JMenu("Select Viewer Input");
 
-//        DefaultListModel<OpenCVOperation> operationsList = Helper.getWebcamHarnessWindow().getListManager().getOperationsList();
-        ArrayList<OpenCVOperation> operationsList = Helper.getWebcamHarnessWindow().getListManager().getOperationsArrayList();
-        for(OpenCVOperation operation : operationsList) {
-            OperationMenuItem newMenuItem = new OperationMenuItem(operation);
+        ArrayList<IOData.ImageMat> imageMatList = 
+                Helper.getWebcamHarnessWindow().getListManager().getIODataArrayList( IOData.ImageMat.class, IOType.OUTPUT );
+        for(IOData.ImageMat imageMat : imageMatList) {
+            OperationMenuItem newMenuItem = new OperationMenuItem(imageMat);
             newMenu.add(newMenuItem);
-            newMenuItem.setText(operation.getOutputName());
+            newMenuItem.setText(imageMat.getName());
 
             //Add a listener to the newMenuItem that will set the inputOperation of this ImagePanel to the selected operation.
             newMenuItem.addActionListener( e -> {
-                inputOperation = newMenuItem.getOpenCVOperation();
+                inputImage = newMenuItem.getImageMat();
                 this.revalidate();
                 this.repaint();
             });
@@ -140,7 +143,7 @@ public class ImagePanel {
             BufferedImage image;
 
             //Set the background color of the imagePanel.
-            if(inputOperation != null) {
+            if(inputImage != null) {
                 drawingPanel.setBackground(new Color( 238, 238, 238));
             } else {
                 drawingPanel.setBackground(new Color( 255, 245, 245));
@@ -148,8 +151,8 @@ public class ImagePanel {
             }
 
             //Convert the Mat of the inputOperation to a bufferedImage.
-            if(inputOperation.getOutputMat() != null && inputOperation.getOutputMat().width() > 0 && inputOperation.getOutputMat().height() > 0) {
-                image = ImagePanel.matToBufferedImage(inputOperation.getOutputMat());
+            if( inputImage != null && !inputImage.getData().empty() && inputImage.getData().width() > 0 && inputImage.getData().height() > 0) {
+                image = ImagePanel.matToBufferedImage(inputImage.getData());
                 drawingPanel.setBackground(new Color( 238, 238, 238));
             } else {
                 return;

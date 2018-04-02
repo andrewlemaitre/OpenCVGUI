@@ -18,13 +18,17 @@ public class TranslationOperation extends OpenCVOperation {
     /** Generated serial id. */
     private static final long serialVersionUID = -2603659127294991627L;
     Dimension offset = new Dimension();
+    IOData.ImageMat inputImg;
+    IOData.ImageMat outputImg;
 
     public TranslationOperation() {
         super();
         this.setOperationName("Translation Operation");
         this.setOutputName("Translation Output");
-        this.addDataInput( new IOData.ImageMat(this, IOData.IOType.INPUT));
-        this.addDataOutput( new IOData.ImageMat(this, IOData.IOType.OUTPUT));
+        inputImg = new IOData.ImageMat(this, "Input Image", IOData.IOType.INPUT);
+        outputImg = new IOData.ImageMat(this, "Output Image", IOData.IOType.OUTPUT);
+        this.addDataInput( inputImg );
+        this.addDataOutput( outputImg );
     }
 
     @Override
@@ -36,7 +40,7 @@ public class TranslationOperation extends OpenCVOperation {
     public JDialog openDialogBox() {
         OperationDialogBox odb = new OperationDialogBox();
         odb.addTextBox("Operation Name", "Translation Operation", this.getOperationNameObject());
-        odb.addSourceMatSelector("Input Operation", this);
+        odb.addSourceMatSelector("Input Operation", this, outputImg);
         odb.add2DDimension("Displacement", offset, getXModel(), getYModel(), false);
         odb.addTextBox("Output Name", "Translation Output", this.getOutputNameObject());
         return odb.getDialog();
@@ -51,15 +55,15 @@ public class TranslationOperation extends OpenCVOperation {
         translationMatrix.put(0, 0, 1f, 0f, offset.getWidth());
         translationMatrix.put(1, 0, 0f, 1f, offset.getHeight());
 
-        int inputWidth = getInputMat().width(),
-            inputHeight = getInputMat().height();
+        int inputWidth = inputImg.getData().width(),
+            inputHeight = inputImg.getData().height();
 
-        Imgproc.warpAffine(getInputMat(), getOutputMat(), translationMatrix, new Size(inputWidth, inputHeight));
+        Imgproc.warpAffine(inputImg.getData(), outputImg.getData(), translationMatrix, new Size(inputWidth, inputHeight));
     }
 
     @Override
     public boolean isValid() {
-        if(this.getInputOperation() == null)
+        if(inputImg.getData().empty())
             return false;
         return true;
     }

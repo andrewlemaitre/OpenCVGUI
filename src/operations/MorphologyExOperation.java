@@ -24,14 +24,19 @@ public class MorphologyExOperation extends OpenCVOperation {
     transient Mat kernel = Mat.ones(1,  1, CvType.CV_32F);
     Dimension2D anchorPoint = new Dimension(-1,-1);
     PassableInt iterations = new PassableInt(1);
+    IOData.ImageMat inputImg;
+    IOData.ImageMat outputImg;
 
     public MorphologyExOperation() {
         super();
         this.setOperationName("MorphologyEx Operation");
         this.setOutputName("MorphologyEx Output");
         operationType.setValue(new IntegerFlag("MORPH_ERODE",Imgproc.MORPH_ERODE));
-        this.addDataInput( new IOData.ImageMat(this, IOData.IOType.INPUT));
-        this.addDataOutput( new IOData.ImageMat(this, IOData.IOType.OUTPUT));
+        
+        inputImg = new IOData.ImageMat(this, "Input Image", IOData.IOType.INPUT);
+        outputImg = new IOData.ImageMat(this, "Output Image", IOData.IOType.OUTPUT);
+        this.addDataInput( inputImg );
+        this.addDataOutput( outputImg );
     }
 
     @Override
@@ -43,7 +48,7 @@ public class MorphologyExOperation extends OpenCVOperation {
     public JDialog openDialogBox() {
         OperationDialogBox odb = new OperationDialogBox();
         odb.addTextBox("Operation Name", "Erode Operation", this.getOperationNameObject());
-        odb.addSourceMatSelector("Input Operation", this);
+        odb.addSourceMatSelector("Input Operation", this, outputImg);
 
         IntegerFlag[] operationTypesList = {
             new IntegerFlag("MORPH_ERODE",Imgproc.MORPH_ERODE),
@@ -70,12 +75,12 @@ public class MorphologyExOperation extends OpenCVOperation {
         if(isValid() == false)
             return;
         Point anchor = new Point(anchorPoint.getWidth(), anchorPoint.getHeight());
-        Imgproc.morphologyEx(getInputMat(), getOutputMat(), operationType.getValue(), kernel, anchor, iterations.getValue());
+        Imgproc.morphologyEx(inputImg.getData(), outputImg.getData(), operationType.getValue(), kernel, anchor, iterations.getValue());
     }
 
     @Override
     public boolean isValid() {
-        if(getInputOperation() == null)
+        if(inputImg.getData().empty())
             return false;
         return true;
     }

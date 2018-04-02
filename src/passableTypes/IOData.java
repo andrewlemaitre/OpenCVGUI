@@ -1,5 +1,6 @@
 package passableTypes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.opencv.core.Mat;
@@ -15,21 +16,33 @@ public abstract class IOData<T> {
 
     private T data;
     private String name;
-    private OpenCVOperation origin;
+    private OpenCVOperation dataParent;
     private IOType ioType;
+    private OpenCVOperation dataSource;
 
-    public IOData(final OpenCVOperation origin, String name, IOType ioType) {
-        this.setOrigin(origin);
+    public IOData(final OpenCVOperation origin, String name, IOType ioType, T data) {
+        this.setParent(origin);
         this.setName(name);
         this.ioType = ioType;
+        this.data = data;
     }
 
     public T getData() {
         return data;
     }
 
-    public OpenCVOperation getOrigin() {
-        return origin;
+    /** Gets the OpenCVOperation that this data belongs to.
+     * @return The operation that this io data belongs to.
+     */
+    public OpenCVOperation getParent() {
+        return dataParent;
+    }
+
+    /** Gets the OpenCVOperation that supplies the data.
+     * @return The operation that provides the input for this.
+     */
+    public OpenCVOperation getSource() {
+        return dataSource;
     }
 
     public String getName() {
@@ -40,27 +53,27 @@ public abstract class IOData<T> {
         return ioType;
     }
 
-    private void setOrigin(final OpenCVOperation origin) {
-        this.origin = origin;
+    private void setParent(final OpenCVOperation origin) {
+        this.dataParent = origin;
     }
 
     private void setName(final String name) {
         this.name = name;
     }
 
-    protected void setData(T data) {
+    public void setData(T data) {
         this.data = data;
     }
 
     public static class ImageMat extends IOData<Mat> {
-        public ImageMat(final OpenCVOperation origin, IOType ioType) {
-            super(origin, "Image Mat", ioType);
+        public ImageMat(final OpenCVOperation origin, final String name, IOType ioType) {
+            super(origin, name, ioType, new Mat());
         }
     }
 
     public static class ContoursList extends IOData<List<MatOfPoint>> {
-        public ContoursList(final OpenCVOperation origin, IOType ioType) {
-            super(origin, "Contours List", ioType);
+        public ContoursList(final OpenCVOperation origin, final String name, IOType ioType) {
+            super(origin, name, ioType, new ArrayList<MatOfPoint>());
         }
     }
 }

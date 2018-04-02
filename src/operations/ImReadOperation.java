@@ -8,7 +8,6 @@ import org.opencv.imgcodecs.Imgcodecs;
 
 import dialogs.OperationDialogBox;
 import passableTypes.IOData;
-import passableTypes.IOData.IOType;
 import passableTypes.IntegerFlag;
 import passableTypes.PassableFile;
 
@@ -18,13 +17,14 @@ public class ImReadOperation extends OpenCVOperation {
     private static final long serialVersionUID = 6526718592030838820L;
     PassableFile passableFile = new PassableFile();
     IntegerFlag ifi = new IntegerFlag();
+    IOData.ImageMat outputImg;
 
     public ImReadOperation() {
         this.setOperationName("Imread Name");
         this.setOutputName("Imread Output");
         this.ifi.setValue("No Flags Set", -2);
-//        this.addDataInput(new IOData.ImageMat( this, IOType.INPUT ));
-        this.addDataOutput(new IOData.ImageMat( this, IOType.OUTPUT ));
+        outputImg = new IOData.ImageMat(this, "ImRead Output Image", IOData.IOType.OUTPUT);
+        this.addDataOutput( outputImg );
     }
 
     @Override
@@ -71,9 +71,9 @@ public class ImReadOperation extends OpenCVOperation {
             return;
         }
         if(flag != -2)
-            this.setOutputMat(Imgcodecs.imread( file.getPath(), flag ));
+            this.outputImg.setData(Imgcodecs.imread( file.getPath(), flag ));
         else
-            this.setOutputMat(Imgcodecs.imread( file.getPath() ));
+            this.outputImg.setData(Imgcodecs.imread( file.getPath() ));
     }
 
     public PassableFile getFile() {

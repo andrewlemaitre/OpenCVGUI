@@ -210,13 +210,14 @@ public class OperationDialogBox {
 
     }
 
-    public final void addSourceMatSelector(final String label, final OpenCVOperation openCVOperation) {
+    public final void addSourceMatSelector(final String label, final OpenCVOperation openCVOperation, IOData.ImageMat ioImage ) {
         addMigRow();
         addSettingLabel(label);
 
         JButton button = new JButton();
-        if(openCVOperation.getInputOperation() != null)    {
-            button.setText(openCVOperation.getInputOperation().getOutputName());
+        if( ioImage != null )    {
+//            button.setText(openCVOperation.getInputOperation().getOutputName());
+            button.setText("Select Input Operation2.");
         } else {
             button.setText("Select Input Operation.");
         }
@@ -231,8 +232,9 @@ public class OperationDialogBox {
                 smsd.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosed(final WindowEvent e) {
-                        if(openCVOperation.getInputOperation() != null) {
-                            button.setText(openCVOperation.getInputOperation().getOutputName());
+                        if(ioImage != null) {
+                            button.setText("Select Input Operation3.");
+//                            button.setText(openCVOperation.getInputOperation().getOutputName());
                         }
                     }
                 });

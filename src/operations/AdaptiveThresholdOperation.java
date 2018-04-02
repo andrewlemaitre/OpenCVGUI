@@ -18,6 +18,8 @@ public class AdaptiveThresholdOperation extends OpenCVOperation {
     PassableInt subtractedConstant = new PassableInt(1);
     IntegerFlag adaptiveMethod = new IntegerFlag();
     IntegerFlag thresholdType = new IntegerFlag();
+    IOData.ImageMat inputImg;
+    IOData.ImageMat outputImg;
 
     public AdaptiveThresholdOperation() {
         super();
@@ -25,8 +27,10 @@ public class AdaptiveThresholdOperation extends OpenCVOperation {
         this.setOutputName("Adaptive Threshold Output");
         this.adaptiveMethod.setValue("ADAPTIVE_THRESH_MEAN_C",Imgproc.ADAPTIVE_THRESH_MEAN_C);
         this.thresholdType.setValue("THRESH_BINARY",Imgproc.THRESH_BINARY);
-        this.addDataInput( new IOData.ImageMat(this, IOData.IOType.INPUT));
-        this.addDataOutput( new IOData.ImageMat(this, IOData.IOType.OUTPUT));
+        inputImg = new IOData.ImageMat(this, "Input Image", IOData.IOType.INPUT);
+        outputImg = new IOData.ImageMat(this, "Output Image", IOData.IOType.OUTPUT);
+        this.addDataInput( inputImg );
+        this.addDataOutput( outputImg );
     }
 
     @Override
@@ -39,7 +43,7 @@ public class AdaptiveThresholdOperation extends OpenCVOperation {
         OperationDialogBox odb = new OperationDialogBox();
         odb.addTextBox("Operation Name", "Adaptive Threshold Operation", this.getOperationNameObject());
 
-        odb.addSourceMatSelector("Input Operation", this);
+        odb.addSourceMatSelector("Input Operation", this, outputImg);
 
         odb.add1DDimension("Max Value", maxValue, getMaxValueModel());
 
@@ -68,9 +72,8 @@ public class AdaptiveThresholdOperation extends OpenCVOperation {
     public void performOperation() {
         if(isValid() == false)
             return;
-
-        Imgproc.adaptiveThreshold(  getInputMat(), 
-                                    getOutputMat(), 
+        Imgproc.adaptiveThreshold(  inputImg.getData(), 
+                                    outputImg.getData(), 
                                     maxValue.getValue(), 
                                     adaptiveMethod.getValue(), 
                                     thresholdType.getValue(), 
@@ -80,7 +83,7 @@ public class AdaptiveThresholdOperation extends OpenCVOperation {
 
     @Override
     public boolean isValid() {
-        if(getInputOperation() == null)
+        if(inputImg.getData().empty())
             return false;
         return true;
     }

@@ -14,12 +14,16 @@ public class DistanceTransformOperation extends OpenCVOperation {
     private static final long serialVersionUID = 1058056779285391129L;
     IntegerFlag distanceType = new IntegerFlag();
     IntegerFlag maskSize = new IntegerFlag();
+    IOData.ImageMat inputImg;
+    IOData.ImageMat outputImg;
 
     public DistanceTransformOperation() {
         this.setOperationName( "Distance Transform Operation ");
         this.setOutputName( "Distance Transform Output ");
-        this.addDataInput( new IOData.ImageMat(this, IOData.IOType.INPUT));
-        this.addDataOutput( new IOData.ImageMat(this, IOData.IOType.OUTPUT));
+        inputImg = new IOData.ImageMat(this, "Input Image", IOData.IOType.INPUT);
+        outputImg = new IOData.ImageMat(this, "Output Image", IOData.IOType.OUTPUT);
+        this.addDataInput( inputImg );
+        this.addDataOutput( outputImg );
     }
 
     //TODO: Add controls to enable both version of DistanceTransform. Maybe.
@@ -27,7 +31,7 @@ public class DistanceTransformOperation extends OpenCVOperation {
     public JDialog openDialogBox() {
         OperationDialogBox odb = new OperationDialogBox();
         odb.addTextBox("Operation Name", "Distance Transform Name", this.getOperationNameObject());
-        odb.addSourceMatSelector("Input Operation", this);
+        odb.addSourceMatSelector("Input Operation", this, outputImg);
 
         IntegerFlag[] distanceTypes = {
                 new IntegerFlag("DIST_USER",Imgproc.DIST_USER),
@@ -57,12 +61,12 @@ public class DistanceTransformOperation extends OpenCVOperation {
         if(this.isValid() == false)
             return;
 
-        if(this.getInputOperation().getOutputMat().empty())
+        if(this.inputImg.getData().empty())
             System.err.println("Input mat for threshold operation \"" + this.getOperationName() +"\" is empty. Did you configure the input operation?");
 
         Imgproc.distanceTransform( 
-                this.getInputOperation().getOutputMat(), 
-                this.getOutputMat(), 
+                this.inputImg.getData(), 
+                this.outputImg.getData(), 
                 distanceType.getValue(), 
                 maskSize.getValue());
 
@@ -77,7 +81,7 @@ public class DistanceTransformOperation extends OpenCVOperation {
 
     @Override
     public boolean isValid() {
-        if(this.getInputOperation() == null || distanceType == null || maskSize == null)
+        if(inputImg.getData().empty() || distanceType == null || maskSize == null)
             return false;
         return true;
     }

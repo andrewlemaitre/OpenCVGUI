@@ -122,15 +122,15 @@ public class OpenCVHarnessWindow extends JFrame {
     }
 
     private void addTestingOperations() {
-        operationsManager.addOperation(new operations.CvtColorOperation());
-        operationsManager.addOperation(new operations.DistanceTransformOperation());
+//        operationsManager.addOperation(new operations.CvtColorOperation());
+//        operationsManager.addOperation(new operations.DistanceTransformOperation());
         ImReadOperation iro = (ImReadOperation) operationsManager.addOperation( new operations.ImReadOperation());
         iro.setOutputName("Image Read test");
         iro.getFile().setValue( new File("C:/Users/lemaitrea/Documents/Skittles_1.jpg"));
-        operationsManager.addOperation(new operations.ResizeOperation());
-        operationsManager.addOperation(new operations.ThresholdOperation());
-        operationsManager.addOperation(new operations.TranslationOperation());
-        operationsManager.addOperation(new operations.RotationOperation());
+//        operationsManager.addOperation(new operations.ResizeOperation());
+//        operationsManager.addOperation(new operations.ThresholdOperation());
+//        operationsManager.addOperation(new operations.TranslationOperation());
+//        operationsManager.addOperation(new operations.RotationOperation());
     }
 
     public OperationsManager getListManager() {

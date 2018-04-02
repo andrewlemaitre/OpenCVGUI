@@ -21,14 +21,18 @@ public class ResizeOperation extends OpenCVOperation {
     Dimension2D absoluteResizeDims = new Dimension(0,0);
     Dimension2D scaleFactorDims = new DoubleDimension(0,0);
     IntegerFlag interpolationFlag = new IntegerFlag();
+    IOData.ImageMat inputImg;
+    IOData.ImageMat outputImg;
 
     public ResizeOperation() {
         super();
         this.setOperationName("Resize Operation");
         this.setOutputName("Resize Output");
         interpolationFlag.setValue("INTER_NEAREST",Imgproc.INTER_NEAREST);
-        this.addDataInput( new IOData.ImageMat(this, IOData.IOType.INPUT));
-        this.addDataOutput( new IOData.ImageMat(this, IOData.IOType.OUTPUT));
+        inputImg = new IOData.ImageMat(this, "Input Image", IOData.IOType.INPUT);
+        outputImg = new IOData.ImageMat(this, "Output Image", IOData.IOType.OUTPUT);
+        this.addDataInput( inputImg );
+        this.addDataOutput( outputImg );
     }
 
     @Override
@@ -42,7 +46,7 @@ public class ResizeOperation extends OpenCVOperation {
         OperationDialogBox odb = new OperationDialogBox();
         odb.addTextBox("Operation Name", "Resize Operation", this.getOutputNameObject());
 
-        odb.addSourceMatSelector("Input Operation", this);
+        odb.addSourceMatSelector("Input Operation", this, outputImg);
         odb.add2DDimension("Absolute Size", absoluteResizeDims, getAbsXNumberModel(), getAbsYNumberModel(), false);
         odb.add2DDimension("Scale Factor", scaleFactorDims, getScaleXNumberModel(), getScaleYNumberModel(), false);
 
@@ -72,13 +76,13 @@ public class ResizeOperation extends OpenCVOperation {
             return;
 
         try {
-            if(this.getInputOperation().getOutputMat().empty()) {
+            if(this.inputImg.getData().empty()) {
                 System.err.println("Input mat for resize operation \"" + this.getOperationName() +"\" is empty. Did you configure the input operation?");
                 return;
             }
             Imgproc.resize(
-                    this.getInputOperation().getOutputMat(), 
-                    this.getOutputMat(), 
+                    this.inputImg.getData(), 
+                    this.outputImg.getData(), 
                     new Size(absoluteResizeDims.getWidth(), absoluteResizeDims.getHeight()), 
                     scaleFactorDims.getWidth(), 
                     scaleFactorDims.getHeight(),
@@ -90,7 +94,7 @@ public class ResizeOperation extends OpenCVOperation {
 
     @Override
     public boolean isValid() {
-        if(this.getInputOperation() == null)
+        if(inputImg.getData().empty())
             return false;
         //If either absolute width or height is greater than 0 and the other is equal to 0, then return false.
         if(( absoluteResizeDims.getWidth() > 0 || absoluteResizeDims.getHeight() > 0) && 

@@ -23,14 +23,18 @@ public class GaussianBlurOperation extends OpenCVOperation {
     PassableDouble sigmaX = new PassableDouble(0d);
     PassableDouble sigmaY = new PassableDouble(0d);
     IntegerFlag borderType = new IntegerFlag();
+    IOData.ImageMat inputImg;
+    IOData.ImageMat outputImg;
 
     public GaussianBlurOperation() {
         super();
         this.setOperationName("Gaussian Blur Operation");
         this.setOutputName("Gaussian Blur Output");
         borderType.setValue( new IntegerFlag("BORDER_CONSTANT",Core.BORDER_CONSTANT));
-        this.addDataInput( new IOData.ImageMat(this, IOData.IOType.INPUT));
-        this.addDataOutput( new IOData.ImageMat(this, IOData.IOType.OUTPUT));
+        inputImg = new IOData.ImageMat(this, "Input Image", IOData.IOType.INPUT);
+        outputImg = new IOData.ImageMat(this, "Output Image", IOData.IOType.OUTPUT);
+        this.addDataInput( inputImg );
+        this.addDataOutput( outputImg );
     }
 
     @Override
@@ -43,7 +47,7 @@ public class GaussianBlurOperation extends OpenCVOperation {
         OperationDialogBox odb = new OperationDialogBox();
         odb.addTextBox("Op Name", "Gaussian Blur Operation", this.getOperationNameObject());
 
-        odb.addSourceMatSelector("Input Operation", this);
+        odb.addSourceMatSelector("Input Operation", this, outputImg);
 
         odb.add2DDimension("Kernel Size", kernelSize, getKernelSizeXModel(), getKernelSizeYModel(), false);
         odb.add1DDimension("Sigma X", sigmaX, getSigmaXModel());
@@ -71,12 +75,12 @@ public class GaussianBlurOperation extends OpenCVOperation {
         if(isValid() == false)
             return;
         Size ksize = new Size(kernelSize.getWidth(), kernelSize.getHeight());        
-        Imgproc.GaussianBlur(getInputMat(), getOutputMat(), ksize, sigmaX.getValue(), sigmaY.getValue(), borderType.getValue());
+        Imgproc.GaussianBlur(inputImg.getData(), outputImg.getData(), ksize, sigmaX.getValue(), sigmaY.getValue(), borderType.getValue());
     }
 
     @Override
     public boolean isValid() {
-        if(getInputOperation() == null)
+        if(inputImg.getData().empty())
             return false;
         return true;
     }

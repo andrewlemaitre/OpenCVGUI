@@ -20,14 +20,18 @@ public class BilateralFilterOperation extends OpenCVOperation {
     PassableDouble sigmaColor = new PassableDouble(0d);
     PassableDouble sigmaSpace = new PassableDouble(0d);
     IntegerFlag borderType = new IntegerFlag();
+    IOData.ImageMat inputImg;
+    IOData.ImageMat outputImg;
 
     public BilateralFilterOperation() {
         super();
         this.setOperationName("Bilateral Filter Operation");
         this.setOutputName("Bilateral Filter Output");
         borderType.setValue( new IntegerFlag("BORDER_CONSTANT",Core.BORDER_CONSTANT));
-        this.addDataInput( new IOData.ImageMat(this, IOData.IOType.INPUT));
-        this.addDataOutput( new IOData.ImageMat(this, IOData.IOType.OUTPUT));
+        inputImg = new IOData.ImageMat(this, "Input Image", IOData.IOType.INPUT);
+        outputImg = new IOData.ImageMat(this, "Output Image", IOData.IOType.OUTPUT);
+        this.addDataInput( inputImg );
+        this.addDataOutput( outputImg );
     }
 
     @Override
@@ -40,7 +44,7 @@ public class BilateralFilterOperation extends OpenCVOperation {
         OperationDialogBox odb = new OperationDialogBox();
         odb.addTextBox("Op Name", "Bilateral Filter Operation", this.getOperationNameObject());
 
-        odb.addSourceMatSelector("Input Operation", this);
+        odb.addSourceMatSelector("Input Operation", this, outputImg);
 
         odb.add1DDimension("Filter Size", filterSize, getFilterSizeModel());
         odb.add1DDimension("Sigma Color", sigmaColor, getSigmaColorModel());
@@ -68,8 +72,8 @@ public class BilateralFilterOperation extends OpenCVOperation {
         if(isValid() == false)
             return;
 
-        Imgproc.bilateralFilter(getInputMat(), 
-                                getOutputMat(), 
+        Imgproc.bilateralFilter(inputImg.getData(), 
+                                outputImg.getData(), 
                                 filterSize.getValue(), 
                                 sigmaColor.getValue(), 
                                 sigmaSpace.getValue());
@@ -77,7 +81,7 @@ public class BilateralFilterOperation extends OpenCVOperation {
 
     @Override
     public boolean isValid() {
-        if(getInputOperation() == null)
+        if(inputImg.getData().empty())
             return false;
         return true;
     }

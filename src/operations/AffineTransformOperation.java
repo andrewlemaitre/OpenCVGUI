@@ -25,13 +25,17 @@ public class AffineTransformOperation extends OpenCVOperation {
     Dimension2D point4 = new DoubleDimension();
     Dimension2D point5 = new DoubleDimension();
     Dimension2D point6 = new DoubleDimension();
+    IOData.ImageMat inputImg;
+    IOData.ImageMat outputImg;
 
     public AffineTransformOperation() {
         super();
         this.setOperationName("Affine Tranform Operation");
         this.setOutputName("Affine Tranform Output");
-        this.addDataInput( new IOData.ImageMat(this, IOData.IOType.INPUT));
-        this.addDataOutput( new IOData.ImageMat(this, IOData.IOType.OUTPUT));
+        inputImg = new IOData.ImageMat(this, "Input Image", IOData.IOType.INPUT);
+        outputImg = new IOData.ImageMat(this, "Output Image", IOData.IOType.OUTPUT);
+        this.addDataInput( inputImg );
+        this.addDataOutput( outputImg );
     }
 
     @Override
@@ -43,7 +47,7 @@ public class AffineTransformOperation extends OpenCVOperation {
     public JDialog openDialogBox() {
         OperationDialogBox odb = new OperationDialogBox();
         odb.addTextBox("Operation Name", "Affine Transform Operation", this.getOperationNameObject());
-        odb.addSourceMatSelector("Input Operation", this);
+        odb.addSourceMatSelector("Input Operation", this, outputImg);
         odb.add2DDimension("Point 1", point1, getModel(point1.getWidth()), getModel(point1.getHeight()), false);
         odb.add2DDimension("Point 2", point2, getModel(point2.getWidth()), getModel(point2.getHeight()), false);
         odb.add2DDimension("Point 3", point3, getModel(point3.getWidth()), getModel(point3.getHeight()), false);
@@ -69,7 +73,7 @@ public class AffineTransformOperation extends OpenCVOperation {
         MatOfPoint2f points2 = new MatOfPoint2f(p4, p5, p6);
 
         Mat affineTransform = Imgproc.getAffineTransform(points1, points2);
-        Imgproc.warpAffine(getInputMat(), getOutputMat(), affineTransform, new Size( getInputMat().width(), getInputMat().height()));
+        Imgproc.warpAffine(inputImg.getData(), outputImg.getData(), affineTransform, new Size( inputImg.getData().width(), inputImg.getData().height()));
     }
 
     private Point dimensionToPoint(Dimension2D dim) {
@@ -79,7 +83,7 @@ public class AffineTransformOperation extends OpenCVOperation {
 
     @Override
     public boolean isValid() {
-        if(getInputOperation() == null)
+        if(inputImg.getData().empty())
             return false;
 
         return true;

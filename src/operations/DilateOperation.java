@@ -22,13 +22,17 @@ public class DilateOperation extends OpenCVOperation {
     transient Mat kernel = Mat.ones(1,  1, CvType.CV_32F);
     Dimension2D anchorPoint = new Dimension(-1,-1);
     PassableInt iterations = new PassableInt(1);
+    IOData.ImageMat inputImg;
+    IOData.ImageMat outputImg;
 
     public DilateOperation() {
         super();
         this.setOperationName("Dilate Operation");
         this.setOutputName("Dilate Output");
-        this.addDataInput( new IOData.ImageMat(this, IOData.IOType.INPUT));
-        this.addDataOutput( new IOData.ImageMat(this, IOData.IOType.OUTPUT));
+        inputImg = new IOData.ImageMat(this, "Input Image", IOData.IOType.INPUT);
+        outputImg = new IOData.ImageMat(this, "Output Image", IOData.IOType.OUTPUT);
+        this.addDataInput( inputImg );
+        this.addDataOutput( outputImg );
     }
 
     @Override
@@ -40,7 +44,7 @@ public class DilateOperation extends OpenCVOperation {
     public JDialog openDialogBox() {
         OperationDialogBox odb = new OperationDialogBox();
         odb.addTextBox("Operation Name", "Dilate Operation", this.getOperationNameObject());
-        odb.addSourceMatSelector("Input Operation", this);
+        odb.addSourceMatSelector("Input Operation", this, outputImg);
 
         odb.addKernelBuilder("Kernel", kernel);
         odb.add2DDimension("Anchor", anchorPoint, getAnchorXModel(), getAnchorYModel(), false);
@@ -55,12 +59,12 @@ public class DilateOperation extends OpenCVOperation {
         if(isValid() == false)
             return;
         Point anchor = new Point(anchorPoint.getWidth(), anchorPoint.getHeight());
-        Imgproc.dilate(getInputMat(), getOutputMat(), kernel, anchor, iterations.getValue());
+        Imgproc.dilate(inputImg.getData(), outputImg.getData(), kernel, anchor, iterations.getValue());
     }
 
     @Override
     public boolean isValid() {
-        if(getInputOperation() == null)
+        if(inputImg.getData().empty())
             return false;
         return true;
     }

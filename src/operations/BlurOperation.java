@@ -22,14 +22,18 @@ public class BlurOperation extends OpenCVOperation {
     Dimension2D kernelSize = new Dimension(1, 1);
     Dimension2D anchorPoint = new Dimension(-1,-1);
     IntegerFlag borderType = new IntegerFlag();
+    IOData.ImageMat inputImg;
+    IOData.ImageMat outputImg;
 
     public BlurOperation() {
         super();
         this.setOperationName("Blur Operation");
         this.setOutputName("Blur Output");
         borderType.setValue( new IntegerFlag("BORDER_CONSTANT",Core.BORDER_CONSTANT));
-        this.addDataInput( new IOData.ImageMat(this, IOData.IOType.INPUT));
-        this.addDataOutput( new IOData.ImageMat(this, IOData.IOType.OUTPUT));
+        inputImg = new IOData.ImageMat(this, "Input Image", IOData.IOType.INPUT);
+        outputImg = new IOData.ImageMat(this, "Output Image", IOData.IOType.OUTPUT);
+        this.addDataInput( inputImg );
+        this.addDataOutput( outputImg );
     }
 
     @Override
@@ -42,7 +46,7 @@ public class BlurOperation extends OpenCVOperation {
         OperationDialogBox odb = new OperationDialogBox();
         odb.addTextBox("Op Name", "Blur Operation", this.getOperationNameObject());
 
-        odb.addSourceMatSelector("Input Operation", this);
+        odb.addSourceMatSelector("Input Operation", this, outputImg);
 
         odb.add2DDimension("Kernel Size", kernelSize, getKernelSizeXModel(), getKernelSizeYModel(), false);
         odb.add2DDimension("Anchor Point", anchorPoint, getAnchorXModel(), getAnchorYModel(), false);
@@ -70,12 +74,12 @@ public class BlurOperation extends OpenCVOperation {
             return;
         Point anchor = new Point(anchorPoint.getWidth(), anchorPoint.getHeight());
         Size ksize = new Size(kernelSize.getWidth(), kernelSize.getHeight());
-        Imgproc.blur(getInputMat(), getOutputMat(), ksize, anchor, borderType.getValue());
+        Imgproc.blur(inputImg.getData(), outputImg.getData(), ksize, anchor, borderType.getValue());
     }
 
     @Override
     public boolean isValid() {
-        if(getInputOperation() == null)
+        if(inputImg.getData().empty())
             return false;
         return true;
     }

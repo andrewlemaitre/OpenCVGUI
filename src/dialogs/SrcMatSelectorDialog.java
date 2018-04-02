@@ -101,7 +101,8 @@ public class SrcMatSelectorDialog extends JDialog {
         }
         public void actionPerformed(ActionEvent e) {
             if(list.getSelectedIndex() != -1) {
-                parentOperation.setInputOperation(list.getSelectedValue());
+                //TODO: Update the IOData.ImgData for the parent operation.
+//                parentOperation.setInputOperation(list.getSelectedValue());
                 dispose();
             }
         }

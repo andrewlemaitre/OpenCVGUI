@@ -4,14 +4,19 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
+import miscellaneous.Helper;
 import operations.OpenCVOperation;
 import passableTypes.IOData;
+import passableTypes.IOData.IOType;
 
 public class OperationsTree {
 
@@ -28,6 +33,41 @@ public class OperationsTree {
 
     public void refreshTree() {
         treeModel.reload();
+    }
+
+    public <T> ArrayList<T> getIODataArrayList( Class<T> classType, IOType ioType ) {
+        ArrayList<T> ioDataList = new ArrayList<>();
+        ArrayList<TreeNode> treeNodes = new ArrayList<>();
+        getAllNodes( operationsRootNode, treeNodes );
+        
+        int treeSize = treeNodes.size();
+        for( int i = 0; i < treeSize; i++ ) {
+            
+            TreeNode node = treeNodes.get(i);
+            
+            if( node instanceof IODataNode ) {
+               if(classType.isAssignableFrom(((IODataNode)node).getIOData().getClass())) {
+                   if( ((IODataNode)node).getIOData().getIOType() == ioType || ioType == null ) {
+                       ioDataList.add(classType.cast(((IODataNode) node).getIOData()));
+                   }
+               }
+            }
+        }
+        return ioDataList;
+    }
+    
+    public void getAllNodes( ArrayList<TreeNode> outputList ) {
+        getAllNodes(operationsRootNode, outputList);
+    }
+    
+    private void getAllNodes( TreeNode rootNode, ArrayList<TreeNode> outputList ) {
+        int nodeChildCount = rootNode.getChildCount();
+        TreeNode childNode;
+        for( int i = 0; i < nodeChildCount; i++ ) {
+            childNode = rootNode.getChildAt(i);
+            outputList.add(childNode);
+            getAllNodes(childNode, outputList);
+        }
     }
 
     public ArrayList<OpenCVOperation> getOperationArrayList() {
@@ -55,8 +95,11 @@ public class OperationsTree {
 
     public void addOperation(OpenCVOperation operation) {
       OperationNode opNode = new OperationNode(operation);
-      operationsRootNode.add(opNode);
-      this.refreshTree();
+//      operationsRootNode.add(opNode);
+//      treeModel.nodeChanged(opNode);
+      treeModel.insertNodeInto(opNode, operationsRootNode, operationsRootNode.getChildCount());
+//      this.refreshTree();
+//      operationsTree.expandRow(0);
     }
 
     public Object getSelectedValue() {
@@ -105,15 +148,21 @@ public class OperationsTree {
         public IODataNode(IOData<?> data) {
             this.data = data;
         }
+        
+        public IOData<?> getIOData() {
+            return data;
+        }
 
         @Override
         public String toString() {
             switch(data.getIOType()) {
                 case INPUT: {
-                    return "Input " + data.getName() + ":";
+                    return data.getParent().getOperationName() + " Input";
+//                    return "Input " + data.getName() + ":";
                 }
                 case OUTPUT: {
-                    return "Output " + data.getName();
+                    return data.getParent().getOperationName() + " Output";
+//                    return "Output " + data.getName();
                 }
                 default: {
                     return "IOType error.";
@@ -128,12 +177,19 @@ public class OperationsTree {
             super.mouseReleased(e);
             if ( e.getButton() == MouseEvent.BUTTON3 ) {
                 TreePath path = getOperationsTree().getPathForLocation(e.getX(), e.getY());
-                if( path.getLastPathComponent() instanceof OperationNode ) {
+                if( path == null )
+                    return;
+                else if( path.getLastPathComponent() instanceof OperationNode ) {
                     System.out.println("Clicked operation node.");
-                    //createOperationsMenu();
+                    JPopupMenu popupMenu = new JPopupMenu();
+                    JMenu testMenu = createOperationsJMenu();
+                    popupMenu.add(testMenu);
+                    popupMenu.add( new JMenuItem("Edit"));
+                    popupMenu.add( new JMenuItem("Remove"));
+                    popupMenu.add( new JMenuItem("Copy"));
+                    popupMenu.show(e.getComponent(), e.getX(), e.getY());
                 } else if ( path.getLastPathComponent() instanceof IODataNode ) {
                     System.out.println("Clicked IODataNode.");
-                    //createIODataNode();
                 }
             }
         }
@@ -184,9 +240,9 @@ public class OperationsTree {
 //  }
 //}
     
-//    private JMenu createOperationsJMenu() {
-//        JMenu newMenu = new JMenu("Select Viewer Input");
-//
+    private JMenu createOperationsJMenu() {
+        JMenu newMenu = new JMenu("Select Viewer Input");
+
 ////        DefaultListModel<OpenCVOperation> operationsList = Helper.getWebcamHarnessWindow().getListManager().getOperationsList();
 //        ArrayList<OpenCVOperation> operationsList = Helper.getWebcamHarnessWindow().getListManager().getOperationsArrayList();
 //        for(OpenCVOperation operation : operationsList) {
@@ -201,7 +257,12 @@ public class OperationsTree {
 ////                this.repaint();
 ////            });
 //        }
-//
-//        return newMenu;
-//    }
+
+        JMenuItem testItem = new JMenuItem("Test1");
+        testItem.addActionListener( e -> {
+            Helper.getWebcamHarnessWindow().refreshMainView();
+        });
+        newMenu.add( new JMenuItem("Test1"));
+        return newMenu;
+    }
 }

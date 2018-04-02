@@ -27,13 +27,17 @@ public class PerspectiveTransformOperation extends OpenCVOperation {
     Dimension2D point6 = new DoubleDimension();
     Dimension2D point7 = new DoubleDimension();
     Dimension2D point8 = new DoubleDimension();
+    IOData.ImageMat inputImg;
+    IOData.ImageMat outputImg;
 
     public PerspectiveTransformOperation() {
         super();
         this.setOperationName("Perspective Tranform Operation");
         this.setOutputName("Perspective Tranform Output");
-        this.addDataInput( new IOData.ImageMat(this, IOData.IOType.INPUT));
-        this.addDataOutput( new IOData.ImageMat(this, IOData.IOType.OUTPUT));
+        inputImg = new IOData.ImageMat(this, "Input Image", IOData.IOType.INPUT);
+        outputImg = new IOData.ImageMat(this, "Output Image", IOData.IOType.OUTPUT);
+        this.addDataInput( inputImg );
+        this.addDataOutput( outputImg );
     }
 
     @Override
@@ -45,7 +49,7 @@ public class PerspectiveTransformOperation extends OpenCVOperation {
     public JDialog openDialogBox() {
         OperationDialogBox odb = new OperationDialogBox();
         odb.addTextBox("Operation Name", "Perspective Transform Operation", this.getOperationNameObject());
-        odb.addSourceMatSelector("Input Operation", this);
+        odb.addSourceMatSelector("Input Operation", this, outputImg);
         odb.add2DDimension("Point 1", point1, getModel(point1.getWidth()), getModel(point1.getHeight()), false);
         odb.add2DDimension("Point 2", point2, getModel(point2.getWidth()), getModel(point2.getHeight()), false);
         odb.add2DDimension("Point 3", point3, getModel(point3.getWidth()), getModel(point3.getHeight()), false);
@@ -75,7 +79,7 @@ public class PerspectiveTransformOperation extends OpenCVOperation {
         MatOfPoint2f points2 = new MatOfPoint2f(p5, p6, p7, p8);
 
         Mat perspectiveTransform = Imgproc.getPerspectiveTransform(points1, points2);
-        Imgproc.warpPerspective(getInputMat(), getOutputMat(), perspectiveTransform, new Size( getInputMat().width(), getInputMat().height()));
+        Imgproc.warpPerspective(inputImg.getData(), outputImg.getData(), perspectiveTransform, new Size( inputImg.getData().width(), inputImg.getData().height()));
     }
 
     private Point dimensionToPoint(Dimension2D dim) {
@@ -85,7 +89,7 @@ public class PerspectiveTransformOperation extends OpenCVOperation {
 
     @Override
     public boolean isValid() {
-        if(getInputOperation() == null)
+        if(inputImg.getData().empty())
             return false;
         return true;
     }

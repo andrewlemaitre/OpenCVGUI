@@ -26,10 +26,10 @@ public abstract class OpenCVOperation implements Serializable {
     /** The output name of this operation. */
     private PassableString outputName = new   PassableString();
     /** The OpenCVOperation that this operation will get it's input data from. */
-    private OpenCVOperation inputOperation;
+//    private OpenCVOperation inputOperation;
     /** The Mat that this openCVOperation will put output data in. */
     private long ID;
-    transient private Mat outputMat = new Mat();
+//    transient private Mat outputMat = new Mat();
     transient private static Random r = new Random();
     private ArrayList<IOData<?>> inputs = new ArrayList<IOData<?>>();
     private ArrayList<IOData<?>> outputs = new ArrayList<IOData<?>>();
@@ -44,9 +44,9 @@ public abstract class OpenCVOperation implements Serializable {
         return ID;
     }
 
-    public void createNewOutputMat() {
-        outputMat = new Mat();
-    }
+//    public void createNewOutputMat() {
+//        outputMat = new Mat();
+//    }
 
     protected final void addDataInput(IOData<?> ioData) {
         inputs.add(ioData);
@@ -93,42 +93,42 @@ public abstract class OpenCVOperation implements Serializable {
     /**
      * @return The OpenCVOperation that supplies the input information to this operation.
      */
-    public final OpenCVOperation getInputOperation() {
-        return inputOperation;
-    }
+//    public final OpenCVOperation getInputOperation() {
+//        return inputOperation;
+//    }
 
     /**
      * @param inputOperation The OpenCVOperation that will be used to supply the input information to this operation.
      */
-    public final void setInputOperation(final OpenCVOperation inputOperation) {
-        this.inputOperation = inputOperation;
-    }
+//    public final void setInputOperation(final OpenCVOperation inputOperation) {
+//        this.inputOperation = inputOperation;
+//    }
 
     /**
      * @return The output data from this operation.
      */
-    public final Mat getOutputMat() {
-        return outputMat;
-    }
+//    public final Mat outputImg.getData() {
+//        return outputMat;
+//    }
 
     /**
      * @param m The Mat that this operation's output Mat will be set to.
      */
-    protected final void setOutputMat(final Mat m) {
-        this.outputMat = m;
-    }
+//    protected final void setOutputMat(final Mat m) {
+//        this.outputMat = m;
+//    }
 
     /**
      * @return The Mat from the OpenCVOperation that supplies this operation with data.
      */
-    public final Mat getInputMat() {
-        if(this.inputOperation != null)
-            return this.inputOperation.getOutputMat();
-        else {
-            System.err.println("Input operation is null.");
-            throw(new NullPointerException());
-        }
-    }
+//    public final Mat inputImg.getData() {
+//        if(this.inputOperation != null)
+//            return this.inputOperation.outputImg.getData();
+//        else {
+//            System.err.println("Input operation is null.");
+//            throw(new NullPointerException());
+//        }
+//    }
 
     /**
      * @param outputName The String that this operation's output name will be set to.

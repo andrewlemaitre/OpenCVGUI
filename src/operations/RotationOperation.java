@@ -22,13 +22,17 @@ public class RotationOperation extends OpenCVOperation {
     Dimension2D centerOfRotation = new DoubleDimension();
     PassableDouble angle = new PassableDouble();
     PassableDouble scale = new PassableDouble();
+    IOData.ImageMat inputImg;
+    IOData.ImageMat outputImg;
 
     public RotationOperation() {
         super();
         this.setOperationName("Rotation Operation");
         this.setOutputName("Rotation Output");
-        this.addDataInput( new IOData.ImageMat(this, IOData.IOType.INPUT));
-        this.addDataOutput( new IOData.ImageMat(this, IOData.IOType.OUTPUT));
+        inputImg = new IOData.ImageMat(this, "Input Image", IOData.IOType.INPUT);
+        outputImg = new IOData.ImageMat(this, "Output Image", IOData.IOType.OUTPUT);
+        this.addDataInput( inputImg );
+        this.addDataOutput( outputImg );
     }
 
     @Override
@@ -40,7 +44,7 @@ public class RotationOperation extends OpenCVOperation {
     public JDialog openDialogBox() {
         OperationDialogBox odb = new OperationDialogBox();
         odb.addTextBox("Operation Name", "Rotation Operation", this.getOperationNameObject());
-        odb.addSourceMatSelector("Input Operation", this);
+        odb.addSourceMatSelector("Input Operation", this, outputImg);
         odb.add1DDimension("Angle", angle, getAngleModel());
         odb.add1DDimension("Scale", scale, getScaleModel());
         odb.add2DDimension("Center of Rotation", centerOfRotation, getCRXModel(), getCRYModel(), false);
@@ -53,14 +57,14 @@ public class RotationOperation extends OpenCVOperation {
         if(isValid() == false)
             return;
         Point COR = new Point(centerOfRotation.getWidth(), centerOfRotation.getHeight());
-        Mat inputMat = this.getInputMat();
+        Mat inputMat = this.inputImg.getData();
         Mat rotationMatrix = Imgproc.getRotationMatrix2D(COR, angle.getValue(), scale.getValue());
-        Imgproc.warpAffine(inputMat, this.getOutputMat(), rotationMatrix, new Size(inputMat.width(), inputMat.height()));
+        Imgproc.warpAffine(inputMat, this.outputImg.getData(), rotationMatrix, new Size(inputMat.width(), inputMat.height()));
     }
 
     @Override
     public boolean isValid() {
-        if(getInputOperation() == null)
+        if(inputImg.getData().empty())
             return false;
         return true;
     }

@@ -9,6 +9,7 @@ import javax.swing.JTree;
 import miscellaneous.Helper;
 import openCVHarness.OperationsTree.OperationNode;
 import operations.OpenCVOperation;
+import passableTypes.IOData.IOType;
 
 public class OperationsManager {
 
@@ -24,6 +25,10 @@ public class OperationsManager {
     public OpenCVOperation addOperation(OpenCVOperation operation) {
         operationsTree.addOperation(operation);
         return operation;
+    }
+    
+    public <T> ArrayList<T> getIODataArrayList(Class<T> classType, IOType ioType) {
+        return operationsTree.getIODataArrayList(classType, ioType);
     }
 
     public ArrayList<OpenCVOperation> getOperationsArrayList() {
