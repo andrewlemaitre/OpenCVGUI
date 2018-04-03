@@ -1,5 +1,6 @@
 package openCVHarness;
 
+import java.awt.MouseInfo;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -51,27 +52,31 @@ public class OperationsManager {
             operation.performOperation();
         }
     }
+    
+    static public void editOperation(OpenCVOperation operation) {
+        JDialog dialog = operation.openDialogBox();
+
+        dialog.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                Helper.getWebcamHarnessWindow().refreshMainView();
+            }
+        });
+
+        dialog.pack();
+        java.awt.Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
+        mouseLocation.x -= dialog.getWidth()/2;
+        mouseLocation.y -= dialog.getHeight()/2;
+        
+        dialog.setLocationRelativeTo(Helper.getWebcamHarnessWindow());
+        dialog.setLocation(mouseLocation);
+        dialog.setVisible(true);
+    }
 
     public void editSelectedOperation() {
         Object object = operationsTree.getSelectedValue();
         if(object instanceof OperationNode) {
-            OpenCVOperation selectedOperation = ((OperationNode)object).getOperation();
-            if(selectedOperation != null) {
-                JDialog dialog = selectedOperation.openDialogBox();
-
-                dialog.addWindowListener(new WindowAdapter() {
-                    @Override
-                    public void windowClosed(WindowEvent e) {
-                        Helper.getWebcamHarnessWindow().refreshMainView();
-                    }
-                });
-
-                dialog.setLocationRelativeTo(Helper.getWebcamHarnessWindow());
-                dialog.setVisible(true);
-                dialog.pack();
-            } else {
-                System.err.println("Edit operation failed because no operation is selected");
-            }
+            OperationsManager.editOperation( ((OperationNode)object).getOperation());
         } else {
             System.err.println("Selected item is not an operation.");
         }

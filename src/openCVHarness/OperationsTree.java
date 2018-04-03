@@ -14,6 +14,7 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import miscellaneous.Helper;
+import openCVHarness.OperationsTree.OperationNode;
 import operations.OpenCVOperation;
 import passableTypes.IOData;
 import passableTypes.IOData.IOType;
@@ -184,9 +185,25 @@ public class OperationsTree {
                     JPopupMenu popupMenu = new JPopupMenu();
                     JMenu testMenu = createOperationsJMenu();
                     popupMenu.add(testMenu);
-                    popupMenu.add( new JMenuItem("Edit"));
-                    popupMenu.add( new JMenuItem("Remove"));
-                    popupMenu.add( new JMenuItem("Copy"));
+                    
+                    //Create edit menu item
+                    JMenuItem editMenu = new JMenuItem("Edit");
+                    editMenu.addActionListener( evt -> OperationsManager.editOperation(((OperationNode)path.getLastPathComponent()).getOperation()));
+                    popupMenu.add(editMenu);
+                    
+                    //Create remove menu item
+                    JMenuItem removeMenu = new JMenuItem("Remove");
+                    removeMenu.addActionListener( evt -> treeModel.removeNodeFromParent((OperationNode) path.getLastPathComponent()));
+                    popupMenu.add(removeMenu);
+                    
+                    //Create copy menu item
+                    JMenuItem copyMenu = new JMenuItem("Copy");
+                    copyMenu.addActionListener( evt -> {
+                        OpenCVOperation newOperation = ((OperationNode)path.getLastPathComponent()).getOperation().newOperationCopy();
+                        OperationsTree.this.addOperation(newOperation);
+                    });
+                    popupMenu.add(copyMenu);
+                    
                     popupMenu.show(e.getComponent(), e.getX(), e.getY());
                 } else if ( path.getLastPathComponent() instanceof IODataNode ) {
                     System.out.println("Clicked IODataNode.");
@@ -241,7 +258,7 @@ public class OperationsTree {
 //}
     
     private JMenu createOperationsJMenu() {
-        JMenu newMenu = new JMenu("Select Viewer Input");
+        JMenu newMenu = new JMenu("Inputs");
 
 ////        DefaultListModel<OpenCVOperation> operationsList = Helper.getWebcamHarnessWindow().getListManager().getOperationsList();
 //        ArrayList<OpenCVOperation> operationsList = Helper.getWebcamHarnessWindow().getListManager().getOperationsArrayList();
@@ -258,11 +275,11 @@ public class OperationsTree {
 ////            });
 //        }
 
-        JMenuItem testItem = new JMenuItem("Test1");
+        JMenuItem testItem = new JMenuItem("Not yet implemented");
         testItem.addActionListener( e -> {
             Helper.getWebcamHarnessWindow().refreshMainView();
         });
-        newMenu.add( new JMenuItem("Test1"));
+        newMenu.add(testItem);
         return newMenu;
     }
 }
