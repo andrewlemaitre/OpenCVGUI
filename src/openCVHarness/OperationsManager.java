@@ -1,5 +1,6 @@
 package openCVHarness;
 
+import java.awt.Dimension;
 import java.awt.MouseInfo;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -65,11 +66,9 @@ public class OperationsManager {
 
         dialog.pack();
         java.awt.Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
-        mouseLocation.x -= dialog.getWidth()/2;
-        mouseLocation.y -= dialog.getHeight()/2;
-        
-        dialog.setLocationRelativeTo(Helper.getWebcamHarnessWindow());
-        dialog.setLocation(mouseLocation);
+        java.awt.Point dialogLocation = new java.awt.Point( mouseLocation.x - dialog.getWidth()/2, mouseLocation.y - dialog.getHeight()/2 );
+        java.awt.Point p = Helper.fitRectangleInScreen(dialogLocation, new Dimension(dialog.getWidth(), dialog.getHeight()));
+        dialog.setLocation(p);
         dialog.setVisible(true);
     }
 
@@ -126,51 +125,6 @@ public class OperationsManager {
 //            setForeground(foreground);
 //            
 //            return this;
-//            
-//        }
-//    }
-
-//    //TODO: Make edit operations here and on the button call a editOperation(int i) function so we have a common code base for creating edit dialogs, showing them and packing them.
-//    private class ImageOperationsListListener extends MouseAdapter {
-//        @Override
-//        public void mouseClicked(MouseEvent evt) {
-//            
-//            JList<?> list = (JList<?>)evt.getSource();
-//            
-//            //If the click count is equal to two and we have clicked the left mouse button.
-//            if (evt.getClickCount() == 2 && evt.getButton() == MouseEvent.BUTTON1) {
-//                int index = list.locationToIndex(evt.getPoint());
-//                if(index >= 0) {
-//                    JDialog odb = operationsList.getElementAt(index).openDialogBox();
-//                    odb.pack();
-//                    java.awt.Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
-//                    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-//                    int x, y;
-//                    
-//                    if(mouseLocation.x + odb.getWidth() > screenSize.getWidth()) {
-//                        x = (int)screenSize.getWidth()-odb.getWidth();
-//                    } else {
-//                        x = mouseLocation.x;
-//                    }
-//                    
-//                    if(mouseLocation.y + odb.getHeight() > screenSize.getHeight()) {
-//                        y = (int)screenSize.getHeight()-odb.getHeight();
-//                    } else {
-//                        y = mouseLocation.y;
-//                    }
-//                        odb.setLocation(x, y);
-//                        
-//                    odb.setVisible(true);
-//                }
-//            } else if (list.locationToIndex(evt.getPoint()) >= 0 && evt.getButton() == MouseEvent.BUTTON3) {
-//                int selectedIndex = list.locationToIndex(evt.getPoint());
-//                
-//                JPopupMenu jpm = new JPopupMenu();
-//                JMenu inputOperationsMenu = getInputOperationsForPopupMenu(selectedIndex);
-//                jpm.add(inputOperationsMenu);
-//                
-//                jpm.show( evt.getComponent(), evt.getX(), evt.getY());
-//            }
 //            
 //        }
 //    }
