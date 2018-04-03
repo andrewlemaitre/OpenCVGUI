@@ -76,7 +76,7 @@ public class SrcMatSelectorDialog extends JDialog {
 
     void populatePanel() {
         OpenCVHarnessWindow whw = Helper.getWebcamHarnessWindow();
-        ArrayList<OpenCVOperation> operationsList = whw.getListManager().getOperationsArrayList();
+//        ArrayList<OpenCVOperation> operationsList = whw.getListManager().getOperationsArrayList();
 
         ArrayList<IOData.ImageMat> list = whw.getListManager().getIODataArrayList( IOData.ImageMat.class, IOType.OUTPUT);
 //        DefaultListModel<OpenCVOperation> imageOpList = whw.getListManager().getOperationsList();
@@ -87,7 +87,7 @@ public class SrcMatSelectorDialog extends JDialog {
                 foundIndex = i;
                 break;
             }
-            if(i == operationsList.size()-1) {
+            if(i == list.size()-1) {
                 System.err.println("IOData Image Mat was not found in the list.");
                 return;
             }

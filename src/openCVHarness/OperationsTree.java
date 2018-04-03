@@ -206,56 +206,46 @@ public class OperationsTree {
                     
                     popupMenu.show(e.getComponent(), e.getX(), e.getY());
                 } else if ( path.getLastPathComponent() instanceof IODataNode ) {
-                    System.out.println("Clicked IODataNode.");
+                    System.out.println("Clicked iodatanode.");
+                    JPopupMenu popupMenu = new JPopupMenu();
+                    IODataNode node = (IODataNode) path.getLastPathComponent();
+                    if( node.getIOData().getIOType() == IOType.INPUT ) {
+                        System.out.println("data node type of input.");
+                        IOData<?> ioData = node.getIOData();
+                        OpenCVHarnessWindow whw = Helper.getWebcamHarnessWindow();
+                        ArrayList<? extends IOData> list = whw.getListManager().getIODataArrayList( ioData.getClass(), IOType.OUTPUT);
+                        int foundIndex = 0;
+                        for(int i = 0; i < list.size(); i++) {
+                            if( list.get(i).getParent().equals( ioData.getParent() )) {
+                                foundIndex = i;
+                                break;
+                            }
+                            if(i == list.size()-1) {
+                                System.err.println("IOData Image Mat was not found in the list.");
+                                return;
+                            }
+                        }
+                        if(foundIndex == 0) {
+                            System.err.println("Parent operation appears to be first operation in the list.. so there will be no source mats available.");
+                            return;
+                        }
+
+                        JMenu inputMenu = new JMenu("inputMenu");
+                        
+                        for(int i = 0; i < foundIndex; i++) {
+                            JMenuItem menuItem = new JMenuItem( list.get(i).getParent().getOperationName() );
+                            IOData<?> iodata = list.get(i);
+                            menuItem.addActionListener( evt -> System.out.println("Clicked " + iodata.getParent().getOperationName()));
+                            inputMenu.add( menuItem );
+                        }
+                        
+                        popupMenu.add(inputMenu);
+                        popupMenu.show(e.getComponent(), e.getX(), e.getY());
+                    }
                 }
             }
         }
     }
-
-////TODO: Make edit operations here and on the button call a editOperation(int i) function so we have a common code base for creating edit dialogs, showing them and packing them.
-//private class ImageOperationsListListener extends MouseAdapter {
-//  @Override
-//  public void mouseClicked(MouseEvent evt) {
-//      
-//      JList<?> list = (JList<?>)evt.getSource();
-//      
-//      //If the click count is equal to two and we have clicked the left mouse button.
-//      if (evt.getClickCount() == 2 && evt.getButton() == MouseEvent.BUTTON1) {
-//          int index = list.locationToIndex(evt.getPoint());
-//          if(index >= 0) {
-//              JDialog odb = operationsList.getElementAt(index).openDialogBox();
-//              odb.pack();
-//              java.awt.Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
-//              Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-//              int x, y;
-//              
-//              if(mouseLocation.x + odb.getWidth() > screenSize.getWidth()) {
-//                  x = (int)screenSize.getWidth()-odb.getWidth();
-//              } else {
-//                  x = mouseLocation.x;
-//              }
-//              
-//              if(mouseLocation.y + odb.getHeight() > screenSize.getHeight()) {
-//                  y = (int)screenSize.getHeight()-odb.getHeight();
-//              } else {
-//                  y = mouseLocation.y;
-//              }
-//                  odb.setLocation(x, y);
-//                  
-//              odb.setVisible(true);
-//          }
-//      } else if (list.locationToIndex(evt.getPoint()) >= 0 && evt.getButton() == MouseEvent.BUTTON3) {
-//          int selectedIndex = list.locationToIndex(evt.getPoint());
-//          
-//          JPopupMenu jpm = new JPopupMenu();
-//          JMenu inputOperationsMenu = getInputOperationsForPopupMenu(selectedIndex);
-//          jpm.add(inputOperationsMenu);
-//          
-//          jpm.show( evt.getComponent(), evt.getX(), evt.getY());
-//      }
-//      
-//  }
-//}
     
     private JMenu createOperationsJMenu() {
         JMenu newMenu = new JMenu("Inputs");
