@@ -48,12 +48,6 @@ public class Helper {
             y = originalPoint.y;
         }
         
-        System.out.println("originalPoint:" + originalPoint);
-        System.out.println("screensize:" + screenSize);
-        System.out.println("mouseX+Width:" + (originalPoint.x + rectDimension.getWidth()));
-        System.out.println("mouseY+Height:" + (originalPoint.y + rectDimension.getHeight()));
-        System.out.println("x,y" + x + "," + y );
-        
         return new java.awt.Point(x,y);
     }
 }
