@@ -2,6 +2,8 @@ package operations;
 
 import javax.swing.JDialog;
 import javax.swing.SpinnerNumberModel;
+
+import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
 import dialogs.OperationDialogBox;
@@ -72,7 +74,8 @@ public class AdaptiveThresholdOperation extends OpenCVOperation {
     public void performOperation() {
         if(isValid() == false)
             return;
-        Imgproc.adaptiveThreshold(  inputImg.getData(), 
+        
+        Imgproc.adaptiveThreshold(  (Mat) inputImg.getIOSource().getData(), 
                                     outputImg.getData(), 
                                     maxValue.getValue(), 
                                     adaptiveMethod.getValue(), 
@@ -83,8 +86,10 @@ public class AdaptiveThresholdOperation extends OpenCVOperation {
 
     @Override
     public boolean isValid() {
+        if(inputImg.getIOSource() == null )
+            return errorMsg( String.format("Adaptive Threshold Op. \"%s\" is not valid because %s data source is null.\n", this.getOperationName(), inputImg.getName()) );
         if(inputImg.getData().empty())
-            return false;
+            return errorMsg( String.format("Adaptive Threshold Op. \"%s\" is not valid because %s getData returned empty.\n", this.getOperationName(), inputImg.getName()));
         return true;
     }
 

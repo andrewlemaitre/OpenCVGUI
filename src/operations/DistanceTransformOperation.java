@@ -31,7 +31,7 @@ public class DistanceTransformOperation extends OpenCVOperation {
     public JDialog openDialogBox() {
         OperationDialogBox odb = new OperationDialogBox();
         odb.addTextBox("Operation Name", "Distance Transform Name", this.getOperationNameObject());
-        odb.addSourceMatSelector("Input Operation", this, outputImg);
+        odb.addSourceMatSelector("Input Operation", this, inputImg);
 
         IntegerFlag[] distanceTypes = {
                 new IntegerFlag("DIST_USER",Imgproc.DIST_USER),
@@ -81,8 +81,14 @@ public class DistanceTransformOperation extends OpenCVOperation {
 
     @Override
     public boolean isValid() {
-        if(inputImg.getData().empty() || distanceType == null || maskSize == null)
-            return false;
+        if(inputImg.getIOSource() == null )
+            return errorMsg( String.format("Distance Transform Op. \"%s\" is not valid because %s data source is null.\n", this.getOperationName(), inputImg.getName()) );
+        if(inputImg.getData().empty())
+            return errorMsg( String.format("Distance Transform Op. \"%s\" is not valid because %s getData returned empty.\n", this.getOperationName(), inputImg.getName()));
+        if(distanceType == null || maskSize == null)
+            return errorMsg( String.format("Distance Transform Op. \"%s\" is not valid because distance type is null.\n", this.getOperationName()));
+        if(maskSize == null)
+            return errorMsg( String.format("Distance Transform Op. \"%s\" is not valid because mask size is null.\n", this.getOperationName()));
         return true;
     }
 

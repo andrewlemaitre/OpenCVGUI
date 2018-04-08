@@ -19,6 +19,7 @@ public abstract class IOData<T> {
     private OpenCVOperation dataParent;
     private IOType ioType;
     private OpenCVOperation dataSource;
+    private IOData dataIOSource;
 
     public IOData(final OpenCVOperation origin, String name, IOType ioType, T data) {
         this.setParent(origin);
@@ -28,7 +29,11 @@ public abstract class IOData<T> {
     }
 
     public T getData() {
-        return data;
+        if( ioType == IOType.INPUT ) {
+            return (T) dataIOSource.getData();
+        } else {
+            return data;
+        }
     }
 
     /** Gets the OpenCVOperation that this data belongs to.
@@ -64,10 +69,14 @@ public abstract class IOData<T> {
     public void setData(T data) {
         this.data = data;
     }
-
-    public void setData(T data, OpenCVOperation source) {
-        this.data = data;
+    
+    public void setDataSource( OpenCVOperation source, IOData sourceIOData) {
         this.dataSource = source;
+        this.dataIOSource = sourceIOData;
+    }
+    
+    public IOData getIOSource() {
+        return this.dataIOSource;
     }
 
     public static class ImageMat extends IOData<Mat> {

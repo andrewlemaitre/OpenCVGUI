@@ -44,7 +44,7 @@ public class BilateralFilterOperation extends OpenCVOperation {
         OperationDialogBox odb = new OperationDialogBox();
         odb.addTextBox("Op Name", "Bilateral Filter Operation", this.getOperationNameObject());
 
-        odb.addSourceMatSelector("Input Operation", this, outputImg);
+        odb.addSourceMatSelector("Input Operation", this, inputImg);
 
         odb.add1DDimension("Filter Size", filterSize, getFilterSizeModel());
         odb.add1DDimension("Sigma Color", sigmaColor, getSigmaColorModel());
@@ -81,8 +81,10 @@ public class BilateralFilterOperation extends OpenCVOperation {
 
     @Override
     public boolean isValid() {
+        if(inputImg.getIOSource() == null )
+            return errorMsg( String.format("Bilateral Transform Op. \"%s\" is not valid because %s data source is null.\n", this.getOperationName(), inputImg.getName()) );
         if(inputImg.getData().empty())
-            return false;
+            return errorMsg( String.format("Bilateral Transform Op. \"%s\" is not valid because %s getData returned empty.\n", this.getOperationName(), inputImg.getName()));
         return true;
     }
 

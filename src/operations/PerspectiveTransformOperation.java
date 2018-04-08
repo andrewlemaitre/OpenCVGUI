@@ -49,7 +49,7 @@ public class PerspectiveTransformOperation extends OpenCVOperation {
     public JDialog openDialogBox() {
         OperationDialogBox odb = new OperationDialogBox();
         odb.addTextBox("Operation Name", "Perspective Transform Operation", this.getOperationNameObject());
-        odb.addSourceMatSelector("Input Operation", this, outputImg);
+        odb.addSourceMatSelector("Input Operation", this, inputImg);
         odb.add2DDimension("Point 1", point1, getModel(point1.getWidth()), getModel(point1.getHeight()), false);
         odb.add2DDimension("Point 2", point2, getModel(point2.getWidth()), getModel(point2.getHeight()), false);
         odb.add2DDimension("Point 3", point3, getModel(point3.getWidth()), getModel(point3.getHeight()), false);

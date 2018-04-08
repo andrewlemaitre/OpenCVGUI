@@ -218,7 +218,6 @@ public class ImagePanel {
                     ArrayList<OpenCVOperation> operationsList = Helper.getWebcamHarnessWindow().getListManager().getOperationsArrayList();
                     for(OpenCVOperation op : operationsList) {
                         if(op.getID() == droppedOperationID) {
-                            System.out.println("importing image panel data");
                             ImagePanel.this.inputOperation = op;
                         }
                     }

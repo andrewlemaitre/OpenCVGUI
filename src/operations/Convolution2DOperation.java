@@ -36,7 +36,7 @@ public class Convolution2DOperation extends OpenCVOperation {
         OperationDialogBox odb = new OperationDialogBox();
         odb.addTextBox("Op Name", "2D Convolution Operation", this.getOperationNameObject());
 
-        odb.addSourceMatSelector("Input Operation", this, outputImg);
+        odb.addSourceMatSelector("Input Operation", this, inputImg);
 
         odb.addKernelBuilder("Kernel", kernelData);
 
@@ -54,8 +54,10 @@ public class Convolution2DOperation extends OpenCVOperation {
 
     @Override
     public boolean isValid() {
+        if(inputImg.getIOSource() == null )
+            return errorMsg( String.format("2D Convolution Op. \"%s\" is not valid because %s data source is null.\n", this.getOperationName(), inputImg.getName()) );
         if(inputImg.getData().empty())
-            return false;
+            return errorMsg( String.format("2D Convolution Op. \"%s\" is not valid because %s getData returned empty.\n", this.getOperationName(), inputImg.getName()));
         return true;
     }
 

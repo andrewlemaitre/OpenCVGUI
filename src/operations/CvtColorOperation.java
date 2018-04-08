@@ -61,9 +61,13 @@ public class CvtColorOperation extends OpenCVOperation {
 
     @Override
     public boolean isValid() {
-        if(inputImg.getData().empty() || selectedColorConversion.getValue() == unselectedFlag || selectedColorConversion == null)
-            return false;
-        return true;
+        if(inputImg.getIOSource() == null )
+            return errorMsg( String.format("Convert Color Op. \"%s\" is not valid because %s data source is null.\n", this.getOperationName(), inputImg.getName()) );
+        if(inputImg.getData().empty())
+            return errorMsg( String.format("Convert Color Op. \"%s\" is not valid because %s getData returned empty.\n", this.getOperationName(), inputImg.getName()));
+        if(selectedColorConversion.getValue() == unselectedFlag )
+            return errorMsg( String.format("Convert Color Op. \"%s\" is not valid because a color conversion type was not selected.\n", this.getOperationName(), inputImg.getName()));
+       return true;
     }
 
     //TODO: Only show menu options that are valid conversion types for the selected input mat.

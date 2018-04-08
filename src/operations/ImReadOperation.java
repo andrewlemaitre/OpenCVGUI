@@ -88,8 +88,12 @@ public class ImReadOperation extends OpenCVOperation {
 
     @Override
     public boolean isValid() {
-        if(passableFile.getValue() == null || passableFile.getValue().exists() == false)
-            return false;
+        if(passableFile.getValue() == null)
+            return errorMsg(String.format("Image Read Op. \"%s\" is not valid because no file is selected.\n", this.getOperationName()));
+        if(passableFile.getValue().exists() == false)
+            return errorMsg(String.format("Image Read Op. \"%s\" is not valid because selected file does not exist.\n"
+                    + "\tSelected file:%s\n", this.getOperationName(), passableFile.getValue().getPath()));
+
         return true;
     }
 }

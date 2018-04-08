@@ -48,7 +48,7 @@ public class MorphologyExOperation extends OpenCVOperation {
     public JDialog openDialogBox() {
         OperationDialogBox odb = new OperationDialogBox();
         odb.addTextBox("Operation Name", "Erode Operation", this.getOperationNameObject());
-        odb.addSourceMatSelector("Input Operation", this, outputImg);
+        odb.addSourceMatSelector("Input Operation", this, inputImg);
 
         IntegerFlag[] operationTypesList = {
             new IntegerFlag("MORPH_ERODE",Imgproc.MORPH_ERODE),
@@ -80,8 +80,10 @@ public class MorphologyExOperation extends OpenCVOperation {
 
     @Override
     public boolean isValid() {
+        if(inputImg.getIOSource() == null )
+            return errorMsg( String.format("Morphology Ex Op. \"%s\" is not valid because %s data source is null.\n", this.getOperationName(), inputImg.getName()) );
         if(inputImg.getData().empty())
-            return false;
+            return errorMsg( String.format("Morphology Ex Op. \"%s\" is not valid because %s getData returned empty.\n", this.getOperationName(), inputImg.getName()));
         return true;
     }
 

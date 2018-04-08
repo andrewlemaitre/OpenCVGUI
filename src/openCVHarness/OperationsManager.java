@@ -47,9 +47,9 @@ public class OperationsManager {
 
     public void runOperations() {
         ArrayList<OpenCVOperation> opList = operationsTree.getOperationArrayList();
-        System.out.println("Number of operations to run:" + opList.size() );
+//        System.out.println("Number of operations to run:" + opList.size() );
         for(OpenCVOperation operation : opList) {
-            System.out.println("Running operation: " + operation );
+//            System.out.println("Running operation: " + operation );
             operation.performOperation();
         }
     }
@@ -83,7 +83,7 @@ public class OperationsManager {
 
     public void removeSelectedOperation() {
         Object object = operationsTree.getSelectedValue();
-        System.out.println("Remove:" + object + ":" + object.getClass());
+//        System.out.println("Remove:" + object + ":" + object.getClass());
         if(object instanceof OperationNode) {
             operationsTree.getTreeModel().removeNodeFromParent( (OperationNode) object);
         }

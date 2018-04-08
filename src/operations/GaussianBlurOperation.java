@@ -47,7 +47,7 @@ public class GaussianBlurOperation extends OpenCVOperation {
         OperationDialogBox odb = new OperationDialogBox();
         odb.addTextBox("Op Name", "Gaussian Blur Operation", this.getOperationNameObject());
 
-        odb.addSourceMatSelector("Input Operation", this, outputImg);
+        odb.addSourceMatSelector("Input Operation", this, inputImg);
 
         odb.add2DDimension("Kernel Size", kernelSize, getKernelSizeXModel(), getKernelSizeYModel(), false);
         odb.add1DDimension("Sigma X", sigmaX, getSigmaXModel());
@@ -80,8 +80,10 @@ public class GaussianBlurOperation extends OpenCVOperation {
 
     @Override
     public boolean isValid() {
+        if(inputImg.getIOSource() == null )
+            return errorMsg( String.format("Gaussian Blur Op. \"%s\" is not valid because %s data source is null.\n", this.getOperationName(), inputImg.getName()) );
         if(inputImg.getData().empty())
-            return false;
+            return errorMsg( String.format("Gaussian Blur Op. \"%s\" is not valid because %s getData returned empty.\n", this.getOperationName(), inputImg.getName()));
         return true;
     }
 

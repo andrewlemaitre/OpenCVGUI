@@ -153,7 +153,6 @@ public class OpenCVHarnessWindow extends JFrame {
             putValue(NAME,"Load Operations");
         }
         public void actionPerformed( ActionEvent e) {
-            System.out.println("Clicked load operations.");
 
             JFileChooser chooser = new JFileChooser();
             chooser.setDialogTitle("Load image operations");
@@ -162,7 +161,6 @@ public class OpenCVHarnessWindow extends JFrame {
 
             if(returnVal == JFileChooser.APPROVE_OPTION) {
                 File loadFile = chooser.getSelectedFile();
-                System.out.println("Save as file " + loadFile.getPath());
                 OpenCVSerializer.deserializeOperations(loadFile.getPath());
             }
         }
@@ -173,7 +171,6 @@ public class OpenCVHarnessWindow extends JFrame {
             putValue(NAME,"Save Operations");
         }
         public void actionPerformed( ActionEvent e) {
-            System.out.println("Clicked save operations.");
 
             JFileChooser chooser = new JFileChooser();
             chooser.setDialogTitle("Save image operations");
@@ -182,7 +179,6 @@ public class OpenCVHarnessWindow extends JFrame {
 
             if(returnVal == JFileChooser.APPROVE_OPTION) {
                 File saveFile = chooser.getSelectedFile();
-                System.out.println("Save as file " + saveFile.getPath());
                 OpenCVSerializer.serializeOperations( operationsManager.getOperationsArrayList(), saveFile.getPath());
             }
         }

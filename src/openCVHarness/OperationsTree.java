@@ -181,7 +181,6 @@ public class OperationsTree {
                 if( path == null )
                     return;
                 else if( path.getLastPathComponent() instanceof OperationNode ) {
-                    System.out.println("Clicked operation node.");
                     JPopupMenu popupMenu = new JPopupMenu();
                     JMenu testMenu = createOperationsJMenu();
                     popupMenu.add(testMenu);
@@ -206,11 +205,9 @@ public class OperationsTree {
                     
                     popupMenu.show(e.getComponent(), e.getX(), e.getY());
                 } else if ( path.getLastPathComponent() instanceof IODataNode ) {
-                    System.out.println("Clicked iodatanode.");
                     JPopupMenu popupMenu = new JPopupMenu();
                     IODataNode node = (IODataNode) path.getLastPathComponent();
                     if( node.getIOData().getIOType() == IOType.INPUT ) {
-                        System.out.println("data node type of input.");
                         IOData<?> ioData = node.getIOData();
                         OpenCVHarnessWindow whw = Helper.getWebcamHarnessWindow();
                         ArrayList<? extends IOData> list = whw.getListManager().getIODataArrayList( ioData.getClass(), IOType.OUTPUT);
@@ -235,7 +232,9 @@ public class OperationsTree {
                         for(int i = 0; i < foundIndex; i++) {
                             JMenuItem menuItem = new JMenuItem( list.get(i).getParent().getOperationName() );
                             IOData<?> iodata = list.get(i);
-                            menuItem.addActionListener( evt -> System.out.println("Clicked " + iodata.getParent().getOperationName()));
+                            menuItem.addActionListener( evt -> {
+                                ioData.setDataSource(iodata.getParent(), iodata);
+                            });
                             inputMenu.add( menuItem );
                         }
                         

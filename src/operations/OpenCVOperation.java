@@ -59,6 +59,11 @@ public abstract class OpenCVOperation implements Serializable {
     public final ArrayList<IOData<?>> getInputs() {
         return inputs;
     }
+    
+    protected boolean errorMsg( String msg ) {
+        System.err.println( msg );
+        return false;
+    }
 
     public final ArrayList<IOData<?>> getOutputs() {
         return outputs;

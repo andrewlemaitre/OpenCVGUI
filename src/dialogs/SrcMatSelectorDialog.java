@@ -76,11 +76,8 @@ public class SrcMatSelectorDialog extends JDialog {
 
     void populatePanel() {
         OpenCVHarnessWindow whw = Helper.getWebcamHarnessWindow();
-//        ArrayList<OpenCVOperation> operationsList = whw.getListManager().getOperationsArrayList();
 
         ArrayList<IOData.ImageMat> list = whw.getListManager().getIODataArrayList( IOData.ImageMat.class, IOType.OUTPUT);
-//        DefaultListModel<OpenCVOperation> imageOpList = whw.getListManager().getOperationsList();
-//        System.out.println(list.size());
         int foundIndex = 0;
         for(int i = 0; i < list.size(); i++) {
             if(list.get(i).getParent().equals( imageMat.getParent() )) {
@@ -110,9 +107,7 @@ public class SrcMatSelectorDialog extends JDialog {
         }
         public void actionPerformed(ActionEvent e) {
             if(list.getSelectedIndex() != -1) {
-                //TODO: Update the IOData.ImgData for the parent operation.
-                imageMat.setData( list.getSelectedValue().getData(), list.getSelectedValue().getParent() );
-//                parentOperation.setInputOperation(list.getSelectedValue());
+                imageMat.setDataSource( list.getSelectedValue().getParent(),list.getSelectedValue() );
                 dispose();
             }
         }

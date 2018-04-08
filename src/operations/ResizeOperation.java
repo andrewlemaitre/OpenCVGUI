@@ -46,7 +46,7 @@ public class ResizeOperation extends OpenCVOperation {
         OperationDialogBox odb = new OperationDialogBox();
         odb.addTextBox("Operation Name", "Resize Operation", this.getOutputNameObject());
 
-        odb.addSourceMatSelector("Input Operation", this, outputImg);
+        odb.addSourceMatSelector("Input Operation", this, inputImg);
         odb.add2DDimension("Absolute Size", absoluteResizeDims, getAbsXNumberModel(), getAbsYNumberModel(), false);
         odb.add2DDimension("Scale Factor", scaleFactorDims, getScaleXNumberModel(), getScaleYNumberModel(), false);
 
@@ -94,12 +94,17 @@ public class ResizeOperation extends OpenCVOperation {
 
     @Override
     public boolean isValid() {
+        if(inputImg.getIOSource() == null )
+            return errorMsg( String.format("Resize Op. \"%s\" is not valid because %s data source is null.\n", this.getOperationName(), inputImg.getName()) );
         if(inputImg.getData().empty())
-            return false;
+            return errorMsg( String.format("Resize Op. \"%s\" is not valid because %s getData returned empty.\n", this.getOperationName(), inputImg.getName()));
         //If either absolute width or height is greater than 0 and the other is equal to 0, then return false.
         if(( absoluteResizeDims.getWidth() > 0 || absoluteResizeDims.getHeight() > 0) && 
                (absoluteResizeDims.getWidth() == 0 || absoluteResizeDims.getHeight() == 0 ))
-            return false;
+            return errorMsg( String.format("Resize Op. \"%s\" is not valid because one of the absolute size dimensions is greater than 0, "
+                    + "but the other is still 0.\n"
+                    + "\twidth=%d"
+                    + "\theight=%d", this.getOperationName(), absoluteResizeDims.getWidth(), absoluteResizeDims.getHeight()));
         /* If both the absolute width and height are 0, then the function will use the scale factor values.
          * So, if either of the scale factor dimensions are equal to 0, return false.
          */

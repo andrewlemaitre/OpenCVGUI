@@ -44,7 +44,7 @@ public class RotationOperation extends OpenCVOperation {
     public JDialog openDialogBox() {
         OperationDialogBox odb = new OperationDialogBox();
         odb.addTextBox("Operation Name", "Rotation Operation", this.getOperationNameObject());
-        odb.addSourceMatSelector("Input Operation", this, outputImg);
+        odb.addSourceMatSelector("Input Operation", this, inputImg);
         odb.add1DDimension("Angle", angle, getAngleModel());
         odb.add1DDimension("Scale", scale, getScaleModel());
         odb.add2DDimension("Center of Rotation", centerOfRotation, getCRXModel(), getCRYModel(), false);
@@ -64,8 +64,10 @@ public class RotationOperation extends OpenCVOperation {
 
     @Override
     public boolean isValid() {
+        if(inputImg.getIOSource() == null )
+            return errorMsg( String.format("Rotation Op. \"%s\" is not valid because %s data source is null.\n", this.getOperationName(), inputImg.getName()) );
         if(inputImg.getData().empty())
-            return false;
+            return errorMsg( String.format("Rotation Op. \"%s\" is not valid because %s getData returned empty.\n", this.getOperationName(), inputImg.getName()));
         return true;
     }
 

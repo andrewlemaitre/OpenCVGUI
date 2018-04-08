@@ -35,7 +35,7 @@ public class ThresholdOperation extends OpenCVOperation {
         OperationDialogBox odb = new OperationDialogBox();
         odb.addTextBox("Operation Name", "Threshold Name", this.getOperationNameObject());
 
-        odb.addSourceMatSelector("Input Operation", this, outputImg);
+        odb.addSourceMatSelector("Input Operation", this, inputImg);
         odb.addSliderSetting("Threshold Min", 0, 255, thresholdValue.getValue(), thresholdValue);
         odb.addSliderSetting("Threshold Max", 0, 255, maxThresholdValue.getValue(), maxThresholdValue);
 
@@ -83,8 +83,14 @@ public class ThresholdOperation extends OpenCVOperation {
 
     @Override
     public boolean isValid() {
-        if(inputImg.getData().empty() || threshFlag == null || additionalThreshFlag == null)
-            return false;
+        if(inputImg.getIOSource() == null )
+            return errorMsg( String.format("Threshold Op. \"%s\" is not valid because %s data source is null.\n", this.getOperationName(), inputImg.getName()) );
+        if(inputImg.getData().empty())
+            return errorMsg( String.format("Threshold Op. \"%s\" is not valid because %s getData returned empty.\n", this.getOperationName(), inputImg.getName()));
+        if(threshFlag == null || additionalThreshFlag == null)
+            return errorMsg( String.format("Threshold Op. \"%s\" is not valid because one of the thresh flags is null.\n"
+                    + "\tThresh Flag:%i\n"
+                    + "\tAdditional Thresh Flag:%i\n", this.getOperationName(), threshFlag, additionalThreshFlag ));
         return true;
     }
 
